@@ -28,7 +28,7 @@ Swarm robotics with LEGO: Multiple LEGO robot vehicles collaborating to harvest 
   - Adapts when the network is disturbed
     - When a robot is pushed away (e.g. visitor interaction, or a rogue robot controlled by the public)
     - When new resources are added the network dynamically approaches the new resources
-
+- Network must also collaboratively explore. Randomly moving around while maintaining coverage of the area.
 
 # About those virtual springs
 - The virtual springs represent virtual forces between the robots.
@@ -77,6 +77,7 @@ Swarm robotics with LEGO: Multiple LEGO robot vehicles collaborating to harvest 
 - Dots signifying agent positions (which upon overlay immediately reveal the estimation error)  
 - Transparent circles signifying lines of sight
 - Lines between any neighbors currently in communication: produces a "tree" with all kinds of branches. And some disconnected branches or nodes
+- Vectors at each node representing each force (soft color) + nett force, torque (bold), indicating the current velocity and yaw rate
 - Colored circle to represent resource quantity that is being broadcast
 - Flashes each time a new ball is collected
 - Bar plots of stats
