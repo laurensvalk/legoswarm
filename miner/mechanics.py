@@ -22,28 +22,24 @@ class Motor:
         return self.motor.position
 
     def Stop(self):
-        self.SetSpeed(0)   
+        self.SetSpeed(0)       
 
-    def Goto(self, reference, speed, tolerance):
-
-        if speed >= 0:
-            abs_speed = speed
-        else:
-            abs_speed = -speed
-
-        if reference - tolerance <= self.GetPosition() <= reference + tolerance:
-            pass
-        else:
-            if reference > self.GetPosition():
-                self.SetSpeed(abs_speed)
-                while self.GetPosition() < reference - tolerance:
-                    pass
-                self.Stop()    
+    def Goto(self, reference, speed):
+        if not self.Running():
+            if speed >= 0:
+                abs_speed = speed
             else:
-                self.SetSpeed(-abs_speed)
-                while self.GetPosition() > reference + tolerance:
-                    pass
-                self.Stop()       
+                abs_speed = -speed
+            self.motor.position_sp = reference
+            self.motor.speed_sp = abs_speed
+            self.motor.run_to_abs_pos()
+
+    def Running(self):
+        return 'running' in self.motor.state
+
+    def WaitForCompletion(self):
+        while self.Running():
+            time.sleep(0.01)
 
     def __del__(self):
         self.Stop()    
@@ -51,8 +47,8 @@ class Motor:
 class Picker:
     target_open   = 40
     target_closed = target_open + 90
-    target_store  = target_closed + 130
-    target_purge = target_store + 30    
+    target_store  = target_closed + 120
+    target_purge = target_store + 45    
 
     def __init__(self,port):   
 
@@ -68,9 +64,8 @@ class Picker:
         self.pickermotor.motor.reset()
 
     def Goto(self, reference):
-        tolerance = 1
         abs_speed = 80
-        self.pickermotor.Goto(reference*self.motor_deg_per_picker_deg, abs_speed*self.motor_deg_per_picker_deg, tolerance*self.motor_deg_per_picker_deg)
+        self.pickermotor.Goto(reference*self.motor_deg_per_picker_deg, abs_speed*self.motor_deg_per_picker_deg)
 
     def SetPickRate(self,rate):
         self.pickermotor.SetSpeed(rate * self.motor_deg_per_picker_deg)
