@@ -2,6 +2,7 @@
 import time
 import ev3dev.ev3 as ev3
 import sys
+from collections import defaultdict
 
 # Debug print
 def eprint(*args, **kwargs):
@@ -24,14 +25,10 @@ class Motor:
     def Stop(self):
         self.SetSpeed(0)       
 
-    def Goto(self, reference, speed):
-        if not self.Running():
-            if speed >= 0:
-                abs_speed = speed
-            else:
-                abs_speed = -speed
+    def Goto(self, reference, speed, tolerance):
+        if not self.Running() and not (reference - tolerance <= self.GetPosition() <= reference + tolerance):
             self.motor.position_sp = reference
-            self.motor.speed_sp = abs_speed
+            self.motor.speed_sp = abs(speed)
             self.motor.run_to_abs_pos()
 
     def Running(self):
@@ -64,8 +61,9 @@ class Picker:
         self.pickermotor.motor.reset()
 
     def Goto(self, reference):
-        abs_speed = 80
-        self.pickermotor.Goto(reference*self.motor_deg_per_picker_deg, abs_speed*self.motor_deg_per_picker_deg)
+        abs_speed = 120
+        tolerance = 4
+        self.pickermotor.Goto(reference*self.motor_deg_per_picker_deg, abs_speed*self.motor_deg_per_picker_deg, abs(tolerance*self.motor_deg_per_picker_deg))
 
     def SetPickRate(self,rate):
         self.pickermotor.SetSpeed(rate * self.motor_deg_per_picker_deg)
@@ -99,27 +97,52 @@ class DriveBase:
         diff = turnrate_deg_sec * self.wheel_cm_sec_per_base_deg_sec / self.wheel_cm_sec_per_deg_s
         self.left.SetSpeed(nett - diff)
         self.right.SetSpeed(nett + diff)
-        eprint(self.left.GetSpeed())
 
     def Stop(self):
         self.DriveAndTurn(0,0)
 
+class RemoteControl:
 
-# Configure the remote
-irRemote          = ev3.InfraredSensor()
-irRemote.mode     = irRemote.MODE_IR_REMOTE
+    button_list = ['NONE','LEFT_UP','LEFT_DOWN','RIGHT_UP','RIGHT_DOWN',
+                'BOTH_UP','LEFT_UP_RIGHT_DOWN','LEFT_DOWN_RIGHT_UP','BOTH_DOWN',
+                'BEACON', 'BOTH_LEFT','BOTH_RIGHT']
 
+    def __init__(self,port):
+        self.remote = ev3.InfraredSensor(port)
+        self.remote.mode = self.remote.MODE_IR_REMOTE
+
+    def Button(self):
+        return self.button_list[self.remote.value()]
+
+    def IsPressed(self,button):
+        return self.button_list.index(button) == self.remote.value()
+
+# Configure the devices
+remote = RemoteControl('in4')
 base = DriveBase(left='outB',right='outC',wheel_diameter=0.043,wheel_span = 0.12)
-
 picker = Picker('outA')
-picker.Goto(Picker.target_closed)
-time.sleep(1)
-picker.Goto(Picker.target_store)
-time.sleep(1)
-picker.Goto(Picker.target_open)
-time.sleep(1)
-picker.Goto(Picker.target_store)
-time.sleep(1)
-picker.Goto(Picker.target_purge)
-time.sleep(1)
-picker.Goto(Picker.target_open)
+
+
+
+actions = {
+    'NONE' : (0,0,None),
+    'LEFT_UP' : (0,40,None),
+    'RIGHT_UP' : (0,-40,None),
+    'BOTH_UP' : (6,0,None),
+    'BOTH_DOWN' : (-6,0,None),
+    'LEFT_DOWN' : (None, None, Picker.target_store),
+    'RIGHT_DOWN' : (None, None, Picker.target_open),
+    'BEACON' : (None, None, Picker.target_purge)    
+}
+actions = defaultdict(lambda: actions['NONE'], actions)
+
+while True:
+    speed_now, steering_now, target_now = actions[remote.Button()]
+
+    if target_now is not None:
+        picker.Goto(target_now)
+
+    if speed_now is not None and steering_now is not None:
+        base.DriveAndTurn(speed_now,steering_now)
+
+    time.sleep(0.1)
