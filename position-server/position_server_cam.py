@@ -1,41 +1,66 @@
 #!/usr/bin/env python3
 
+# Reads webcam data and outputs found triangle markers as an UDP broadcast
+# Use q to stop this script, not ctrl-c!
+
 import cv2
 import numpy as np
 import time
 from threading import Thread
-import select, socket, sys, struct
+import socket
 import logging
-
-THRESH = 120
 try:
     import cPickle as pickle
 except:
     import pickle
 
 
-from multiprocessing.connection import Listener
+### Settings ###
+THRESH = 100        # Threshold for b/w version of camera image
+SERVER_ADDR = ("255.255.255.255", 50008)
+
+
 
 ### Initialize ###
-
-cv2.namedWindow("cam", cv2.WINDOW_OPENGL)
+# Camera
+cv2.namedWindow("cam", cv2.WINDOW_OPENGL+ cv2.WINDOW_AUTOSIZE)
 cap = cv2.VideoCapture(0)
 cap.set(3,1920)
-robot_positions = {}
-SERVER_ADDR = ("255.255.255.255", 50008)
-RECV_BUFFER = 128  # Block size
+
+# Data
+robot_broadcast_data = {'states': {
+                                   # 1: [(500, 500),    # middle of triangle base
+                                   #     (520, 520)],   # point of traingle
+                                   # 2: [(400, 400),    # middle of triangle base
+                                   #     (420, 420)]    # point of traingle
+                                   # etc...
+                                   },
+                        'balls': [], # List of Centroids
+                        'settings': {'sight_range': 100,
+                                     'dump_location': (20, 20)}
+                        }
+
+# Server
+running = True
+
+# Logging n stuff
 logging.basicConfig(#filename='position_server.log',     # To a file. Or not.
                     filemode='w',                       # Start each run with a fresh log
                     format='%(asctime)s, %(levelname)s, %(message)s',
                     datefmt='%H:%M:%S',
                     level=logging.INFO, )              # Log info, and warning
-running = True
 n = 100             # Number of loops to wait for time calculation
 t = time.time()
 
 
 ### Helper functions ###
 def atan2_vec(vector):
+    """
+    Angle relative to horizontal axis. With vectors where the Y axis pointing down.
+    A turn to the left is positive.
+    :param vector:
+    :return:
+    """
     return -np.arctan2(vector[1], vector[0])
 
 
@@ -62,10 +87,10 @@ class SocketThread(Thread):
         Thread.__init__(self)
 
     def run(self):
-        global robot_positions, running
+        global robot_broadcast_data, running
 
         while running:
-            data = pickle.dumps(robot_positions)
+            data = pickle.dumps(robot_broadcast_data)
 
             try:
                 sent = self.server_socket.sendto(data, SERVER_ADDR)
@@ -86,21 +111,16 @@ socket_server = SocketThread()
 socket_server.start()
 
 while True:
-
-
     ok, img = cap.read()
     if not ok:
         continue    #and try again.
-    height, width = img.shape[:2]
+    img_height, img_width = img.shape[:2]
     # width = np.size(img, 1)
 
     # convert to grayscale
     img_grey = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
-    # logging.debug("read greyscale", t - time.time())
-    # Otsu's thresholding. Nice & fast!
-    # http://docs.opencv.org/trunk/d7/d4d/tutorial_py_thresholding.html
-    # values, img_grey = cv2.threshold(img_grey, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+    # logging.debug("read greyscale image", t - time.time())
 
     # Simple adaptive mean thresholding
     values, img_grey = cv2.threshold(img_grey, THRESH, 255, cv2.ADAPTIVE_THRESH_MEAN_C)
@@ -109,10 +129,10 @@ while True:
     img_grey, contours, hierarchy = cv2.findContours(img_grey, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
     # logging.debug("found contours", t - time.time())
 
-    # Preview thresholded image
+    # Uncomment to preview thresholded image
     #img = cv2.cvtColor(img_grey, cv2.COLOR_GRAY2BGR)
 
-    robot_positions = {}
+    robot_states = {}
     # Find triangular contours with at least 2 children. These must be our markers!
     for x in range(0, len(contours)):
 
@@ -130,7 +150,6 @@ while True:
             c = c + 1
 
         if c == 2:
-
             # To do: also check if it runs *exactly* 2 children deep. and not more.
             # This marker has at least two children. Now let's check if it's a triangle.
             approx = cv2.approxPolyDP(contours[x], cv2.arcLength(contours[x], True)*0.05, True)
@@ -164,51 +183,52 @@ while True:
                 R = np.array([[-s, -c], [-c, s]])
 
                 # Calculate the relative position of the code dots with some linear algebra.
-                relative_code_positions = np.array([[0.375, 0.37],
-                                                    [0.125, 0.37],
-                                                    [-0.125, 0.37],
-                                                    [-0.375, 0.37]])
+                relative_code_positions = np.array([[0.375, 0.35],
+                                                    [0.125, 0.35],
+                                                    [-0.125, 0.35],
+                                                    [-0.375, 0.35]])
+
+                # Now do a dot product of the relative positions with the center position,
+                # and offset this back to position of the robot to find matrix of absolute code pixel positions
                 locations = (center + np.dot(relative_code_positions * shortest, R)).astype(int)
 
-
-
-                code = 0
+                # Now check all code pixels and do a binary addition
+                robot_id = 0
                 for i in range(4):
                     try:
                         p = img_grey[locations[i][1], locations[i][0]]
                     except: # The needed pixel is probably outside the image.
-                        code = -1
+                        robot_id = -1
                         break
                     if not p:
-                        code += 2**i
+                        robot_id += 2 ** i
 
                 # Draw the data
                 cv2.putText(img,
-                            u"{0:.2f} rad, code: {1}, x:{2}, y:{3}".format(heading, code, center[0], height-center[1]),
+                            u"{0:.2f} rad, code: {1}, x:{2}, y:{3}".format(heading, robot_id, center[0], img_height - center[1]),
                             tuple(center),
                             cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 255), 4)
-                # Draw binary code marker positions...
+
+                # Draw binary robot id marker positions
                 for l in locations:
                     cv2.circle(img, tuple(l), 4, (0, 255, 0), -1)
 
-                #Draw the contour of our triangle
+                # Draw the contour of our triangle
                 cv2.drawContours(img, [approx], -1, (0, 255, 0))
 
                 # Save the data in our global dictionary
-                robot_positions[code] = {'contour': approx,
-                                         'center': (center[0], height-center[1]),
-                                         'front': (front[0], height-front[1]),
-                                         'heading': heading, # In Radians, 0 is along x axis, positive is ccw
-                                         }
+                robot_states[robot_id] = [(center[0], img_height - center[1]),  # Triangle Center with origin at bottom left
+                                          (front[0], img_height - front[1])]    # Triangle Top with origin at bottom left
+
+    robot_broadcast_data['states'] = robot_states
     # logging.debug("found markers", t - time.time())
 
-    # Draw the middle of the screen
-    cv2.line(img, (width // 2 - 20, height // 2), (width // 2 + 20, height // 2), (0, 0, 255), 3)
-    cv2.line(img, (width // 2, height // 2 - 20), (width // 2, height // 2 + 20), (0, 0, 255), 3)
+    # Draw a + at the middle of the screen
+    cv2.line(img, (img_width // 2 - 20, img_height // 2), (img_width // 2 + 20, img_height // 2), (0, 0, 255), 3)
+    cv2.line(img, (img_width // 2, img_height // 2 - 20), (img_width // 2, img_height // 2 + 20), (0, 0, 255), 3)
 
     # Show all calculations in the preview window
     cv2.imshow("cam", img)
-
     # logging.debug("shown image", t - time.time())
 
     # Wait for the 'q' key. Dont use ctrl-c !!!
@@ -221,7 +241,6 @@ while True:
         t = time.time()
     else:
         n -= 1
-
 
 ### clean up ###
 running = False
