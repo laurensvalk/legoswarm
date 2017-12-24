@@ -1,0 +1,24 @@
+\documentclass[12pt, a4paper]
+{article}
+
+\usepackage{svg}
+\setsvg{inkscape=inkscape -z -D,svgpath=images/}
+\usepackage{float}
+
+\title{Hello, Latex}
+\date{2017\\ December}
+\author{Me\thanks{dep/email}  }
+\begin{document}
+\maketitle
+\section{Section Title}
+Hello, world
+
+\begin{figure}[H]
+\centering
+\includesvg[width=0.1\textwidth]{qr}
+\label{fig:qr}
+\caption{Hello, figure and caption}
+\end{figure}
+
+
+\end{document}
