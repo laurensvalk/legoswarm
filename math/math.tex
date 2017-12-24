@@ -4,21 +4,66 @@
 \usepackage{svg}
 \setsvg{inkscape=inkscape -z -D,svgpath=images/}
 \usepackage{float}
+\usepackage{amsmath}
+\usepackage{todonotes}
 
-\title{Hello, Latex}
-\date{2017\\ December}
-\author{Me\thanks{dep/email}  }
+\providecommand{\todos}[1]{\todo[inline]{#1}}
+\providecommand{\ang}[1]{\theta_{\text{#1}}}
+\providecommand{\sub}[1]{_{\text{#1}}}
+\providecommand{\subi}[1]{_{\text{#1},i}}
+\providecommand{\twonorm}[1]{\left|\left|#1\right|\right|}
+\providecommand{\foralli}{\quad \forall\, i}
+\providecommand{\lr}[1]{\left( {#1} \right)}
+\title{Reference frame conversions}
+\author{Laurens Valk}
 \begin{document}
 \maketitle
-\section{Section Title}
-Hello, world
+
+
+\section{Scaling} 
+\begin{figure}[H]
+\centering
+\includesvg[width=0.8\textwidth]{scaling}
+\label{fig:robotframe}
+\caption{Camera picture (left) and ``physical size'' (right). The symbol * denotes vectors expressed in pixels.}
+\end{figure}
+%
+The distance $d\sub{top/center}$ is known, constant, and equivalent for each agent:
+%
+\begin{equation}
+d\sub{top/center} \equiv \twonorm{r\subi{top}-r\subi{center}} \foralli
+\end{equation}
+%
+Per agent, we can estimate the scaling factor $\epsilon_i$ as:
+%
+\begin{equation}
+\varepsilon_i = \dfrac{\twonorm{r^*\subi{top}-r^*\subi{center}}}{d\sub{top/center}} \quad \text{pixels/m}
+\end{equation}
+%
+A more accurate estimate for the overall scaling factor is:
+%
+\begin{equation}
+\varepsilon = \dfrac{1}{N}\sum^N_{i=1} \varepsilon_i
+\end{equation}
+%
+\todos{Work on generic conversion formula for pixel vector to real life vector. Above is scaling but also need offset and possibly rotation or flipping unless we use same orientation as camera.}
+
+
+
+\section{Label Orientation}
 
 \begin{figure}[H]
 \centering
-\includesvg[width=0.1\textwidth]{qr}
-\label{fig:qr}
-\caption{Hello, figure and caption}
+\includesvg[width=1\textwidth]{robotframe}
+\label{fig:robotframe}
+\caption{Local vehicle frame definitions}
 \end{figure}
+
+\todos{Define homogeneous transformation matrices between all steps to account for both displacement and rotation}
+
+\section{Relative Agent Positions and Orientations}
+
+
 
 
 \end{document}
