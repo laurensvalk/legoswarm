@@ -14,21 +14,104 @@
 \providecommand{\twonorm}[1]{\left|\left|#1\right|\right|}
 \providecommand{\foralli}{\quad \forall\, i}
 \providecommand{\lr}[1]{\left( {#1} \right)}
+
+\providecommand{\tr}{\tilde{r}}
+
 \title{Reference frame conversions}
 \author{Laurens Valk}
 \begin{document}
 \maketitle
 
+\tableofcontents
 
-\section{Scaling} 
+\section{From Pixels to Meters} 
+\subsection{Transformation Matrices}
+The symbol $\tr$ expresses vectors in units of pixels. Any other vector $r$ has units of meters.
 \begin{figure}[H]
 \centering
-\includesvg[width=0.8\textwidth]{scaling}
-\label{fig:robotframe}
-\caption{Camera picture (left) and ``physical size'' (right). The symbol * denotes vectors expressed in pixels.}
+\includesvg[width=1\textwidth]{scaling}
+\caption{Four coordinates: a) in the camera picture, b) with flipped y axis, c) with the origin at the center of the picture, d) scaled to physical distances.
+\label{fig:robotframe}}
 \end{figure}
+
+\begin{equation}
+\begin{bmatrix}
+\tr^f\\
+1
+\end{bmatrix} = \begin{bmatrix}
+1 & 0 & 0\\
+0 & -1 & 0\\
+0& 0 & 1
+\end{bmatrix}\begin{bmatrix}
+\tr^p\\1
+\end{bmatrix}=H^f_p \begin{bmatrix}
+\tr^p\\1
+\end{bmatrix}
+\end{equation}
+\begin{equation}
+\begin{bmatrix}
+\tr^c\\
+1
+\end{bmatrix} = \begin{bmatrix}
+1 & 0 & -\frac{1}{2}\tilde{w}_x\\
+0 & 1 & \frac{1}{2}\tilde{w}_y\\
+0& 0 & 1
+\end{bmatrix}\begin{bmatrix}
+\tr^f\\1
+\end{bmatrix}=H^c_f \begin{bmatrix}
+\tr^f\\1
+\end{bmatrix}
+\end{equation}
+\begin{equation}
+\begin{bmatrix}
+r^s\\
+1
+\end{bmatrix} = \begin{bmatrix}
+\varepsilon & 0 & 0\\
+0 & \varepsilon & 0\\
+0& 0 & 1
+\end{bmatrix}\begin{bmatrix}
+\tr^c\\1
+\end{bmatrix}=H^s_c \begin{bmatrix}
+\tr^c\\1
+\end{bmatrix}
+\end{equation}
+
+\begin{equation}
+\begin{bmatrix}
+r^s\\
+1
+\end{bmatrix} = H^s_c H^c_f H^f_p \begin{bmatrix}
+\tr^p\\1
+\end{bmatrix}
+\end{equation}
 %
-The distance $d\sub{top/center}$ is known, constant, and equivalent for each agent:
+The overall transformation from pixels to the real world representation is
+%
+\begin{equation}
+\begin{bmatrix}
+r^s\\
+1
+\end{bmatrix} = H^s_p \begin{bmatrix}
+\tr^p\\1
+\end{bmatrix}
+\end{equation}
+%
+where
+%
+\begin{equation}
+H^s_p =H^s_c H^c_f H^f_p = \begin{bmatrix}
+ \varepsilon&    0& -\frac{1}{2}\varepsilon \tilde{w}_x\\
+   0& -\varepsilon&  \frac{1}{2}\varepsilon \tilde{w}_y\\
+0&    0&           1
+\end{bmatrix}
+\end{equation}
+
+
+
+\subsection{Scaling Factor}
+%
+The distance $d\sub{top/center}$ in Figure \ref{fig:robotframe} is known, constant, and equivalent for each agent:
 %
 \begin{equation}
 d\sub{top/center} \equiv \twonorm{r\subi{top}-r\subi{center}} \foralli
@@ -37,7 +120,7 @@ d\sub{top/center} \equiv \twonorm{r\subi{top}-r\subi{center}} \foralli
 Per agent, we can estimate the scaling factor $\epsilon_i$ as:
 %
 \begin{equation}
-\varepsilon_i = \dfrac{\twonorm{r^*\subi{top}-r^*\subi{center}}}{d\sub{top/center}} \quad \text{pixels/m}
+\varepsilon_i = \dfrac{d\sub{top/center}}{\twonorm{\tr\subi{top}-\tr\subi{center}}} \quad \text{m/pixel}
 \end{equation}
 %
 A more accurate estimate for the overall scaling factor is:
@@ -46,19 +129,22 @@ A more accurate estimate for the overall scaling factor is:
 \varepsilon = \dfrac{1}{N}\sum^N_{i=1} \varepsilon_i
 \end{equation}
 %
-\todos{Work on generic conversion formula for pixel vector to real life vector. Above is scaling but also need offset and possibly rotation or flipping unless we use same orientation as camera.}
+However, because $\varepsilon$ is constant it may be more desirable to calculate it once and use it as a constant parameter. If so, we may divide the arena width by the picture with in pixels:
+%
+\begin{equation}
+\varepsilon = \dfrac{d\sub{field}}{\tilde{w}_x} \quad \text{m/pixel}
+\end{equation}
 
-
-
-\section{Label Orientation}
+\section{Local Robot Frames}
+\subsection{Label Orientation}
 
 \begin{figure}[H]
 \centering
 \includesvg[width=1\textwidth]{robotframe}
-\label{fig:robotframe}
-\caption{Local vehicle frame definitions}
+\caption{Local vehicle frame definitions
+\label{fig:robotframe}}
 \end{figure}
-
+\todos{fix $\theta\sub{label}$ to fixed value to avoid computing sine/cos explicitly to get rotation matrix.}
 \todos{Define homogeneous transformation matrices between all steps to account for both displacement and rotation}
 
 \section{Relative Agent Positions and Orientations}

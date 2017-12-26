@@ -36,7 +36,7 @@
   }%
   \providecommand\rotatebox[2]{#2}%
   \ifx\svgwidth\undefined%
-    \setlength{\unitlength}{562.67285156bp}%
+    \setlength{\unitlength}{568.60408615bp}%
     \ifx\svgscale\undefined%
       \relax%
     \else%
@@ -48,11 +48,33 @@
   \global\let\svgwidth\undefined%
   \global\let\svgscale\undefined%
   \makeatother%
-  \begin{picture}(1,0.39512863)%
+  \begin{picture}(1,0.69033413)%
     \put(0,0){\includegraphics[width=\unitlength,page=1]{scaling.pdf}}%
-    \put(0.66312106,0.37506481){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$r\subi{top/center}$}}}%
+    \put(0.09352344,0.53210501){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$0$}}}%
+    \put(0.29954177,0.53210501){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$x^p$}}}%
+    \put(0.10407559,0.36628541){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$y^p$}}}%
     \put(0,0){\includegraphics[width=\unitlength,page=2]{scaling.pdf}}%
-    \put(-0.00206534,0.37622472){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$r^*\subi{top}-r^*\subi{center} = \varepsilon \lr{r\subi{top}-r\subi{center}}$}}}%
+    \put(0.58876692,0.49953826){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$0$}}}%
+    \put(0.79716637,0.53196176){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$x^f$}}}%
+    \put(0.60239344,0.66160256){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$y^f$}}}%
     \put(0,0){\includegraphics[width=\unitlength,page=3]{scaling.pdf}}%
+    \put(0.17303688,0.09485927){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$0$}}}%
+    \put(0.38285764,0.12586156){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$x^c$}}}%
+    \put(0.17432685,0.25550231){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$y^c$}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=4]{scaling.pdf}}%
+    \put(0.18598044,0.58788071){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$w_x$}}}%
+    \put(0.03121546,0.45974736){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$w_y$}}}%
+    \put(0.67194945,0.09514871){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$0$}}}%
+    \put(0.88177015,0.126151){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$x^s$}}}%
+    \put(0.6732394,0.25579166){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$y^s$}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=5]{scaling.pdf}}%
+    \put(0.53900583,0.64884376){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{}}}%
+    \put(0.2723886,0.12419918){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$d$}}}%
+    \put(0.83857466,0.15859365){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\varepsilon d$}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=6]{scaling.pdf}}%
+    \put(0.01611825,0.61741419){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{\textbf{a})}}}%
+    \put(0.52833143,0.61741419){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{\textbf{b})}}}%
+    \put(0.01611825,0.2459538){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{\textbf{c})}}}%
+    \put(0.52833143,0.2459538){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{\textbf{d})}}}%
   \end{picture}%
 \endgroup%
