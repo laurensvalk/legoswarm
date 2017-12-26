@@ -1,6 +1,6 @@
 %% Creator: Inkscape inkscape 0.91, www.inkscape.org
 %% PDF/EPS/PS + LaTeX output extension by Johan Engelen, 2010
-%% Accompanies image file 'robotframe.pdf' (pdf, eps, ps)
+%% Accompanies image file 'labelworld.pdf' (pdf, eps, ps)
 %%
 %% To include the image in your LaTeX document, write
 %%   \input{<filename>.pdf_tex}
@@ -36,7 +36,7 @@
   }%
   \providecommand\rotatebox[2]{#2}%
   \ifx\svgwidth\undefined%
-    \setlength{\unitlength}{486.40641174bp}%
+    \setlength{\unitlength}{317.12373047bp}%
     \ifx\svgscale\undefined%
       \relax%
     \else%
@@ -48,23 +48,18 @@
   \global\let\svgwidth\undefined%
   \global\let\svgscale\undefined%
   \makeatother%
-  \begin{picture}(1,0.66620114)%
-    \put(0,0){\includegraphics[width=\unitlength,page=1]{robotframe.pdf}}%
-    \put(0.53931432,0.11235902){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$r\sub{center/base}$}}}%
-    \put(0,0){\includegraphics[width=\unitlength,page=2]{robotframe.pdf}}%
-    \put(0.03042374,0.60986377){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$r\sub{gripper}$}}}%
-    \put(0,0){\includegraphics[width=\unitlength,page=3]{robotframe.pdf}}%
-    \put(0.75788375,0.41249801){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\xh_\ell$}}}%
-    \put(0.45408371,0.64745717){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\yh_\ell$}}}%
-    \put(0,0){\includegraphics[width=\unitlength,page=4]{robotframe.pdf}}%
-    \put(0.63640888,0.21336385){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\xh_b$}}}%
-    \put(0.2531705,0.58871121){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\yh_b$}}}%
-    \put(0,0){\includegraphics[width=\unitlength,page=5]{robotframe.pdf}}%
-    \put(-0.00238917,0.00469402){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$r\sub{base}$}}}%
-    \put(0,0){\includegraphics[width=\unitlength,page=6]{robotframe.pdf}}%
-    \put(0.80879584,0.59241894){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$r\sub{top}$}}}%
-    \put(0,0){\includegraphics[width=\unitlength,page=7]{robotframe.pdf}}%
-    \put(0.6277018,0.59241894){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$r\sub{center}$}}}%
-    \put(0,0){\includegraphics[width=\unitlength,page=8]{robotframe.pdf}}%
+  \begin{picture}(1,0.81486507)%
+    \put(0,0){\includegraphics[width=\unitlength,page=1]{labelworld.pdf}}%
+    \put(0.73855704,0.47472749){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\xh_\ell$}}}%
+    \put(0.18609487,0.66933361){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\yh_\ell$}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=2]{labelworld.pdf}}%
+    \put(0.58467243,0.00892421){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\xh_b$}}}%
+    \put(-0.00314103,0.5846344){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\yh_b$}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=3]{labelworld.pdf}}%
+    \put(0.70672983,0.78132384){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$r\sub{top}$}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=4]{labelworld.pdf}}%
+    \put(0.42356083,0.67681306){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$r\sub{center}$}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=5]{labelworld.pdf}}%
+    \put(0.15867884,0.09206654){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$r\sub{center}$}}}%
   \end{picture}%
 \endgroup%

@@ -16,6 +16,15 @@
 \providecommand{\lr}[1]{\left( {#1} \right)}
 
 \providecommand{\tr}{\tilde{r}}
+\providecommand{\inert}{w}
+\providecommand{\br}{\boldsymbol{r}}
+\providecommand{\btr}{\tilde{\br}}
+
+\providecommand{\xh}{\hat{x}}
+\providecommand{\yh}{\hat{y}}
+
+\providecommand{\qcom}{, \qquad}
+
 
 \title{Reference frame conversions}
 \author{Laurens Valk}
@@ -53,8 +62,8 @@ The symbol $\tr$ expresses vectors in units of pixels. Any other vector $r$ has 
 \tr^c\\
 1
 \end{bmatrix} = \begin{bmatrix}
-1 & 0 & -\frac{1}{2}\tilde{w}_x\\
-0 & 1 & \frac{1}{2}\tilde{w}_y\\
+1 & 0 & -\frac{1}{2}\tilde{d}_x\\
+0 & 1 & \frac{1}{2}\tilde{d}_y\\
 0& 0 & 1
 \end{bmatrix}\begin{bmatrix}
 \tr^f\\1
@@ -64,7 +73,7 @@ The symbol $\tr$ expresses vectors in units of pixels. Any other vector $r$ has 
 \end{equation}
 \begin{equation}
 \begin{bmatrix}
-r^s\\
+r^{\inert}\\
 1
 \end{bmatrix} = \begin{bmatrix}
 \varepsilon & 0 & 0\\
@@ -72,16 +81,16 @@ r^s\\
 0& 0 & 1
 \end{bmatrix}\begin{bmatrix}
 \tr^c\\1
-\end{bmatrix}=H^s_c \begin{bmatrix}
+\end{bmatrix}=H^{\inert}_c \begin{bmatrix}
 \tr^c\\1
 \end{bmatrix}
 \end{equation}
 
 \begin{equation}
 \begin{bmatrix}
-r^s\\
+r^{\inert}\\
 1
-\end{bmatrix} = H^s_c H^c_f H^f_p \begin{bmatrix}
+\end{bmatrix} = H^{\inert}_c H^c_f H^f_p \begin{bmatrix}
 \tr^p\\1
 \end{bmatrix}
 \end{equation}
@@ -90,19 +99,20 @@ The overall transformation from pixels to the real world representation is
 %
 \begin{equation}
 \begin{bmatrix}
-r^s\\
+r^{\inert}\\
 1
-\end{bmatrix} = H^s_p \begin{bmatrix}
+\end{bmatrix} = H^{\inert}_p \begin{bmatrix}
 \tr^p\\1
-\end{bmatrix}
+\end{bmatrix} \quad \Rightarrow \quad \br^{\inert} = H^{\inert}_p 
+\btr^p
 \end{equation}
 %
 where
 %
 \begin{equation}
-H^s_p =H^s_c H^c_f H^f_p = \begin{bmatrix}
- \varepsilon&    0& -\frac{1}{2}\varepsilon \tilde{w}_x\\
-   0& -\varepsilon&  \frac{1}{2}\varepsilon \tilde{w}_y\\
+H^{\inert}_p =H^{\inert}_c H^c_f H^f_p = \begin{bmatrix}
+ \varepsilon&    0& -\frac{1}{2}\varepsilon \tilde{d}_x\\
+   0& -\varepsilon&  \frac{1}{2}\varepsilon \tilde{d}_y\\
 0&    0&           1
 \end{bmatrix}
 \end{equation}
@@ -132,20 +142,65 @@ A more accurate estimate for the overall scaling factor is:
 However, because $\varepsilon$ is constant it may be more desirable to calculate it once and use it as a constant parameter. If so, we may divide the arena width by the picture with in pixels:
 %
 \begin{equation}
-\varepsilon = \dfrac{d\sub{field}}{\tilde{w}_x} \quad \text{m/pixel}
+\varepsilon = \dfrac{d\sub{field}}{\tilde{d}_x} \quad \text{m/pixel}
 \end{equation}
-
+\pagebreak
 \section{Local Robot Frames}
-\subsection{Label Orientation}
+
+\subsection{From Label Markers to Label Frame}
 
 \begin{figure}[H]
 \centering
-\includesvg[width=1\textwidth]{robotframe}
+\includesvg[width=0.5\textwidth]{labelworld}
+\caption{Local vehicle frame definitions
+\label{fig:labelworld}}
+\end{figure}
+
+
+First, transform pixel locations to world coordinates:
+%
+\begin{equation}
+\br\sub{center}^w = H^{\inert}_p \btr\sub{center}^p, \quad \br\sub{top}^w = H^{\inert}_p \btr\sub{top}^p
+\end{equation}
+%
+Obtain the label x and y axes in world coordinates:
+%
+\begin{align}
+\xh_\ell^{\inert}= \dfrac{r\sub{top}^w-r\sub{center}^w}{\twonorm{r\sub{top}^w-r\sub{center}^w}} \qcom \yh_\ell^{\inert} = \begin{bmatrix}
+0 & -1\\
+1 & 0
+\end{bmatrix}\xh_\ell
+\end{align}
+%
+The transformation matrix becomes:
+%
+\begin{equation}
+\br^{\inert} =H^{\inert}_\ell 
+\br^\ell\qcom H^{\inert}_\ell = \begin{bmatrix}
+\xh_\ell^{\inert} & \yh_\ell^{\inert} & r^{\inert}\sub{center}\\
+0 & 0 & 1
+\end{bmatrix}
+\end{equation}
+
+
+\todos{Agree on a better name than center. This is confusing}
+
+\subsection{From Label Frame to Robot Frame}
+
+
+\begin{equation}
+\br^b = \begin{bmatrix}
+I_2 & r^b\sub{center}\\
+0& 1
+\end{bmatrix}\br^\ell
+\end{equation}
+
+\begin{figure}[H]
+\centering
+\includesvg[width=0.7\textwidth]{robotframe}
 \caption{Local vehicle frame definitions
 \label{fig:robotframe}}
 \end{figure}
-\todos{fix $\theta\sub{label}$ to fixed value to avoid computing sine/cos explicitly to get rotation matrix.}
-\todos{Define homogeneous transformation matrices between all steps to account for both displacement and rotation}
 
 \section{Relative Agent Positions and Orientations}
 
