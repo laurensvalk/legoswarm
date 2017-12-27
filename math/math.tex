@@ -15,10 +15,10 @@
 \providecommand{\foralli}{\quad \forall\, i}
 \providecommand{\lr}[1]{\left( {#1} \right)}
 
-\providecommand{\tr}{\tilde{r}}
+\providecommand{\tp}{\tilde{p}}
 \providecommand{\inert}{w}
-\providecommand{\br}{\boldsymbol{r}}
-\providecommand{\btr}{\tilde{\br}}
+\providecommand{\bp}{\boldsymbol{p}}
+\providecommand{\btp}{\tilde{\bp}}
 
 \providecommand{\xh}{\hat{x}}
 \providecommand{\yh}{\hat{y}}
@@ -35,63 +35,63 @@
 
 \section{From Pixels to Meters} 
 \subsection{Transformation Matrices}
-The symbol $\tr$ expresses vectors in units of pixels. Any other vector $r$ has units of meters.
+The symbol $\tp$ expresses points in units of pixels. Any other point $p$ has position units of meters.
 \begin{figure}[H]
 \centering
 \includesvg[width=1\textwidth]{scaling}
-\caption{Four coordinates: a) in the camera picture, b) with flipped y axis, c) with the origin at the center of the picture, d) scaled to physical distances.
+\caption{Four coordinates: a) in the camera picture, b) with flipped y axis, c) with the origin at the midbase of the picture, d) scaled to physical distances.
 \label{fig:robotframe}}
 \end{figure}
 
 \begin{equation}
 \begin{bmatrix}
-\tr^f\\
+\tp^f\\
 1
 \end{bmatrix} = \begin{bmatrix}
 1 & 0 & 0\\
 0 & -1 & 0\\
 0& 0 & 1
 \end{bmatrix}\begin{bmatrix}
-\tr^p\\1
+\tp^p\\1
 \end{bmatrix}=H^f_p \begin{bmatrix}
-\tr^p\\1
+\tp^p\\1
 \end{bmatrix}
 \end{equation}
 \begin{equation}
 \begin{bmatrix}
-\tr^c\\
+\tp^c\\
 1
 \end{bmatrix} = \begin{bmatrix}
 1 & 0 & -\frac{1}{2}\tilde{d}_x\\
 0 & 1 & \frac{1}{2}\tilde{d}_y\\
 0& 0 & 1
 \end{bmatrix}\begin{bmatrix}
-\tr^f\\1
+\tp^f\\1
 \end{bmatrix}=H^c_f \begin{bmatrix}
-\tr^f\\1
+\tp^f\\1
 \end{bmatrix}
 \end{equation}
 \begin{equation}
 \begin{bmatrix}
-r^{\inert}\\
+p^{\inert}\\
 1
 \end{bmatrix} = \begin{bmatrix}
 \varepsilon & 0 & 0\\
 0 & \varepsilon & 0\\
 0& 0 & 1
 \end{bmatrix}\begin{bmatrix}
-\tr^c\\1
+\tp^c\\1
 \end{bmatrix}=H^{\inert}_c \begin{bmatrix}
-\tr^c\\1
+\tp^c\\1
 \end{bmatrix}
 \end{equation}
 
 \begin{equation}
 \begin{bmatrix}
-r^{\inert}\\
+p^{\inert}\\
 1
 \end{bmatrix} = H^{\inert}_c H^c_f H^f_p \begin{bmatrix}
-\tr^p\\1
+\tp^p\\1
 \end{bmatrix}
 \end{equation}
 %
@@ -99,12 +99,12 @@ The overall transformation from pixels to the real world representation is
 %
 \begin{equation}
 \begin{bmatrix}
-r^{\inert}\\
+p^{\inert}\\
 1
 \end{bmatrix} = H^{\inert}_p \begin{bmatrix}
-\tr^p\\1
-\end{bmatrix} \quad \Rightarrow \quad \br^{\inert} = H^{\inert}_p 
-\btr^p
+\tp^p\\1
+\end{bmatrix} \quad \Rightarrow \quad \bp^{\inert} = H^{\inert}_p 
+\btp^p
 \end{equation}
 %
 where
@@ -121,16 +121,16 @@ H^{\inert}_p =H^{\inert}_c H^c_f H^f_p = \begin{bmatrix}
 
 \subsection{Scaling Factor}
 %
-The distance $d\sub{top/center}$ in Figure \ref{fig:robotframe} is known, constant, and equivalent for each agent:
+The distance $d\sub{apex/midbase}$ in Figure \ref{fig:robotframe} is known, constant, and equivalent for each agent:
 %
 \begin{equation}
-d\sub{top/center} \equiv \twonorm{r\subi{top}-r\subi{center}} \foralli
+d\sub{apex/midbase} \equiv \twonorm{p\subi{apex}-p\subi{midbase}} \foralli
 \end{equation}
 %
 Per agent, we can estimate the scaling factor $\epsilon_i$ as:
 %
 \begin{equation}
-\varepsilon_i = \dfrac{d\sub{top/center}}{\twonorm{\tr\subi{top}-\tr\subi{center}}} \quad \text{m/pixel}
+\varepsilon_i = \dfrac{d\sub{apex/midbase}}{\twonorm{\tp\subi{apex}-\tp\subi{midbase}}} \quad \text{m/pixel}
 \end{equation}
 %
 A more accurate estimate for the overall scaling factor is:
@@ -146,7 +146,11 @@ However, because $\varepsilon$ is constant it may be more desirable to calculate
 \end{equation}
 \pagebreak
 \section{Local Robot Frames}
-
+\todos{cross check p's and then define vector as difference between two points; and then vectors cannot be transformed; just rotated}
+\begin{equation}
+r_{b/a}^c = p^c_b - p^c_a
+\end{equation}
+\todos{add picture} Put at start
 \subsection{From Label Markers to Label Frame}
 
 \begin{figure}[H]
@@ -160,13 +164,13 @@ However, because $\varepsilon$ is constant it may be more desirable to calculate
 First, transform pixel locations to world coordinates:
 %
 \begin{equation}
-\br\sub{center}^w = H^{\inert}_p \btr\sub{center}^p, \quad \br\sub{top}^w = H^{\inert}_p \btr\sub{top}^p
+\bp\sub{midbase}^w = H^{\inert}_p \btp\sub{midbase}^p, \quad \bp\sub{apex}^w = H^{\inert}_p \btp\sub{apex}^p
 \end{equation}
 %
 Obtain the label x and y axes in world coordinates:
 %
 \begin{align}
-\xh_\ell^{\inert}= \dfrac{r\sub{top}^w-r\sub{center}^w}{\twonorm{r\sub{top}^w-r\sub{center}^w}} \qcom \yh_\ell^{\inert} = \begin{bmatrix}
+\xh_\ell^{\inert}= \dfrac{p\sub{apex}^w-p\sub{midbase}^w}{\twonorm{p\sub{apex}^w-p\sub{midbase}^w}} \qcom \yh_\ell^{\inert} = \begin{bmatrix}
 0 & -1\\
 1 & 0
 \end{bmatrix}\xh_\ell
@@ -175,24 +179,25 @@ Obtain the label x and y axes in world coordinates:
 The transformation matrix becomes:
 %
 \begin{equation}
-\br^{\inert} =H^{\inert}_\ell 
-\br^\ell\qcom H^{\inert}_\ell = \begin{bmatrix}
-\xh_\ell^{\inert} & \yh_\ell^{\inert} & r^{\inert}\sub{center}\\
+\bp^{\inert} =H^{\inert}_\ell 
+\bp^\ell\qcom H^{\inert}_\ell = \begin{bmatrix}
+\xh_\ell^{\inert} & \yh_\ell^{\inert} & r^{\inert}\sub{midbase/origin}\\
 0 & 0 & 1
 \end{bmatrix}
 \end{equation}
 
 
 \todos{Agree on a better name than center. This is confusing}
-
+\todos{replace terminology: top = apex, center = midbase}
+\todos{FIX: Inside H matrix are always VECTORS. not p's.}
 \subsection{From Label Frame to Robot Frame}
 
-
+\todos{distinguish between points and vectors: Then vectors suddenly make sense: points in a frame are always defined with respect to the origin of that frame}
 \begin{equation}
-\br^b = \begin{bmatrix}
-I_2 & r^b\sub{center}\\
+\bp^b = \begin{bmatrix}
+I_2 & r^b\sub{midbase/robot}\\
 0& 1
-\end{bmatrix}\br^\ell
+\end{bmatrix}\bp^\ell
 \end{equation}
 
 \begin{figure}[H]

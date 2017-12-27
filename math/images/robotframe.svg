@@ -157,9 +157,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.979899"
-     inkscape:cx="372.66219"
-     inkscape:cy="526.72344"
+     inkscape:zoom="3.959798"
+     inkscape:cx="475.43167"
+     inkscape:cy="611.12242"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -230,7 +230,7 @@
          y="684.987"
          x="378.57953"
          id="tspan6027"
-         sodipodi:role="line">$r\sub{center/base}$</tspan></text>
+         sodipodi:role="line">$r\sub{midbase/robot}$</tspan></text>
     <path
        style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        d="M 372.4312,684.1529 C 237.55589,739.33135 285.79972,648.95684 246.8418,596.26038"
@@ -247,7 +247,7 @@
          sodipodi:role="line"
          id="tspan6677"
          x="69.169975"
-         y="382.50012">$r\sub{gripper}$</tspan></text>
+         y="382.50012">$p\sub{gripper}$</tspan></text>
     <path
        sodipodi:nodetypes="cc"
        inkscape:connector-curvature="0"
@@ -377,7 +377,7 @@
          y="750.44818"
          x="49.219463"
          id="tspan12828"
-         sodipodi:role="line">$r\sub{base}$</tspan></text>
+         sodipodi:role="line">$p\sub{robot}$</tspan></text>
     <path
        style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        d="M 93.602341,725.74984 C 115.12483,725.40121 193.50355,684.34821 212.37322,618.91696"
@@ -394,7 +394,7 @@
          sodipodi:role="line"
          id="tspan12840"
          x="542.42645"
-         y="393.10672">$r\sub{top}$</tspan></text>
+         y="393.10672">$p\sub{apex}$</tspan></text>
     <path
        sodipodi:nodetypes="cc"
        inkscape:connector-curvature="0"
@@ -411,7 +411,7 @@
          y="393.10672"
          x="432.31982"
          id="tspan12846"
-         sodipodi:role="line">$r\sub{center}$</tspan></text>
+         sodipodi:role="line">$p\sub{midbase}$</tspan></text>
     <path
        style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        d="m 342.17782,499.29498 c 63.8354,-15.50092 24.34755,-75.74681 84.77485,-104.81257"

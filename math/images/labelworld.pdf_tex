@@ -36,7 +36,7 @@
   }%
   \providecommand\rotatebox[2]{#2}%
   \ifx\svgwidth\undefined%
-    \setlength{\unitlength}{317.12373047bp}%
+    \setlength{\unitlength}{343.28445435bp}%
     \ifx\svgscale\undefined%
       \relax%
     \else%
@@ -48,18 +48,19 @@
   \global\let\svgwidth\undefined%
   \global\let\svgscale\undefined%
   \makeatother%
-  \begin{picture}(1,0.81486507)%
+  \begin{picture}(1,0.80601287)%
     \put(0,0){\includegraphics[width=\unitlength,page=1]{labelworld.pdf}}%
-    \put(0.73855704,0.47472749){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\xh_\ell$}}}%
-    \put(0.18609487,0.66933361){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\yh_\ell$}}}%
+    \put(0.71682217,0.4917962){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\xh_\ell$}}}%
+    \put(0.20646156,0.67157195){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\yh_\ell$}}}%
     \put(0,0){\includegraphics[width=\unitlength,page=2]{labelworld.pdf}}%
-    \put(0.58467243,0.00892421){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\xh_b$}}}%
-    \put(-0.00314103,0.5846344){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\yh_b$}}}%
+    \put(0.57466466,0.06149045){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\xh_{\inert}$}}}%
+    \put(0.03164678,0.59332742){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\yh_{\inert}$}}}%
     \put(0,0){\includegraphics[width=\unitlength,page=3]{labelworld.pdf}}%
-    \put(0.70672983,0.78132384){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$r\sub{top}$}}}%
+    \put(0.68742042,0.77502772){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$p\sub{apex}$}}}%
     \put(0,0){\includegraphics[width=\unitlength,page=4]{labelworld.pdf}}%
-    \put(0.42356083,0.67681306){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$r\sub{center}$}}}%
+    \put(0.42583092,0.67848141){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$p\sub{midbase}$}}}%
     \put(0,0){\includegraphics[width=\unitlength,page=5]{labelworld.pdf}}%
-    \put(0.15867884,0.09206654){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$r\sub{center}$}}}%
+    \put(0.18113482,0.13829674){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$r\sub{midbase/origin}$}}}%
+    \put(-0.00338527,0.00848308){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$p\sub{origin}$}}}%
   \end{picture}%
 \endgroup%

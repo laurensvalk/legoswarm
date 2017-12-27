@@ -36,7 +36,7 @@
   }%
   \providecommand\rotatebox[2]{#2}%
   \ifx\svgwidth\undefined%
-    \setlength{\unitlength}{486.40641174bp}%
+    \setlength{\unitlength}{500.70719299bp}%
     \ifx\svgscale\undefined%
       \relax%
     \else%
@@ -48,23 +48,23 @@
   \global\let\svgwidth\undefined%
   \global\let\svgscale\undefined%
   \makeatother%
-  \begin{picture}(1,0.66620114)%
+  \begin{picture}(1,0.6484297)%
     \put(0,0){\includegraphics[width=\unitlength,page=1]{robotframe.pdf}}%
-    \put(0.53931432,0.11235902){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$r\sub{center/base}$}}}%
+    \put(0.52391087,0.11040595){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$r\sub{midbase/robot}$}}}%
     \put(0,0){\includegraphics[width=\unitlength,page=2]{robotframe.pdf}}%
-    \put(0.03042374,0.60986377){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$r\sub{gripper}$}}}%
+    \put(0.0295548,0.59370139){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$p\sub{gripper}$}}}%
     \put(0,0){\includegraphics[width=\unitlength,page=3]{robotframe.pdf}}%
-    \put(0.75788375,0.41249801){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\xh_\ell$}}}%
-    \put(0.45408371,0.64745717){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\yh_\ell$}}}%
+    \put(0.73623771,0.40197262){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\xh_\ell$}}}%
+    \put(0.44111455,0.63022108){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\yh_\ell$}}}%
     \put(0,0){\includegraphics[width=\unitlength,page=4]{robotframe.pdf}}%
-    \put(0.63640888,0.21336385){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\xh_b$}}}%
-    \put(0.2531705,0.58871121){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\yh_b$}}}%
+    \put(0.6182323,0.20852596){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\xh_b$}}}%
+    \put(0.24593965,0.57315296){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\yh_b$}}}%
     \put(0,0){\includegraphics[width=\unitlength,page=5]{robotframe.pdf}}%
-    \put(-0.00238917,0.00469402){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$r\sub{base}$}}}%
+    \put(-0.00232094,0.00581599){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$p\sub{robot}$}}}%
     \put(0,0){\includegraphics[width=\unitlength,page=6]{robotframe.pdf}}%
-    \put(0.80879584,0.59241894){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$r\sub{top}$}}}%
+    \put(0.78569569,0.5767548){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$p\sub{apex}$}}}%
     \put(0,0){\includegraphics[width=\unitlength,page=7]{robotframe.pdf}}%
-    \put(0.6277018,0.59241894){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$r\sub{center}$}}}%
+    \put(0.6097739,0.5767548){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$p\sub{midbase}$}}}%
     \put(0,0){\includegraphics[width=\unitlength,page=8]{robotframe.pdf}}%
   \end{picture}%
 \endgroup%
