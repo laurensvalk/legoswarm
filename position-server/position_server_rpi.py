@@ -161,6 +161,7 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
             # To do: also check if it runs *exactly* 2 children deep. and not more.
             # This marker has at least two children. Now let's check if it's a triangle.
             approx = cv2.approxPolyDP(contours[x], cv2.arcLength(contours[x], True)*0.05, True)
+            logging.debug("approxed")
             if len(approx) == 3:
                 # We found a squarish object too.
                 # Let it's corners be these vectors.
@@ -210,6 +211,7 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
                         break
                     if not p:
                         robot_id += 2 ** i
+                logging.debug("checked id")
 
                 # Draw the data
                 # cv2.putText(img,
