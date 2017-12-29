@@ -7,7 +7,7 @@ def read_broadcast():
                                     3: [(400, 400), (420, 420)],   # midbase, apex
                                     4: [(400, 400), (420, 420)]    # midbase, apex
                                     },
-                            'balls': [(23, 24),           # centroids of balls on camera
+                            'balls': [(23, 25),           # centroids of balls on camera
                                     (1800, 900)],
                             'settings': {'sight_range': 0.3,
                                         'dump_location': (20, 20),
