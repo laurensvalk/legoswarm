@@ -33,6 +33,41 @@
 
 \tableofcontents
 
+\section{Preliminaries}
+
+\subsection{Points and Vectors}
+\begin{equation}
+r_{b/a}^c = p^c_b - p^c_a
+\end{equation}
+\todos{add picture}
+\subsection{Transformation}
+
+\begin{equation}
+\begin{bmatrix}
+p^i\\
+1
+\end{bmatrix} = \underbrace{\begin{bmatrix}
+R^i_j & r^i_{j/i}\\
+0 & 1
+\end{bmatrix}}_{H^i_j}\begin{bmatrix}
+p^j\\1
+\end{bmatrix}
+\end{equation}
+
+\subsection{Inverse Transformation}
+
+\begin{equation}
+\begin{bmatrix}
+p^j\\
+1
+\end{bmatrix} = \underbrace{\begin{bmatrix}
+(R^i_j)^T & -(R^i_j)^Tr^i_{j/i}\\
+0 & 1
+\end{bmatrix}}_{H^i_j}\begin{bmatrix}
+p^j\\1
+\end{bmatrix}
+\end{equation}
+
 \section{From Pixels to Meters} 
 \subsection{Transformation Matrices}
 The symbol $\tp$ expresses points in units of pixels. Any other point $p$ has position units of meters.
@@ -147,10 +182,7 @@ However, because $\varepsilon$ is constant it may be more desirable to calculate
 \pagebreak
 \section{Local Robot Frames}
 \todos{cross check p's and then define vector as difference between two points; and then vectors cannot be transformed; just rotated}
-\begin{equation}
-r_{b/a}^c = p^c_b - p^c_a
-\end{equation}
-\todos{add picture} Put at start
+
 \subsection{From Label Markers to Label Frame}
 
 \begin{figure}[H]
