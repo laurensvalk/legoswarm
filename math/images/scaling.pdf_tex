@@ -1,0 +1,78 @@
+%% Creator: Inkscape inkscape 0.91, www.inkscape.org
+%% PDF/EPS/PS + LaTeX output extension by Johan Engelen, 2010
+%% Accompanies image file 'scaling.pdf' (pdf, eps, ps)
+%%
+%% To include the image in your LaTeX document, write
+%%   \input{<filename>.pdf_tex}
+%%  instead of
+%%   \includegraphics{<filename>.pdf}
+%% To scale the image, write
+%%   \def\svgwidth{<desired width>}
+%%   \input{<filename>.pdf_tex}
+%%  instead of
+%%   \includegraphics[width=<desired width>]{<filename>.pdf}
+%%
+%% Images with a different path to the parent latex file can
+%% be accessed with the `import' package (which may need to be
+%% installed) using
+%%   \usepackage{import}
+%% in the preamble, and then including the image with
+%%   \import{<path to file>}{<filename>.pdf_tex}
+%% Alternatively, one can specify
+%%   \graphicspath{{<path to file>/}}
+%% 
+%% For more information, please see info/svg-inkscape on CTAN:
+%%   http://tug.ctan.org/tex-archive/info/svg-inkscape
+%%
+\begingroup%
+  \makeatletter%
+  \providecommand\color[2][]{%
+    \errmessage{(Inkscape) Color is used for the text in Inkscape, but the package 'color.sty' is not loaded}%
+    \renewcommand\color[2][]{}%
+  }%
+  \providecommand\transparent[1]{%
+    \errmessage{(Inkscape) Transparency is used (non-zero) for the text in Inkscape, but the package 'transparent.sty' is not loaded}%
+    \renewcommand\transparent[1]{}%
+  }%
+  \providecommand\rotatebox[2]{#2}%
+  \ifx\svgwidth\undefined%
+    \setlength{\unitlength}{587.75115647bp}%
+    \ifx\svgscale\undefined%
+      \relax%
+    \else%
+      \setlength{\unitlength}{\unitlength * \real{\svgscale}}%
+    \fi%
+  \else%
+    \setlength{\unitlength}{\svgwidth}%
+  \fi%
+  \global\let\svgwidth\undefined%
+  \global\let\svgscale\undefined%
+  \makeatother%
+  \begin{picture}(1,0.66784523)%
+    \put(0,0){\includegraphics[width=\unitlength,page=1]{scaling.pdf}}%
+    \put(0.09047674,0.51477072){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$0$}}}%
+    \put(0.2782005,0.51477072){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\xh^p$}}}%
+    \put(0.10068513,0.35435299){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\yh_p$}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=2]{scaling.pdf}}%
+    \put(0.56958676,0.48326489){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$0$}}}%
+    \put(0.76395771,0.51463213){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\xh_f$}}}%
+    \put(0.58276937,0.64004965){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\yh_f$}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=3]{scaling.pdf}}%
+    \put(0.16739988,0.09176906){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$0$}}}%
+    \put(0.35228666,0.12176139){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\xh_c$}}}%
+    \put(0.16864783,0.24717885){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\yh_c$}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=4]{scaling.pdf}}%
+    \put(0.65005947,0.09204907){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$0$}}}%
+    \put(0.85304487,0.1220414){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\xh_{\inert}$}}}%
+    \put(0.65130739,0.24745878){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\yh_{\inert}$}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=5]{scaling.pdf}}%
+    \put(0.52144673,0.62770648){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{}}}%
+    \put(0.26351504,0.12015316){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$a$}}}%
+    \put(0.78157468,0.15125531){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\varepsilon a$}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=6]{scaling.pdf}}%
+    \put(0.01559317,0.59730079){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{\textbf{a})}}}%
+    \put(0.51112007,0.59730079){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{\textbf{b})}}}%
+    \put(0.01559317,0.2379414){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{\textbf{c})}}}%
+    \put(0.51112007,0.2379414){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{\textbf{d})}}}%
+  \end{picture}%
+\endgroup%

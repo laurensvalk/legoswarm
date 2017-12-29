@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-from miner import Picker, DriveBase, RemoteControl, eprint
+from hardware import Picker, DriveBase, RemoteControl, eprint
 from collections import defaultdict
 import time
 

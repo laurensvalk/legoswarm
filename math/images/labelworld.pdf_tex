@@ -1,0 +1,66 @@
+%% Creator: Inkscape inkscape 0.91, www.inkscape.org
+%% PDF/EPS/PS + LaTeX output extension by Johan Engelen, 2010
+%% Accompanies image file 'labelworld.pdf' (pdf, eps, ps)
+%%
+%% To include the image in your LaTeX document, write
+%%   \input{<filename>.pdf_tex}
+%%  instead of
+%%   \includegraphics{<filename>.pdf}
+%% To scale the image, write
+%%   \def\svgwidth{<desired width>}
+%%   \input{<filename>.pdf_tex}
+%%  instead of
+%%   \includegraphics[width=<desired width>]{<filename>.pdf}
+%%
+%% Images with a different path to the parent latex file can
+%% be accessed with the `import' package (which may need to be
+%% installed) using
+%%   \usepackage{import}
+%% in the preamble, and then including the image with
+%%   \import{<path to file>}{<filename>.pdf_tex}
+%% Alternatively, one can specify
+%%   \graphicspath{{<path to file>/}}
+%% 
+%% For more information, please see info/svg-inkscape on CTAN:
+%%   http://tug.ctan.org/tex-archive/info/svg-inkscape
+%%
+\begingroup%
+  \makeatletter%
+  \providecommand\color[2][]{%
+    \errmessage{(Inkscape) Color is used for the text in Inkscape, but the package 'color.sty' is not loaded}%
+    \renewcommand\color[2][]{}%
+  }%
+  \providecommand\transparent[1]{%
+    \errmessage{(Inkscape) Transparency is used (non-zero) for the text in Inkscape, but the package 'transparent.sty' is not loaded}%
+    \renewcommand\transparent[1]{}%
+  }%
+  \providecommand\rotatebox[2]{#2}%
+  \ifx\svgwidth\undefined%
+    \setlength{\unitlength}{343.28445435bp}%
+    \ifx\svgscale\undefined%
+      \relax%
+    \else%
+      \setlength{\unitlength}{\unitlength * \real{\svgscale}}%
+    \fi%
+  \else%
+    \setlength{\unitlength}{\svgwidth}%
+  \fi%
+  \global\let\svgwidth\undefined%
+  \global\let\svgscale\undefined%
+  \makeatother%
+  \begin{picture}(1,0.80601287)%
+    \put(0,0){\includegraphics[width=\unitlength,page=1]{labelworld.pdf}}%
+    \put(0.71682217,0.4917962){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\xh_\ell$}}}%
+    \put(0.20646156,0.67157195){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\yh_\ell$}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=2]{labelworld.pdf}}%
+    \put(0.57466466,0.06149045){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\xh_{\inert}$}}}%
+    \put(0.03164678,0.59332742){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\yh_{\inert}$}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=3]{labelworld.pdf}}%
+    \put(0.68742042,0.77502772){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$p\sub{apex}$}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=4]{labelworld.pdf}}%
+    \put(0.42583092,0.67848141){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$p\sub{midbase}$}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=5]{labelworld.pdf}}%
+    \put(0.18113482,0.13829674){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$r\sub{midbase/origin}$}}}%
+    \put(-0.00338527,0.00848308){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$p\sub{origin}$}}}%
+  \end{picture}%
+\endgroup%

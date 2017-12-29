@@ -1,0 +1,247 @@
+\documentclass[12pt, a4paper]
+{article}
+
+\usepackage{svg}
+\setsvg{inkscape=inkscape -z -D,svgpath=images/}
+\usepackage{float}
+\usepackage{amsmath}
+\usepackage{todonotes}
+
+\providecommand{\todos}[1]{\todo[inline]{#1}}
+\providecommand{\ang}[1]{\theta_{\text{#1}}}
+\providecommand{\sub}[1]{_{\text{#1}}}
+\providecommand{\subi}[1]{_{\text{#1},i}}
+\providecommand{\twonorm}[1]{\left|\left|#1\right|\right|}
+\providecommand{\foralli}{\quad \forall\, i}
+\providecommand{\lr}[1]{\left( {#1} \right)}
+
+\providecommand{\tp}{\tilde{p}}
+\providecommand{\inert}{w}
+\providecommand{\bp}{\boldsymbol{p}}
+\providecommand{\btp}{\tilde{\bp}}
+
+\providecommand{\xh}{\hat{x}}
+\providecommand{\yh}{\hat{y}}
+
+\providecommand{\qcom}{, \qquad}
+
+
+\title{Reference frame conversions}
+\author{Laurens Valk}
+\begin{document}
+\maketitle
+
+\tableofcontents
+
+\section{Preliminaries}
+
+\subsection{Points and Vectors}
+\begin{equation}
+r_{b/a}^c = p^c_b - p^c_a
+\end{equation}
+\todos{add picture}
+\subsection{Transformation}
+
+\begin{equation}
+\begin{bmatrix}
+p^i\\
+1
+\end{bmatrix} = \underbrace{\begin{bmatrix}
+R^i_j & r^i_{j/i}\\
+0 & 1
+\end{bmatrix}}_{H^i_j}\begin{bmatrix}
+p^j\\1
+\end{bmatrix}
+\end{equation}
+
+\subsection{Inverse Transformation}
+
+\begin{equation}
+\begin{bmatrix}
+p^j\\
+1
+\end{bmatrix} = \underbrace{\begin{bmatrix}
+(R^i_j)^T & -(R^i_j)^Tr^i_{j/i}\\
+0 & 1
+\end{bmatrix}}_{H^i_j}\begin{bmatrix}
+p^j\\1
+\end{bmatrix}
+\end{equation}
+
+\section{From Pixels to Meters} 
+\subsection{Transformation Matrices}
+The symbol $\tp$ expresses points in units of pixels. Any other point $p$ has position units of meters.
+\begin{figure}[H]
+\centering
+\includesvg[width=1\textwidth]{scaling}
+\caption{Four coordinates: a) in the camera picture, b) with flipped y axis, c) with the origin at the midbase of the picture, d) scaled to physical distances.
+\label{fig:robotframe}}
+\end{figure}
+
+\begin{equation}
+\begin{bmatrix}
+\tp^f\\
+1
+\end{bmatrix} = \begin{bmatrix}
+1 & 0 & 0\\
+0 & -1 & 0\\
+0& 0 & 1
+\end{bmatrix}\begin{bmatrix}
+\tp^p\\1
+\end{bmatrix}=H^f_p \begin{bmatrix}
+\tp^p\\1
+\end{bmatrix}
+\end{equation}
+\begin{equation}
+\begin{bmatrix}
+\tp^c\\
+1
+\end{bmatrix} = \begin{bmatrix}
+1 & 0 & -\frac{1}{2}\tilde{d}_x\\
+0 & 1 & \frac{1}{2}\tilde{d}_y\\
+0& 0 & 1
+\end{bmatrix}\begin{bmatrix}
+\tp^f\\1
+\end{bmatrix}=H^c_f \begin{bmatrix}
+\tp^f\\1
+\end{bmatrix}
+\end{equation}
+\begin{equation}
+\begin{bmatrix}
+p^{\inert}\\
+1
+\end{bmatrix} = \begin{bmatrix}
+\varepsilon & 0 & 0\\
+0 & \varepsilon & 0\\
+0& 0 & 1
+\end{bmatrix}\begin{bmatrix}
+\tp^c\\1
+\end{bmatrix}=H^{\inert}_c \begin{bmatrix}
+\tp^c\\1
+\end{bmatrix}
+\end{equation}
+
+\begin{equation}
+\begin{bmatrix}
+p^{\inert}\\
+1
+\end{bmatrix} = H^{\inert}_c H^c_f H^f_p \begin{bmatrix}
+\tp^p\\1
+\end{bmatrix}
+\end{equation}
+%
+The overall transformation from pixels to the real world representation is
+%
+\begin{equation}
+\begin{bmatrix}
+p^{\inert}\\
+1
+\end{bmatrix} = H^{\inert}_p \begin{bmatrix}
+\tp^p\\1
+\end{bmatrix} \quad \Rightarrow \quad \bp^{\inert} = H^{\inert}_p 
+\btp^p
+\end{equation}
+%
+where
+%
+\begin{equation}
+H^{\inert}_p =H^{\inert}_c H^c_f H^f_p = \begin{bmatrix}
+ \varepsilon&    0& -\frac{1}{2}\varepsilon \tilde{d}_x\\
+   0& -\varepsilon&  \frac{1}{2}\varepsilon \tilde{d}_y\\
+0&    0&           1
+\end{bmatrix}
+\end{equation}
+
+
+
+\subsection{Scaling Factor}
+%
+The distance $d\sub{apex/midbase}$ in Figure \ref{fig:robotframe} is known, constant, and equivalent for each agent:
+%
+\begin{equation}
+d\sub{apex/midbase} \equiv \twonorm{p\subi{apex}-p\subi{midbase}} \foralli
+\end{equation}
+%
+Per agent, we can estimate the scaling factor $\epsilon_i$ as:
+%
+\begin{equation}
+\varepsilon_i = \dfrac{d\sub{apex/midbase}}{\twonorm{\tp\subi{apex}-\tp\subi{midbase}}} \quad \text{m/pixel}
+\end{equation}
+%
+A more accurate estimate for the overall scaling factor is:
+%
+\begin{equation}
+\varepsilon = \dfrac{1}{N}\sum^N_{i=1} \varepsilon_i
+\end{equation}
+%
+However, because $\varepsilon$ is constant it may be more desirable to calculate it once and use it as a constant parameter. If so, we may divide the arena width by the picture with in pixels:
+%
+\begin{equation}
+\varepsilon = \dfrac{d\sub{field}}{\tilde{d}_x} \quad \text{m/pixel}
+\end{equation}
+\pagebreak
+\section{Local Robot Frames}
+\todos{cross check p's and then define vector as difference between two points; and then vectors cannot be transformed; just rotated}
+
+\subsection{From Label Markers to Label Frame}
+
+\begin{figure}[H]
+\centering
+\includesvg[width=0.5\textwidth]{labelworld}
+\caption{Local vehicle frame definitions
+\label{fig:labelworld}}
+\end{figure}
+
+
+First, transform pixel locations to world coordinates:
+%
+\begin{equation}
+\bp\sub{midbase}^w = H^{\inert}_p \btp\sub{midbase}^p, \quad \bp\sub{apex}^w = H^{\inert}_p \btp\sub{apex}^p
+\end{equation}
+%
+Obtain the label x and y axes in world coordinates:
+%
+\begin{align}
+\xh_\ell^{\inert}= \dfrac{p\sub{apex}^w-p\sub{midbase}^w}{\twonorm{p\sub{apex}^w-p\sub{midbase}^w}} \qcom \yh_\ell^{\inert} = \begin{bmatrix}
+0 & -1\\
+1 & 0
+\end{bmatrix}\xh_\ell
+\end{align}
+%
+The transformation matrix becomes:
+%
+\begin{equation}
+\bp^{\inert} =H^{\inert}_\ell 
+\bp^\ell\qcom H^{\inert}_\ell = \begin{bmatrix}
+\xh_\ell^{\inert} & \yh_\ell^{\inert} & r^{\inert}\sub{midbase/origin}\\
+0 & 0 & 1
+\end{bmatrix}
+\end{equation}
+
+
+\todos{Agree on a better name than center. This is confusing}
+\todos{replace terminology: top = apex, center = midbase}
+\todos{FIX: Inside H matrix are always VECTORS. not p's.}
+\subsection{From Label Frame to Robot Frame}
+
+\todos{distinguish between points and vectors: Then vectors suddenly make sense: points in a frame are always defined with respect to the origin of that frame}
+\begin{equation}
+\bp^b = \begin{bmatrix}
+I_2 & r^b\sub{midbase/robot}\\
+0& 1
+\end{bmatrix}\bp^\ell
+\end{equation}
+
+\begin{figure}[H]
+\centering
+\includesvg[width=0.7\textwidth]{robotframe}
+\caption{Local vehicle frame definitions
+\label{fig:robotframe}}
+\end{figure}
+
+\section{Relative Agent Positions and Orientations}
+
+
+
+
+\end{document}
