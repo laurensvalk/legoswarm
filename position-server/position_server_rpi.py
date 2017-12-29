@@ -53,7 +53,7 @@ logging.basicConfig(#filename='position_server.log',     # To a file. Or not.
                     filemode='w',                       # Start each run with a fresh log
                     format='%(asctime)s, %(levelname)s, %(message)s',
                     datefmt='%H:%M:%S',
-                    level=logging.INFO, )              # Log info, and warning
+                    level=logging.DEBUG, )              # Log info, and warning
 n = 100             # Number of loops to wait for time calculation
 t = time.time()
 
@@ -100,12 +100,13 @@ class SocketThread(Thread):
             try:
                 sent = self.server_socket.sendto(data, SERVER_ADDR)
                 # print(sent)
-                time.sleep(0.025)
+
             except OSError as exc:
                 if exc.errno == 55:
                     time.sleep(0.1)
                 else:
                     raise
+            time.sleep(0.025)
         self.server_socket.close()
         logging.info("Socket server stopped")
 
@@ -127,14 +128,14 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
     # convert to grayscale
     img_grey = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
-    # logging.debug("read greyscale image", t - time.time())
+    logging.debug("read greyscale image", t - time.time())
 
     # Simple adaptive mean thresholding
     values, img_grey = cv2.threshold(img_grey, THRESH, 255, cv2.ADAPTIVE_THRESH_MEAN_C)
 
     # Find contours and tree
     img_grey, contours, hierarchy = cv2.findContours(img_grey, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
-    # logging.debug("found contours", t - time.time())
+    logging.debug("found contours", t - time.time())
 
     # Uncomment to preview thresholded image
     #img = cv2.cvtColor(img_grey, cv2.COLOR_GRAY2BGR)
@@ -211,34 +212,35 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
                         robot_id += 2 ** i
 
                 # Draw the data
-                cv2.putText(img,
-                            u"{0:.2f} rad, code: {1}, x:{2}, y:{3}".format(heading, robot_id, center[0], img_height - center[1]),
-                            tuple(center),
-                            cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 255), 4)
+                # cv2.putText(img,
+                #             u"{0:.2f} rad, code: {1}, x:{2}, y:{3}".format(heading, robot_id, center[0], img_height - center[1]),
+                #             tuple(center),
+                #             cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 255), 4)
 
                 # Draw binary robot id marker positions
-                for l in locations:
-                    cv2.circle(img, tuple(l), 4, (0, 255, 0), -1)
+                # for l in locations:
+                #     cv2.circle(img, tuple(l), 4, (0, 255, 0), -1)
 
                 # Draw the contour of our triangle
-                cv2.drawContours(img, [approx], -1, (0, 255, 0))
+                # cv2.drawContours(img, [approx], -1, (0, 255, 0))
 
                 # Save the data in our global dictionary
                 robot_states[robot_id] = [(center[0], img_height - center[1]),  # Triangle Center with origin at bottom left
                                           (front[0], img_height - front[1])]    # Triangle Top with origin at bottom left
+                logging.debug("Found 1 marker", t - time.time())
 
     robot_broadcast_data['states'] = robot_states
-    # logging.debug("found markers", t - time.time())
+    logging.debug("found all markers", t - time.time())
 
     # Draw a + at the middle of the screen
-    cv2.line(img, (img_width // 2 - 20, img_height // 2), (img_width // 2 + 20, img_height // 2), (0, 0, 255), 3)
-    cv2.line(img, (img_width // 2, img_height // 2 - 20), (img_width // 2, img_height // 2 + 20), (0, 0, 255), 3)
+    # cv2.line(img, (img_width // 2 - 20, img_height // 2), (img_width // 2 + 20, img_height // 2), (0, 0, 255), 3)
+    # cv2.line(img, (img_width // 2, img_height // 2 - 20), (img_width // 2, img_height // 2 + 20), (0, 0, 255), 3)
 
     # Show all calculations in the preview window
-    #cv2.imshow("cam", img)
+    # cv2.imshow("cam", img)
     # clear the stream in preparation for the next frame
     rawCapture.truncate(0)
-    # logging.debug("shown image", t - time.time())
+    logging.debug("Truncated", t - time.time())
 
     # Wait for the 'q' key. Dont use ctrl-c !!!
     keypress = cv2.waitKey(1) & 0xFF
