@@ -14,13 +14,14 @@ class CameraUDP(Thread):
     def __init__(self, port=50008):
         ### Initialize ###
         self.port = port
-        self.robot_broadcast_data = {'states': {}, 'balls': {}, 'settings': {}}
+        self.robot_broadcast_data = {'markers': {}, 'balls': {}, 'settings': {}}
         self.running = True
 
         ### Create a socket ###
         self.s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self.s.bind(('', self.port))
         Thread.__init__(self)
+        print("Started thread")
 
     def stop(self):
         print("Stopping thread")
