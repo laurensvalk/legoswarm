@@ -23,7 +23,7 @@ SERVER_ADDR = ("255.255.255.255", 50008)
 
 ### Initialize ###
 # Camera
-cv2.namedWindow("cam", cv2.WINDOW_OPENGL+ cv2.WINDOW_AUTOSIZE)
+cv2.namedWindow("cam", cv2.WINDOW_OPENGL)
 cap = cv2.VideoCapture(0)
 cap.set(3,1920)
 
