@@ -212,7 +212,7 @@ while True:
 
                 # Draw the data
                 cv2.putText(img,
-                            u"{0:.2f} rad, code: {1}, x:{2}, y:{3}".format(heading, robot_id, center[0], img_height - center[1]),
+                            u"{0:.2f} rad, code: {1}, x:{2}, y:{3}".format(heading, robot_id, center[0], center[1]),
                             tuple(center),
                             cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 255), 4)
 
@@ -224,8 +224,8 @@ while True:
                 cv2.drawContours(img, [approx], -1, (0, 255, 0))
 
                 # Save the data in our global dictionary
-                robot_states[robot_id] = [(center[0], img_height - center[1]),  # Triangle Center with origin at bottom left
-                                          (front[0], img_height - front[1])]    # Triangle Top with origin at bottom left
+                robot_states[robot_id] = [(center[0], center[1]),  # Triangle Center with origin at bottom left
+                                          (front[0], front[1])]    # Triangle Top with origin at bottom left
 
     robot_broadcast_data['states'] = robot_states
     # logging.debug("found markers", t - time.time())
