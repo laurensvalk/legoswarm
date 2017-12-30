@@ -9,6 +9,18 @@ from dummydata import read_broadcast
 # My ID. Ultimately needs to come from elsewhere. E.g. Brick ID
 me = 3
 
+def spring(spring_extension_b):
+    """Convert spring elongation in body frame to forward speed and rotation rate"""
+
+    forward_extension = spring_extension_b[0]
+    medial_extension = spring_extension_b[1]
+
+    # For now just linear relations. Eventually different pattern: repelling nearby, attractive afar, attenuating at infinity etc
+    speed = forward_extension*1000
+    turn_rate = medial_extension*1000
+
+    return speed, turn_rate
+
 # Eventually we're going to do things in a loop. Now just a couple times for debugging
 for timeindex in range(0,1):
 
@@ -77,4 +89,17 @@ for timeindex in range(0,1):
         ##
         ## Above, I processed camera data to get information that I would normally observe using sensors
         ## Below, I'll continue with my actual behavior based on this "observed data"
-        ##                
+        ##
+
+        ##
+        ## Driving towards center of field while avoiding other robots:
+        ##   
+        
+        # springs = {i: p_b_gripperi[i]-p_b_gripper for i in neighbors}                  
+
+
+
+        # nett_force = {i: p_b_gripperi[i]-p_b_gripper for i in neighbors}
+
+        # for i in neighbors:
+        #     print(springs[i])
