@@ -3,11 +3,12 @@
 from numpy import array, append
 from numpy.linalg import norm
 from frames import Transformation, COL, ROW
-
-from dummydata import read_broadcast               
+import time
+from camera_client import CameraUDP
+from dummydata import read_broadcast     
 
 # My ID. Ultimately needs to come from elsewhere. E.g. Brick ID
-me = 3
+me = 1
 
 def spring(spring_extension_b):
     """Convert spring elongation in body frame to forward speed and rotation rate"""
@@ -21,11 +22,24 @@ def spring(spring_extension_b):
 
     return speed, turn_rate
 
+
+camera_thread = CameraUDP()
+camera_thread.start()
+
 # Eventually we're going to do things in a loop. Now just a couple times for debugging
-for timeindex in range(0,1):
+for timeindex in range(0,100):
+
+    time.sleep(0.5)
+    try:
+        # Get robot positions from server
+        data = camera_thread.get_data()
+    except:
+        # Time to panic, log some errors and kill others threads.
+        camera_thread.stop()
+        raise
 
     # Read the data
-    markers, balls, settings = read_broadcast()
+    markers, balls, settings = data['markers'], data['balls'], data['settings']
 
     # Before doing anything, make sure the camera saw me. 
     if me not in markers:
@@ -103,3 +117,5 @@ for timeindex in range(0,1):
 
         # for i in neighbors:
         #     print(springs[i])
+
+camera_thread.stop()        
