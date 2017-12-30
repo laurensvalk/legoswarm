@@ -27,9 +27,9 @@ SERVER_ADDR = ("255.255.255.255", 50008)
 # Camera
 # initialize the camera and grab a reference to the raw camera capture
 camera = PiCamera()
-camera.resolution = (1920, 1080)
+camera.resolution = (640, 480)
 camera.framerate = 24
-rawCapture = PiRGBArray(camera, size=(1920, 1080))
+rawCapture = PiRGBArray(camera, size=(640, 480))
 time.sleep(0.1)
 
 # Data
