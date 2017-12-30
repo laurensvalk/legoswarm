@@ -31,8 +31,9 @@ robot_broadcast_data = {'markers': {
                         'settings': {'sight_range': 100,
                                      'dump_location': (20,20),
                                      'p_bot_midbase': (-4,-2),
-                                     'field_height': 1800,
-                                     'field_width': 900,
+                                     'p_bot_gripper': (0,5),
+                                     'field_height': 900,  # px
+                                     'field_width': 1800,    # px
                                      'cm_per_px': 1.3,
                                      }
                         }
@@ -98,7 +99,7 @@ class SocketThread(Thread):
 
         while running:
             data = pickle.dumps(robot_broadcast_data)
-
+            #print(robot_broadcast_data)
             try:
                 sent = self.server_socket.sendto(data, SERVER_ADDR)
                 # print(sent)
@@ -137,7 +138,7 @@ while True:
     # logging.debug("found contours", t - time.time())
 
     # Uncomment to preview thresholded image
-    #img = cv2.cvtColor(img_grey, cv2.COLOR_GRAY2BGR)
+    img = cv2.cvtColor(img_grey, cv2.COLOR_GRAY2BGR)
 
     robot_states = {}
     # Find triangular contours with at least 2 children. These must be our markers!
@@ -227,7 +228,7 @@ while True:
                 robot_states[robot_id] = [(center[0], center[1]),  # Triangle Center with origin at bottom left
                                           (front[0], front[1])]    # Triangle Top with origin at bottom left
 
-    robot_broadcast_data['states'] = robot_states
+    robot_broadcast_data['markers'] = robot_states
     # logging.debug("found markers", t - time.time())
 
     # Draw a + at the middle of the screen

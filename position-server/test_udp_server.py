@@ -26,6 +26,9 @@ robot_broadcast_data = {'states': {1: [(500, 500),    # middle of triangle base
                                      'dump_location': (20, 20)}
                         }
 
+robot_broadcast_data = {'markers': {1: [(350, 409), (359, 288)]}, 'balls': [], 'settings': {'sight_range': 100, 'dump_location': (20, 20), 'p_bot_midbase': (-4, -2), 'p_bot_gripper': (0, 5), 'field_height': 900, 'field_width': 1800, 'cm_per_px': 1.3}}
+
+
 if __name__ == '__main__':
     while True:
         time.sleep(0.033)
