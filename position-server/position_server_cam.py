@@ -18,17 +18,9 @@ except:
 ### Settings ###
 THRESH = 100        # Threshold for b/w version of camera image
 SERVER_ADDR = ("255.255.255.255", 50008)
-
-
-
-### Initialize ###
-# Camera
-cv2.namedWindow("cam", cv2.WINDOW_OPENGL)
-cap = cv2.VideoCapture(0)
-cap.set(3,1920)
-
-# Data
-robot_broadcast_data = {'states': {
+WIDTH = 1920
+HEIGHT = 1080
+robot_broadcast_data = {'markers': {
                                    # 1: [(500, 500),    # middle of triangle base
                                    #     (520, 520)],   # point of traingle
                                    # 2: [(400, 400),    # middle of triangle base
@@ -37,8 +29,23 @@ robot_broadcast_data = {'states': {
                                    },
                         'balls': [], # List of Centroids
                         'settings': {'sight_range': 100,
-                                     'dump_location': (20, 20)}
+                                     'dump_location': (20,20),
+                                     'p_bot_midbase': (-4,-2),
+                                     'field_height': 1800,
+                                     'field_width': 900,
+                                     'cm_per_px': 1.3,
+                                     }
                         }
+
+
+### Initialize ###
+# Camera
+cv2.namedWindow("cam", cv2.WINDOW_OPENGL)
+cap = cv2.VideoCapture(0)
+cap.set(3, WIDTH)
+
+# Data & robot settings
+
 
 # Server
 running = True
