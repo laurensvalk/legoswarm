@@ -8,7 +8,7 @@ import logging
 from robot_frames import transform_to_world_from_camera, transform_to_world_from_bot
 
 # My ID. Ultimately needs to come from elsewhere. E.g. Brick ID
-MY_ID = 1
+MY_ID = 3
 
 # Log settings
 logging.basicConfig(format='%(asctime)s, %(levelname)s, %(message)s',datefmt='%H:%M:%S',level=logging.DEBUG)
@@ -52,7 +52,7 @@ for timeindex in range(0,50):
             H_to_world_from_bot[i] = transform_to_world_from_bot(settings, p_world_midbase_marker, p_world_apex_marker)
 
         # Empty dictionary of neighboring gripper locations, in my frame of reference
-        p_me_neighborgrippers = []
+        p_me_neighborgrippers = {}
         neighbors = []
 
         # Determine gripper location of everyone else in my reference frame
@@ -71,6 +71,7 @@ for timeindex in range(0,50):
             if np.linalg.norm(p_me_othergripper) < settings['sight_range']:
                 neighbors.append(i)
                 p_me_neighborgrippers[i] = p_me_othergripper
+                logging.debug("I see a neighbor gripper at: " + str(p_me_othergripper))
 
         # Now that we know the neighboring gripper positions, we can do something useful with them
         # For now, let us consider linear springs between all the grippers to achieve rendezvous.
@@ -80,19 +81,13 @@ for timeindex in range(0,50):
         for i in neighbors:
             sum_of_springs = sum_of_springs + p_me_neighborgrippers[i]
 
-        # Convert nett spring into driving and steering
-        speed_per_cm_spring_extension = 0.1
-        turnrate_per_cm_spring_extension = 2
-
         # Decompose stretch into forward and sideways force
         forward_stretch, left_stretch = sum_of_springs[1], -sum_of_springs[0]
 
         # Obtain speed and turnrate
-        speed =  forward_stretch * turnrate_per_cm_spring_extension
-        turnrate = left_stretch * speed_per_cm_spring_extension
-
-        # Print result
-        logging.debug('speed: ' + str(speed) + ' turnrate: ', turnrate)
+        speed =  forward_stretch * settings['turnrate_per_cm_spring_extension']
+        turnrate = left_stretch * settings['speed_per_cm_spring_extension']
+        logging.debug('speed: ' + str(speed) + ' turnrate: ' + str(turnrate))
 
     # Pause after processing data
     time.sleep(1)            
