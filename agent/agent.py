@@ -46,7 +46,10 @@ for timeindex in range(0,50):
             # Obtain gripper position in the world frame by transforming the location the bot frame:
             p_bot_gripper = array(settings['p_bot_gripper'])
             p_world_gripper = H_to_world_from_robot*p_bot_gripper
-            logging.debug(p_world_gripper)
+
+            if i == MY_ID:
+                logging.debug("My gripper should be here")
+                logging.debug(p_world_gripper)
 
     # Pause after processing data
     time.sleep(1)            
