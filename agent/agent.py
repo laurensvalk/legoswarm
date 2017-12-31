@@ -47,10 +47,6 @@ for timeindex in range(0,50):
             p_bot_gripper = array(settings['p_bot_gripper'])
             p_world_gripper = H_to_world_from_bot*p_bot_gripper
 
-            if i == MY_ID:
-                logging.debug("My gripper should be here")
-                logging.debug(p_world_gripper)
-
     # Pause after processing data
     time.sleep(1)            
 
