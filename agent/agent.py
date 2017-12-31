@@ -93,4 +93,4 @@ for timeindex in range(0,50):
     time.sleep(1)            
 
 # Closing down and cleaning up
-camera_thread.stop()        
+camera_thread.stop()

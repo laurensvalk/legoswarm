@@ -25,6 +25,7 @@ actions = defaultdict(lambda: actions['NONE'], actions)
 # Main Loop: Drive around and control picker based on remote
 while True:
     speed_now, steering_now, target_now = actions[remote.Button()]
+
     if target_now is not None:
         picker.Goto(target_now)
     if speed_now is not None and steering_now is not None:
