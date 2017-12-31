@@ -5,7 +5,7 @@ from numpy import array
 import time
 import logging
 
-from robot_frames import transform_to_world_from_camera, transform_to_world_from_robot
+from robot_frames import transform_to_world_from_camera, transform_to_world_from_bot
 
 # My ID. Ultimately needs to come from elsewhere. E.g. Brick ID
 MY_ID = 1
@@ -41,11 +41,11 @@ for timeindex in range(0,50):
             p_world_apex_marker = H_to_world_from_camera*apex_marker
 
             # Obtain transformation matrix between the robot and the world
-            H_to_world_from_robot = transform_to_world_from_robot(settings, p_world_midbase_marker, p_world_apex_marker)
+            H_to_world_from_bot = transform_to_world_from_bot(settings, p_world_midbase_marker, p_world_apex_marker)
 
             # Obtain gripper position in the world frame by transforming the location the bot frame:
             p_bot_gripper = array(settings['p_bot_gripper'])
-            p_world_gripper = H_to_world_from_robot*p_bot_gripper
+            p_world_gripper = H_to_world_from_bot*p_bot_gripper
 
             if i == MY_ID:
                 logging.debug("My gripper should be here")

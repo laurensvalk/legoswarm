@@ -24,7 +24,7 @@ def transform_to_world_from_camera(settings):
     # Return the composite transformation
     return H_to_world_from_centered@H_to_centered_from_flipped@H_to_flipped_from_camera
 
-def transform_to_world_from_robot(settings, p_world_midbase_marker, p_world_apexmarker):
+def transform_to_world_from_bot(settings, p_world_midbase_marker, p_world_apexmarker):
     """Convert marker locations into transformation matrices"""
 
     # Constant transformation between label and robot
