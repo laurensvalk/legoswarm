@@ -14,29 +14,17 @@ PORT = 50008
 # Bind the socket to the broadcast port
 server_address = ('255.255.255.255', PORT)
 
-# Data structure for robots with dummy data
-robot_broadcast_data = {'states': {1: [(500, 500),    # middle of triangle base
-                                       (520, 520)],   # point of traingle
-                                   2: [(400, 400),    # middle of triangle base
-                                       (420, 420)]    # point of traingle
-                                   },
-                        'balls': [(23, 24),           # centroids of balls on camera
-                                  (1800, 900)],
-                        'settings': {'sight_range': 100,
-                                     'dump_location': (20, 20)}
-                        }
-
-robot_broadcast_data = {'markers': {1: [(350, 409), (359, 288)]}, 'balls': [], 'settings': {'sight_range': 100, 'dump_location': (20, 20), 'p_bot_midbase': (-4, -2), 'p_bot_gripper': (0, 5), 'field_height': 900, 'field_width': 1800, 'cm_per_px': 1.3}}
+robot_broadcast_data = {'markers': {1: [(0, 0), (4, 3)], 2: [(1919, 1079), (1919-4, 1079-3)], 3: [(960, 540), (960+4, 540-3)]}, 'balls': [], 'settings': {'sight_range': 100, 'dump_location': (20, 20), 'p_bot_midbase': (-4, -2), 'p_bot_gripper': (0, 5), 'field_height': 1080, 'field_width': 1920, 'cm_per_px': 1.0416}}
 
 
 if __name__ == '__main__':
     while True:
-        time.sleep(0.033)
+        time.sleep(0.1)
         data = pickle.dumps(robot_broadcast_data)
         if data:
             try:
                 sent = sock.sendto(data, server_address)
-                time.sleep(0.025)
+                time.sleep(0.5)
             except OSError as exc:
                 if exc.errno == 55:
                     time.sleep(0.1)
