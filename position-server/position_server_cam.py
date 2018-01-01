@@ -16,7 +16,7 @@ except:
 
 
 ### Settings ###
-THRESH = 100        # Threshold for b/w version of camera image
+THRESH = 70        # Threshold for b/w version of camera image
 SERVER_ADDR = ("255.255.255.255", 50008)
 WIDTH = 1920
 HEIGHT = 1080
@@ -44,6 +44,17 @@ robot_broadcast_data = {'markers': {
 cv2.namedWindow("cam", cv2.WINDOW_OPENGL)
 cap = cv2.VideoCapture(0)
 cap.set(3, WIDTH)
+
+
+def adjust_gamma(image, gamma=1.0):
+    # build a lookup table mapping the pixel values [0, 255] to
+    # their adjusted gamma values
+    invGamma = 1.0 / gamma
+    table = np.array([min(255,i*2.5)
+                      for i in np.arange(0, 256)]).astype("uint8")
+
+    # apply gamma correction using the lookup table
+    return cv2.LUT(image, table)
 
 # Data & robot settings
 
@@ -125,13 +136,21 @@ while True:
     img_height, img_width = img.shape[:2]
     # width = np.size(img, 1)
 
+
     # convert to grayscale
     img_grey = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+
+    img_grey = adjust_gamma(img_grey)
 
     # logging.debug("read greyscale image", t - time.time())
 
     # Simple adaptive mean thresholding
-    values, img_grey = cv2.threshold(img_grey, THRESH, 255, cv2.ADAPTIVE_THRESH_MEAN_C)
+    values, img_grey = cv2.threshold(img_grey, 230, 255, cv2.THRESH_BINARY)
+    #values, img_grey = cv2.threshold(img_grey, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+    # img_grey = cv2.adaptiveThreshold(img_grey, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 17, 2)
+    #img_grey = cv2.Canny(img_grey, 50, 150)
+    #img_grey = cv2.dilate(img_grey, np.ones((3, 3)))
+
 
     # Find contours and tree
     img_grey, contours, hierarchy = cv2.findContours(img_grey, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
@@ -191,10 +210,10 @@ while True:
                 R = np.array([[-s, -c], [-c, s]])
 
                 # Calculate the relative position of the code dots with some linear algebra.
-                relative_code_positions = np.array([[0.375, 0.35],
-                                                    [0.125, 0.35],
-                                                    [-0.125, 0.35],
-                                                    [-0.375, 0.35]])
+                relative_code_positions = np.array([[0.375, 0.5],
+                                                    [0.125, 0.5],
+                                                    [-0.125, 0.5],
+                                                    [-0.375, 0.5]])
 
                 # Now do a dot product of the relative positions with the center position,
                 # and offset this back to position of the robot to find matrix of absolute code pixel positions
