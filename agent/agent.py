@@ -4,7 +4,7 @@ from camera_client import CameraUDP
 import numpy as np
 import time
 import logging
-
+from hardware import DriveBase
 from robot_frames import transform_to_world_from_camera, transform_to_world_from_bot
 
 # My ID. Ultimately needs to come from elsewhere. E.g. Brick ID
@@ -16,6 +16,9 @@ logging.basicConfig(format='%(asctime)s, %(levelname)s, %(message)s',datefmt='%H
 # Start data thread
 camera_thread = CameraUDP()
 camera_thread.start()
+
+# Activate hardware if we're a robot
+base = DriveBase(left='outB', right='outC', wheel_diameter=0.043, wheel_span=0.12)
 
 # Every time step, read camera data, process it, and steer robot accordingly
 for timeindex in range(0,50):
@@ -87,6 +90,11 @@ for timeindex in range(0,50):
         # Obtain speed and turnrate
         speed =  forward_stretch * settings['turnrate_per_cm_spring_extension']
         turnrate = left_stretch * settings['speed_per_cm_spring_extension']
+
+        # Drive!
+        base.DriveAndTurn(speed,turnrate)
+
+        # Debug print of where we're going        
         logging.debug('speed: ' + str(speed) + ' turnrate: ' + str(turnrate))
 
     # Pause after processing data
