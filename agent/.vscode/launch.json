@@ -8,7 +8,7 @@
         "name": "Download and Run",
         "type": "ev3devBrowser",
         "request": "launch",
-        "program": "/home/robot/${workspaceRootFolderName}/agent_hardware_test.py"
+        "program": "/home/robot/${workspaceRootFolderName}/agent.py"
     },
         {
             "name": "Python",
