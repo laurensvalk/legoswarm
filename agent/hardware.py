@@ -17,11 +17,14 @@ def eprint(*args, **kwargs):
 
 # TODO: This class (and whole module) needs better documentation
 class Motor:
+
+    max_speed_sp = 500 # degree per second
+
     def __init__(self, port):
         self.motor = ev3.Motor(port)
 
     def SetSpeed(self, speed):
-        self.motor.speed_sp = speed
+        self.motor.speed_sp = self.limit(speed)
         self.motor.run_forever()
 
     def GetSpeed(self):
@@ -31,12 +34,15 @@ class Motor:
         return self.motor.position
 
     def Stop(self):
-        self.SetSpeed(0)       
+        self.SetSpeed(0)    
+
+    def limit(self, speed):
+        return max(min(self.max_speed_sp, speed), -self.max_speed_sp)       
 
     def Goto(self, reference, speed, tolerance):
         if not self.Running() and not (reference - tolerance <= self.GetPosition() <= reference + tolerance):
             self.motor.position_sp = reference
-            self.motor.speed_sp = abs(speed)
+            self.motor.speed_sp = abs(self.limit(speed))
             self.motor.run_to_abs_pos()
 
     def Running(self):
