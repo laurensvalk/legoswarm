@@ -9,6 +9,8 @@ import time
 from threading import Thread
 import socket
 import logging
+from settings import robot_broadcast_data, SERVER_ADDR
+
 try:
     import cPickle as pickle
 except:
@@ -17,26 +19,9 @@ except:
 
 ### Settings ###
 THRESH = 70        # Threshold for b/w version of camera image
-SERVER_ADDR = ("255.255.255.255", 50008)
 WIDTH = 1920
 HEIGHT = 1080
-robot_broadcast_data = {'markers': {
-                                   # 1: [(500, 500),    # middle of triangle base
-                                   #     (520, 520)],   # point of traingle
-                                   # 2: [(400, 400),    # middle of triangle base
-                                   #     (420, 420)]    # point of traingle
-                                   # etc...
-                                   },
-                        'balls': [], # List of Centroids
-                        'settings': {'sight_range': 100,
-                                     'dump_location': (20,20),
-                                     'p_bot_midbase': (-4,-2),
-                                     'p_bot_gripper': (0,5),
-                                     'field_height': 900,  # px
-                                     'field_width': 1800,    # px
-                                     'cm_per_px': 1.3,
-                                     }
-                        }
+
 
 
 ### Initialize ###

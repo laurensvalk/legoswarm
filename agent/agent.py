@@ -6,23 +6,10 @@ import time
 import logging
 from hardware import DriveBase
 from robot_frames import transform_to_world_from_camera, transform_to_world_from_bot
+from settings import robot_broadcast_data
 
 # My ID. Ultimately needs to come from elsewhere. E.g. Brick ID
 MY_ID = 3
-
-# Get default data in case no server is running
-data = {'markers': {},
-        'balls': [],
-        'settings': {'sight_range': 300,
-                     'dump_location': (20, 20),
-                     'p_bot_midbase': (-4, -2),
-                     'p_bot_gripper': (0, 5),
-                     'field_height': 1080,
-                     'field_width': 1920,
-                     'cm_per_px': 0.1,
-                     'speed_per_cm_spring_extension': 0.5 ,
-                     'turnrate_per_cm_spring_extension': 5}
-        }
 
 # Log settings
 logging.basicConfig(format='%(asctime)s, %(levelname)s, %(message)s',datefmt='%H:%M:%S',level=logging.DEBUG)
