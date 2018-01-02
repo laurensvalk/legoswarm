@@ -37,6 +37,7 @@ while True:
     # Before doing anything, make sure the camera saw me. 
     if MY_ID not in markers:
         logging.warning("I am lost. Please send rescue.")
+        base.Stop()
     else:
         # Determine who's who
         agents = [i for i in markers]
