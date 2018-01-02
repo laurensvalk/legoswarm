@@ -19,7 +19,7 @@ camera_thread = CameraUDP()
 camera_thread.start()
 
 # Activate hardware if we're a robot
-base = DriveBase(left='outB', right='outC', wheel_diameter=0.043, wheel_span=0.12)
+base = DriveBase(left='outB', right='outC', wheel_diameter=4.3, wheel_span=12.0)
 
 # Every time step, read camera data, process it, and steer robot accordingly
 for timeindex in range(0,50):
