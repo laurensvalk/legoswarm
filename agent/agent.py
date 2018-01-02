@@ -23,6 +23,8 @@ base = DriveBase(left='outB', right='outC', wheel_diameter=0.043, wheel_span=0.1
 
 # Every time step, read camera data, process it, and steer robot accordingly
 while True:
+    t = time.time()
+    logging.debug("Loop start")
     try:
         # Get robot positions and settings from server
         data = camera_thread.get_data()
@@ -30,7 +32,8 @@ while True:
     except:
         # Stop the loop if we're unable to get server data
         break
-    
+
+    logging.debug(str(time.time()-t) + "Got data")
     # Before doing anything, make sure the camera saw me. 
     if MY_ID not in markers:
         logging.warning("I am lost. Please send rescue.")
@@ -54,6 +57,7 @@ while True:
 
             # Obtain transformation matrix between the robot and the world
             H_to_world_from_bot[i] = transform_to_world_from_bot(settings, p_world_midbase_marker, p_world_apex_marker)
+        logging.debug(str(time.time() - t) + "Done position calculations")
 
         # Empty dictionary of neighboring gripper locations, in my frame of reference
         p_me_neighborgrippers = {}
@@ -77,6 +81,8 @@ while True:
                 p_me_neighborgrippers[i] = p_me_othergripper
                 logging.debug("I see a neighbor gripper at: " + str(p_me_othergripper))
 
+        logging.debug(str(time.time() - t) + "Done gripper relative positions")
+
         # Now that we know the neighboring gripper positions, we can do something useful with them
         # For now, let us consider linear springs between all the grippers to achieve rendezvous.
 
@@ -87,6 +93,8 @@ while True:
 
         # Decompose stretch into forward and sideways force
         forward_stretch, left_stretch = sum_of_springs[1], -sum_of_springs[0]
+
+        logging.debug(str(time.time() - t) + "Done spring calculations")
 
         # Obtain speed and turnrate
         speed =  forward_stretch * settings['turnrate_per_cm_spring_extension']
