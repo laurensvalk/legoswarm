@@ -22,7 +22,7 @@ camera_thread.start()
 base = DriveBase(left='outB', right='outC', wheel_diameter=4.3, wheel_span=12.0)
 
 # Every time step, read camera data, process it, and steer robot accordingly
-for timeindex in range(0,50):
+while True:
     try:
         # Get robot positions and settings from server
         data = camera_thread.get_data()
@@ -99,7 +99,7 @@ for timeindex in range(0,50):
         logging.debug('speed: ' + str(speed) + ' turnrate: ' + str(turnrate))
 
     # Pause after processing data
-    time.sleep(1)            
+    # time.sleep(1)
 
 # Closing down and cleaning up
 camera_thread.stop()
