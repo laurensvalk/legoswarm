@@ -10,7 +10,7 @@ robot_broadcast_data = {'markers': {#1: [(0, 0), (4, 3)],
                                      'field_height': 1080,
                                      'field_width': 1920,
                                      'cm_per_px': 0.1,
-                                     'speed_per_cm_spring_extension': 0.25,
+                                     'speed_per_cm_spring_extension': 0.2,
                                      'turnrate_per_cm_spring_extension': 10}
                         }
 

@@ -6,7 +6,7 @@ import time
 import logging
 from hardware import DriveBase
 from robot_frames import transform_to_world_from_camera, transform_to_world_from_bot
-from settings import robot_broadcast_data
+from settings import robot_broadcast_data as data
 
 # My ID. Ultimately needs to come from elsewhere. E.g. Brick ID
 MY_ID = 3
@@ -31,6 +31,9 @@ while True:
         markers, balls, settings = data['markers'], data['balls'], data['settings']        
     except:
         # Stop the loop if we're unable to get server data
+        logging.warning("No data. Waiting 1s")
+        base.Stop()
+        time.sleep(1)
         break
 
     logging.debug(str(time.time()-t) + "Got data")
@@ -93,13 +96,17 @@ while True:
             sum_of_springs = sum_of_springs + p_me_neighborgrippers[i]
 
         # Decompose stretch into forward and sideways force
-        forward_stretch, left_stretch = sum_of_springs[1], -sum_of_springs[0]
+        forward_stretch, left_stretch = -sum_of_springs[1], sum_of_springs[0]
 
         logging.debug(str(time.time() - t) + "Done spring calculations")
 
         # Obtain speed and turnrate
-        speed =  forward_stretch * settings['turnrate_per_cm_spring_extension']
-        turnrate = left_stretch * settings['speed_per_cm_spring_extension']
+        speed =  forward_stretch * settings['speed_per_cm_spring_extension']
+        turnrate = left_stretch * settings['turnrate_per_cm_spring_extension']
+        logging.debug("Speed: {0} = {1} stretch x {2} rate".format(speed, forward_stretch,
+                                                                   settings['speed_per_cm_spring_extension']))
+        logging.debug("Turnrate: {0} = {1} stretch x {2} rate".format(speed, left_stretch,
+                                                                   settings['turnrate_per_cm_spring_extension']))
 
         # Drive!
         base.DriveAndTurn(speed,turnrate)
