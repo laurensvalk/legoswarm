@@ -10,6 +10,7 @@ from threading import Thread
 import socket
 import logging
 from settings import robot_broadcast_data, SERVER_ADDR
+from parse_camera_data import preparse_robot_data
 
 try:
     import cPickle as pickle
@@ -144,7 +145,7 @@ while True:
     # Uncomment to preview thresholded image
     img = cv2.cvtColor(img_grey, cv2.COLOR_GRAY2BGR)
 
-    robot_states = {}
+    robot_markers = {}
     # Find triangular contours with at least 2 children. These must be our markers!
     for x in range(0, len(contours)):
 
@@ -229,10 +230,14 @@ while True:
                 cv2.drawContours(img, [approx], -1, (0, 255, 0))
 
                 # Save the data in our global dictionary
-                robot_states[robot_id] = [(center[0], center[1]),  # Triangle Center with origin at bottom left
+                robot_markers[robot_id] = [(center[0], center[1]),  # Triangle Center with origin at bottom left
                                           (front[0], front[1])]    # Triangle Top with origin at bottom left
 
-    robot_broadcast_data['markers'] = robot_states
+    robot_broadcast_data['markers'] = robot_markers
+
+    # Calculations to save time on client side
+    robot_broadcast_data['localdata'] = preparse_robot_data(robot_broadcast_data['markers'], robot_broadcast_data['balls'], robot_broadcast_data['settings'])
+    
     # logging.debug("found markers", t - time.time())
 
     # Draw a + at the middle of the screen

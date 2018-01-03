@@ -28,7 +28,7 @@ while True:
     try:
         # Get robot positions and settings from server
         data = camera_thread.get_data()
-        markers, balls, settings = data['markers'], data['balls'], data['settings']        
+        markers, localdata, balls, settings = data['markers'], data['balls'], data['settings'], data['localdata']
     except:
         # Stop the loop if we're unable to get server data
         logging.warning("No data. Waiting 1s")
