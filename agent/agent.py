@@ -6,7 +6,6 @@ import time
 import logging
 from hardware import DriveBase
 from robot_frames import transform_to_world_from_camera, transform_to_world_from_bot
-from settings import robot_broadcast_data as data
 
 # My ID. Ultimately needs to come from elsewhere. E.g. Brick ID
 MY_ID = 3
@@ -38,65 +37,21 @@ while True:
 
     logging.debug(str(time.time()-t) + "Got data")
     # Before doing anything, make sure the camera saw me. 
+    # TODO: This currently relies on markers. Remove dependency; use only localdata
     if MY_ID not in markers:
         logging.warning("I am lost. Please send rescue.")
         base.Stop()
     else:
-        # Determine who's who
-        agents = [i for i in markers]
-        # List of everyone except me
-        other_agents = [i for i in agents if i != MY_ID]
-
-        # Empty dictionary of transformations from each robot to the world
-        H_to_world_from_bot = {}
-
-        # For every robot in the dataset, including me, determine position and orientation
-        for i, [midbase_marker, apex_marker] in markers.items():
-            # Get transformation matrix from pixels to world frame
-            H_to_world_from_camera = transform_to_world_from_camera(settings)
-
-            # Transform marker locations to world coordinates
-            p_world_midbase_marker = H_to_world_from_camera*midbase_marker
-            p_world_apex_marker = H_to_world_from_camera*apex_marker
-
-            # Obtain transformation matrix between the robot and the world
-            H_to_world_from_bot[i] = transform_to_world_from_bot(settings, p_world_midbase_marker, p_world_apex_marker)
-        logging.debug(str(time.time() - t) + "Done position calculations")
-
-        # Empty dictionary of neighboring gripper locations, in my frame of reference
-        p_me_neighborgrippers = {}
-        neighbors = []
-
-        # Determine gripper location of everyone else in my reference frame
-        for i in other_agents:
-            # First, obtain the constant location a gripper in a robot frame
-            p_bot_gripper = np.array(settings['p_bot_gripper'])
-
-            # Transformation from another robot, to my reference frame
-            H_to_me_from_otherbot = H_to_world_from_bot[MY_ID].inverse()@H_to_world_from_bot[i]
-
-            # Gripper location of other robot, in my reference frame:
-            p_me_othergripper = H_to_me_from_otherbot*p_bot_gripper
-
-            # If that other gripper is in our field of view,
-            # we consider it a neighbor and store the result
-            if np.linalg.norm(p_me_othergripper) < settings['sight_range']:
-                neighbors.append(i)
-                p_me_neighborgrippers[i] = p_me_othergripper
-                logging.debug("I see a neighbor gripper at: " + str(p_me_othergripper))
-
-        logging.debug(str(time.time() - t) + "Done gripper relative positions")
-
-        # Now that we know the neighboring gripper positions, we can do something useful with them
-        # For now, let us consider linear springs between all the grippers to achieve rendezvous.
+        # Read out the neighbor gripper positions in my frame of reference
+        p_me_neighborgrippers = localdata['neighborgrippers'][MY_ID]
 
         # Linear spring, sum of neighbor distances, otherwise 0
         sum_of_springs = np.array([0,0])
-        for i in neighbors:
+        for i in p_me_neighborgrippers:
             sum_of_springs = sum_of_springs + p_me_neighborgrippers[i]
 
         # Decompose stretch into forward and sideways force
-        forward_stretch, left_stretch = -sum_of_springs[1], sum_of_springs[0]
+        forward_stretch, left_stretch = sum_of_springs[1], -sum_of_springs[0]
 
         logging.debug(str(time.time() - t) + "Done spring calculations")
 
