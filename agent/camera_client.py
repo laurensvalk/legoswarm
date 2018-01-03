@@ -5,6 +5,8 @@ import logging
 import sys
 import time
 from threading import Thread
+from settings import robot_broadcast_data
+
 try:
     import cPickle as pickle
 except:
@@ -14,7 +16,7 @@ class CameraUDP(Thread):
     def __init__(self, port=50008):
         ### Initialize ###
         self.port = port
-        self.robot_broadcast_data = {'markers': {}, 'balls': {}, 'settings': {}}
+        self.robot_broadcast_data = robot_broadcast_data
         self.running = True
 
         ### Create a socket ###

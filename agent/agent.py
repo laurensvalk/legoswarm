@@ -6,7 +6,6 @@ import time
 import logging
 from hardware import DriveBase
 from robot_frames import transform_to_world_from_camera, transform_to_world_from_bot
-from settings import robot_broadcast_data as data
 
 # My ID. Ultimately needs to come from elsewhere. E.g. Brick ID
 MY_ID = 3
