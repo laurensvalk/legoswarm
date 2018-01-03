@@ -254,6 +254,7 @@ while True:
         break
     if n == 0:
         logging.info("Looptime: {0}, contours: {1}".format((time.time()-t)/100, len(contours)))
+        print(robot_broadcast_data)
         n = 100
         t = time.time()
     else:

@@ -7,7 +7,7 @@ def preparse_robot_data(markers, balls, settings):
     localdata = {}
 
     # Determine who's who
-    agents = [i for i in markers]
+    agents = markers.keys()
 
     # Empty dictionary of transformations from each robot to the world
     H_to_world_from_bot = {}
