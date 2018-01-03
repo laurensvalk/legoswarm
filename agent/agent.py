@@ -4,7 +4,7 @@ from camera_client import CameraUDP
 import numpy as np
 import time
 import logging
-from hardware import DriveBase
+from hardware import DriveBase, eprint
 
 # My ID. Ultimately needs to come from elsewhere. E.g. Brick ID
 MY_ID = 3
@@ -26,7 +26,7 @@ while True:
     try:
         # Get robot positions and settings from server
         data = camera_thread.get_data()
-        markers, localdata, balls, settings = data['markers'], data['balls'], data['settings'], data['localdata']
+        markers, balls, settings, localdata = data['markers'], data['balls'], data['settings'], data['localdata']
     except:
         # Stop the loop if we're unable to get server data
         logging.warning("No data. Waiting 1s")

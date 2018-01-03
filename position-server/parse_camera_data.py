@@ -24,13 +24,19 @@ def preparse_robot_data(markers, balls, settings):
         # Obtain transformation matrix between the robot and the world
         H_to_world_from_bot[i] = transform_to_world_from_bot(settings, p_world_midbase_marker, p_world_apex_marker)
 
+
+    neighborgrippers = {}
+
     # Do the following computations for all agents, using the previously computed frame conversions
     for me in agents:
+
+        neighborgrippers[me] = {}
+
         # List of everyone except me
         other_agents = [i for i in agents if me != i]
 
         # Empty dictionary of neighboring gripper locations, in my frame of reference
-        localdata['neighborgrippers'] = {}
+        
 
         # Determine gripper location of everyone else in my reference frame
         for i in other_agents:
@@ -46,6 +52,8 @@ def preparse_robot_data(markers, balls, settings):
             # If that other gripper is in our field of view,
             # we consider it a neighbor and store the result
             if np.linalg.norm(p_me_othergripper) < settings['sight_range']:
-                localdata['neighborgrippers'][i] = p_me_othergripper
+                neighborgrippers[me][i] = p_me_othergripper
 
+
+    localdata['neighborgrippers'] = neighborgrippers
     return localdata

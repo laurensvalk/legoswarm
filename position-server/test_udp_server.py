@@ -2,6 +2,7 @@
 
 import socket
 from settings import robot_broadcast_data, SERVER_ADDR
+from parse_camera_data import preparse_robot_data
 import time
 try:
     import cPickle as pickle
@@ -24,6 +25,7 @@ robot_broadcast_data['markers'] = {1: [(0, 0), (4, 3)],
 if __name__ == '__main__':
     while True:
         time.sleep(0.1)
+        robot_broadcast_data['localdata'] = preparse_robot_data(robot_broadcast_data['markers'], robot_broadcast_data['balls'], robot_broadcast_data['settings'])
         data = pickle.dumps(robot_broadcast_data)
         if data:
             try:
