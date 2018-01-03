@@ -2,6 +2,7 @@ robot_broadcast_data = {'markers': {#1: [(0, 0), (4, 3)],
                                     #2: [(1919, 1079), (1919-4, 1079-3)],
                                     #3: [(960, 540), (960+4, 540-3)]
                                     },
+                        'localdata': {}
                         'balls': [],
                         'settings': {'sight_range': 300,
                                      'dump_location': (20, 20),
