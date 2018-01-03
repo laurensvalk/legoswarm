@@ -24,16 +24,15 @@ def transform_to_world_from_camera(settings):
     # Return the composite transformation
     return H_to_world_from_centered@H_to_centered_from_flipped@H_to_flipped_from_camera
 
-def transform_to_world_from_bot(settings, p_world_midbase_marker, p_world_apexmarker):
+def transform_to_world_from_bot(settings, p_world_midbase_marker, p_world_apex_marker):
     """Convert marker locations into transformation matrices"""
 
     # Constant transformation between label and robot
     H_to_bot_from_label = Transformation(identity(2), array(settings['p_bot_midbase']))
     H_to_label_from_bot = H_to_bot_from_label.inverse()
 
-
     # x frame axes of the label, expressed in the world: A line through the two markers
-    label_xaxis_world = (p_world_midbase_marker-p_world_apexmarker)/norm(p_world_midbase_marker-p_world_apexmarker)
+    label_xaxis_world = (p_world_apex_marker-p_world_midbase_marker)/norm(p_world_apex_marker-p_world_midbase_marker)
 
     # Ensure the axis is an actual column vector:
     label_xaxis_world = label_xaxis_world.reshape((2,1))
