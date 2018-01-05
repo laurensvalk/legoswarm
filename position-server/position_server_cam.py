@@ -106,6 +106,7 @@ class SocketThread(Thread):
                     time.sleep(0.1)
                 else:
                     raise
+            time.sleep(0.3)
         self.server_socket.close()
         logging.info("Socket server stopped")
 
@@ -259,6 +260,7 @@ while True:
         t = time.time()
     else:
         n -= 1
+    # time.sleep(.3)
 
 ### clean up ###
 running = False
