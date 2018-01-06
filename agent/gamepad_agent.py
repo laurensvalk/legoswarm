@@ -45,6 +45,7 @@ class MotorThread(threading.Thread):
         self.base = hardware.DriveBase()
         self.picker = hardware.Picker()
         self.picker.open()
+        threading.Thread.__init__(self)
 
     def run(self):
         print("Engines running!")
