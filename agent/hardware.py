@@ -68,7 +68,7 @@ class Picker:
     target_purge = target_store + 45    
 
     # Speed and tolerance parameters
-    abs_speed = 220
+    abs_speed = 400
     tolerance = 4
 
     def __init__(self, port=ev3.OUTPUT_A):
