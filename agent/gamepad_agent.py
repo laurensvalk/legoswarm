@@ -7,8 +7,8 @@ import hardware
 import threading
 import time
 
-MAX_SPEED = 40  # cm per s
-MAX_TURNRATE = 20  # deg per s
+MAX_SPEED = -40  # cm per s
+MAX_TURNRATE = -60  # deg per s
 
 def scale(val, src, dst):
     """
@@ -72,6 +72,7 @@ if __name__ == "__main__":
 
             if event.code == 5: #Y axis on right stick
                 fwd_speed = scale(event.value, (0,255), (-MAX_SPEED, MAX_SPEED))
+                print(event.value)
 
 
         if event.type == 1:
