@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-from hardware import Picker, DriveBase, RemoteControl, eprint
+from hardware import Picker, DriveBase, IRRemoteControl, eprint
 from collections import defaultdict
 import time
 
 # Configure the devices
-remote = RemoteControl('in4')
+remote = IRRemoteControl('in4')
 base = DriveBase(left='outB',right='outC',wheel_diameter=0.043,wheel_span = 0.12)
 picker = Picker('outA')
 
@@ -27,7 +27,7 @@ while True:
     speed_now, steering_now, target_now = actions[remote.Button()]
 
     if target_now is not None:
-        picker.Goto(target_now)
+        picker.go_to(target_now)
     if speed_now is not None and steering_now is not None:
-        base.DriveAndTurn(speed_now,steering_now)
+        base.drive_and_turn(speed_now, steering_now)
     time.sleep(0.1)

@@ -30,7 +30,7 @@ while True:
     except:
         # Stop the loop if we're unable to get server data
         logging.warning("No data. Waiting 1s")
-        base.Stop()
+        base.stop()
         time.sleep(1)
         break
 
@@ -39,7 +39,7 @@ while True:
     # TODO: This currently relies on markers. Remove dependency; use only localdata
     if MY_ID not in markers:
         logging.warning("I am lost. Please send rescue.")
-        base.Stop()
+        base.stop()
     else:
         # Read out the neighbor gripper positions in my frame of reference
         p_me_neighborgrippers = localdata['neighborgrippers'][MY_ID]
@@ -63,7 +63,7 @@ while True:
                                                                    settings['turnrate_per_cm_spring_extension']))
 
         # Drive!
-        base.DriveAndTurn(speed,turnrate)
+        base.drive_and_turn(speed, turnrate)
 
         # Debug print of where we're going        
         logging.debug('speed: ' + str(speed) + ' turnrate: ' + str(turnrate))

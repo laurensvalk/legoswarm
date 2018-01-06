@@ -56,6 +56,7 @@ class EZMotor(ev3.Motor):
     def __del__(self):
         self.stop()
 
+
 class Picker:
     """Steer the picker mechanism to the desired target"""
 
@@ -69,7 +70,7 @@ class Picker:
     abs_speed = 120
     tolerance = 4
 
-    def __init__(self,port):   
+    def __init__(self, port=ev3.OUTPUT_A):
 
         # Check if we're running on the EV3
         self.running_on_ev3 = running_on_ev3()
@@ -80,27 +81,27 @@ class Picker:
         # If running on the EV3, perform a reset routine
         if self.running_on_ev3:
             self.pickermotor = EZMotor(port)
-            self.__SetPickRate(-40)
+            self.pick_at_rate(-40)
             time.sleep(0.5)
 
-            while self.__GetPickRate() < -10:
-                pass
-            self.__Stop()
-            self.pickermotor.motor.reset()
+            while self.get_picking_rate() < -10:
+                time.sleep(0.02)
+            self.pickermotor.stop()
+            self.pickermotor.reset()
 
-    def __SetPickRate(self,rate):
+    def pick_at_rate(self, rate):
         """Set the picker reference speed"""
         self.pickermotor.set_speed(rate * self.motor_deg_per_picker_deg)
 
-    def __GetPickRate(self):
+    def get_picking_rate(self):
         """Get the current picker speed"""
         return self.pickermotor.get_speed() / self.motor_deg_per_picker_deg
 
-    def __Stop(self):
+    def stop(self):
         """Stop the picker motor"""
-        self.__SetPickRate(0)
+        self.pickermotor.stop()
 
-    def Goto(self, reference):
+    def go_to(self, reference):
         """Steer Picker mechanism to desired target"""
         # If running on the EV3, steer picker to the desired target
         if self.running_on_ev3:
@@ -109,11 +110,23 @@ class Picker:
                                    abs(self.tolerance*self.motor_deg_per_picker_deg))# Allowed tolerance
         else:
             print("Turning the gripper to: " + str(reference))
-        
+
+    def open(self):
+        self.go_to(self.target_open)
+
+    def close(self):
+        self.go_to(self.target_closed)
+
+    def store(self):
+        self.go_to(self.target_store)
+
+    def purge(self):
+        self.go_to(self.target_purge)
+
 
 class DriveBase:
     """Easily control two large motors to drive a skid steering robot using specified forward speed and turnrate"""
-    def __init__(self,left,right,wheel_diameter,wheel_span):   
+    def __init__(self, left=ev3.OUTPUT_B, right=ev3.OUTPUT_C, wheel_diameter=0.043, wheel_span=0.12):
         """Set up two Large motors"""   
         # Math constants
         deg_per_rad = 180/3.1416
@@ -124,7 +137,7 @@ class DriveBase:
 
         # Turnrate conversions
         wheel_base_radius = wheel_span/2
-        self.wheel_cm_sec_per_base_deg_sec =  wheel_base_radius * 100 / deg_per_rad
+        self.wheel_cm_sec_per_base_deg_sec = wheel_base_radius * 100 / deg_per_rad
 
         # Check if we're running on the EV3
         self.running_on_ev3 = running_on_ev3()
@@ -134,7 +147,7 @@ class DriveBase:
             self.left = EZMotor(left)
             self.right = EZMotor(right)
 
-    def DriveAndTurn(self, speed_cm_sec, turnrate_deg_sec):
+    def drive_and_turn(self, speed_cm_sec, turnrate_deg_sec):
         """Set speed of two motors to attain desired forward speed and turnrate"""
         nett_speed = speed_cm_sec / self.wheel_cm_sec_per_deg_s
         difference = turnrate_deg_sec * self.wheel_cm_sec_per_base_deg_sec / self.wheel_cm_sec_per_deg_s
@@ -144,11 +157,12 @@ class DriveBase:
         else:
             print("Setting Drivebase to Speed cm/s: " + str(speed_cm_sec) + ", Turnrate deg/s: " + str(turnrate_deg_sec))
 
-    def Stop(self):
+    def stop(self):
         """Stop the robot by setting both motors to zero speed"""
-        self.DriveAndTurn(0,0)
+        self.drive_and_turn(0, 0)
 
-class RemoteControl:
+
+class IRRemoteControl:
     """Configures IR Sensor as IR Receiver and reads IR button status"""
 
     # Ordered list of possible button presses
