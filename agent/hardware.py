@@ -64,11 +64,11 @@ class Picker:
     # Target positions for the gripper (degrees). 0 corresponds to the gripper all the way open
     target_open = 40
     target_closed = target_open + 90
-    target_store = target_closed + 120
+    target_store = target_closed + 135
     target_purge = target_store + 45    
 
     # Speed and tolerance parameters
-    abs_speed = 120
+    abs_speed = 220
     tolerance = 4
 
     def __init__(self, port=ev3.OUTPUT_A):
