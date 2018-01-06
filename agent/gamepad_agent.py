@@ -7,8 +7,8 @@ import hardware
 import threading
 import time
 
-MAX_SPEED = -40  # cm per s
-MAX_TURNRATE = -60  # deg per s
+MAX_SPEED = 40  # cm per s
+MAX_TURNRATE = 80  # deg per s
 
 def scale(val, src, dst):
     """
@@ -55,7 +55,7 @@ class MotorThread(threading.Thread):
                 self.picker.store()
             else:
                 self.picker.open()
-            time.sleep(0.03)
+            time.sleep(0.01)
 
         self.base.stop()
 
@@ -69,10 +69,10 @@ if __name__ == "__main__":
         if event.type == 3: #A stick is moved
 
             if event.code == 2: #X axis on right stick
-                turn_rate = scale(event.value,(0,255), (-MAX_TURNRATE, MAX_TURNRATE))
+                turn_rate = scale(event.value, (255, 0), (-MAX_TURNRATE, MAX_TURNRATE))
 
             if event.code == 5: #Y axis on right stick
-                fwd_speed = scale(event.value, (0,255), (-MAX_SPEED, MAX_SPEED))
+                fwd_speed = scale(event.value, (255, 0), (-MAX_SPEED, MAX_SPEED))
 
         if event.type == 1:
             if event.code == 300:
@@ -91,5 +91,5 @@ if __name__ == "__main__":
                     eat = False
 
         # Flush
-        while gamepad.read_one() != None:
-            pass
+        # while gamepad.read_one() != None:
+        #     pass
