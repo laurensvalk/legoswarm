@@ -12,6 +12,7 @@ def running_on_ev3():
 # if running_on_ev3():
 #     import ev3dev.ev3 as ev3
 
+
 # Debug print
 def eprint(*args, **kwargs):
     print(*args, file=sys.stderr, **kwargs)
@@ -45,7 +46,7 @@ class EZMotor(ev3.Motor):
         return max(min(self.max_speed_sp, speed), -self.max_speed_sp)       
 
     def go_to(self, reference, speed, tolerance):
-        if not self.is_running() and not (reference - tolerance <= self.position <= reference + tolerance):
+        if not self.is_running and not (reference - tolerance <= self.position <= reference + tolerance):
             self.position_sp = reference
             self.speed_sp = abs(self.limit(speed))
             self.run_to_abs_pos()
