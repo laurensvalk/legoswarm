@@ -55,6 +55,7 @@ class MotorThread(threading.Thread):
                 self.picker.store()
             else:
                 self.picker.open()
+            time.sleep(0.03)
 
         self.base.stop()
 
@@ -72,8 +73,6 @@ if __name__ == "__main__":
 
             if event.code == 5: #Y axis on right stick
                 fwd_speed = scale(event.value, (0,255), (-MAX_SPEED, MAX_SPEED))
-                print(event.value)
-
 
         if event.type == 1:
             if event.code == 300:
@@ -91,3 +90,6 @@ if __name__ == "__main__":
                 if event.value == 0:
                     eat = False
 
+        # Flush
+        while gamepad.read_one() != None:
+            pass
