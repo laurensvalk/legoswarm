@@ -49,13 +49,21 @@ class MotorThread(threading.Thread):
 
     def run(self):
         print("Engines running!")
+        n = 0
         while running:
+            if n == 0:
+                t = time.time()
+            elif n == 101:
+                print(time.time() - t)
+                n = 0
+            else:
+                n+=1
+
             self.base.drive_and_turn(fwd_speed, turn_rate)
             if eat:
                 self.picker.store()
             else:
                 self.picker.open()
-            time.sleep(0.01)
 
         self.base.stop()
 
@@ -90,6 +98,3 @@ if __name__ == "__main__":
                 if event.value == 0:
                     eat = False
 
-        # Flush
-        # while gamepad.read_one() != None:
-        #     pass
