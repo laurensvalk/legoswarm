@@ -8,7 +8,9 @@ import threading
 import time
 
 MAX_SPEED = 40  # cm per s
+MIN_SPEED = 3
 MAX_TURNRATE = 80  # deg per s
+MIN_TURNRATE = 4
 
 def scale(val, src, dst):
     """
@@ -78,9 +80,11 @@ if __name__ == "__main__":
 
             if event.code == 2: #X axis on right stick
                 turn_rate = scale(event.value, (255, 0), (-MAX_TURNRATE, MAX_TURNRATE))
+                if -MIN_TURNRATE < turn_rate < MIN_TURNRATE: turn_rate = 0
 
             if event.code == 5: #Y axis on right stick
                 fwd_speed = scale(event.value, (255, 0), (-MAX_SPEED, MAX_SPEED))
+                if -MIN_SPEED < fwd_speed < MIN_SPEED: fwd_speed = 0
 
         if event.type == 1:
             if event.code == 300:
