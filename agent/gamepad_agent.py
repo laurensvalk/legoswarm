@@ -63,6 +63,7 @@ class MotorThread(threading.Thread):
             # Give the Ev3 some time to handle other threads.
             time.sleep(0.04)
         self.base.stop()
+        self.picker.stop()
 
 
 if __name__ == "__main__":
