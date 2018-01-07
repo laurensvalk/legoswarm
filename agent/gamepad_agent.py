@@ -11,6 +11,9 @@ MAX_SPEED = 40  # cm per s
 MIN_SPEED = 3
 MAX_TURNRATE = 80  # deg per s
 MIN_TURNRATE = 4
+OPEN = 0
+STORE = 2
+PURGE = 3
 
 def scale(val, src, dst):
     """
@@ -37,7 +40,7 @@ turn_rate = 0
 turn_speed = 0
 fwd_speed = 0
 triangle_pressed_time = 0
-eat = False
+gripper = OPEN
 running = True
 
 
@@ -45,19 +48,20 @@ class MotorThread(threading.Thread):
     def __init__(self):
         self.base = hardware.DriveBase()
         self.picker = hardware.Picker()
-        self.picker.open()
         threading.Thread.__init__(self)
 
     def run(self):
         print("Engines running!")
         while running:
             self.base.drive_and_turn(fwd_speed, turn_rate)
-            if eat:
+            if gripper == STORE:
             #     self.picker.store()
                 self.picker.target = self.picker.target_store
-            else:
+            elif gripper == OPEN:
             #     self.picker.open()
                 self.picker.target = self.picker.target_open
+            elif gripper == PURGE:
+                self.picker.target = self.picker.target_purge
             self.picker.run()
 
             # Give the Ev3 some time to handle other threads.
@@ -95,7 +99,13 @@ if __name__ == "__main__":
             elif event.code == 302:
                 if event.value == 1:
                     print("X button is pressed. Eating.")
-                    eat = True
+                    gripper = STORE
                 if event.value == 0:
-                    eat = False
+                    gripper = OPEN
+            elif event.code == 301:
+                if event.value == 1:
+                    print("O button is pressed. Purging.")
+                    gripper = PURGE
+                if event.value == 0:
+                    gripper = OPEN
 
