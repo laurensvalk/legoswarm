@@ -77,6 +77,7 @@ if __name__ == "__main__":
                 turn_rate = scale(event.value, (255, 0), (-MAX_TURNRATE, MAX_TURNRATE))
                 if -MIN_TURNRATE < turn_rate < MIN_TURNRATE: turn_rate = 0
 
+
             if event.code == 5: #Y axis on right stick
                 fwd_speed = scale(event.value, (255, 0), (-MAX_SPEED, MAX_SPEED))
                 if -MIN_SPEED < fwd_speed < MIN_SPEED: fwd_speed = 0

@@ -20,7 +20,7 @@ def eprint(*args, **kwargs):
 
 
 def limit(speed, max_speed=650):
-    return max(min(max_speed, speed), max_speed)
+    return max(min(max_speed, speed), -max_speed)
 
 
 def run_to_abs_pos(motor, target, max_speed=650, tolerance=3, speed_p=3, hold=0):
@@ -30,11 +30,13 @@ def run_to_abs_pos(motor, target, max_speed=650, tolerance=3, speed_p=3, hold=0)
         speed = limit(error * speed_p, max_speed)
         motor.run_forever(speed_sp=speed)
         if -tolerance <= error <= tolerance: not_there_yet = False
+        time.sleep(0.04)
     end_time = time.time() + hold
     while time.time() < end_time:
         # Hold the position a while longer
         error = target - motor.position
         motor.run_forever(speed_sp=error)
+        time.sleep(0.04)
     motor.stop()
 
 class EZMotor(ev3.Motor):
@@ -89,11 +91,14 @@ class EZMotor(ev3.Motor):
 class Picker:
     """Steer the picker mechanism to the desired target"""
 
+    # Amount of degrees the motor must turn to rotate the gripper by one degree
+    motor_deg_per_picker_deg = -3
+
     # Target positions for the gripper (degrees). 0 corresponds to the gripper all the way open
-    target_open = 40
-    target_closed = target_open + 90
-    target_store = target_closed + 155
-    target_purge = target_store + 45    
+    target_open = 40 * motor_deg_per_picker_deg
+    target_closed = target_open + 90 * motor_deg_per_picker_deg
+    target_store = target_closed + 155 * motor_deg_per_picker_deg
+    target_purge = target_store + 45 * motor_deg_per_picker_deg
 
     # Speed and tolerance parameters
     abs_speed = 400
@@ -104,8 +109,6 @@ class Picker:
         # Check if we're running on the EV3
         self.running_on_ev3 = running_on_ev3()
         
-        # Amount of degrees the motor must turn to rotate the gripper by one degree
-        self.motor_deg_per_picker_deg = -3
 
         self.target = self.target_open
         self.p = p
@@ -114,12 +117,13 @@ class Picker:
         if self.running_on_ev3:
             self.pickermotor = EZMotor(port)
             self.pick_at_rate(-40)
-            time.sleep(0.5)
-
-            while self.get_picking_rate() < -10:
-                time.sleep(0.02)
+            # time.sleep(0.5)
+            #
+            # while self.get_picking_rate() < -10:
+            #     time.sleep(0.02)
+            self.pickermotor.wait_until('stalled')
             self.pickermotor.stop()
-            self.pickermotor.reset()
+            self.pickermotor.position = 0
 
     def pick_at_rate(self, rate):
         """Set the picker reference speed"""
@@ -141,8 +145,8 @@ class Picker:
     def go_to(self, reference):
         """Steer Picker mechanism to desired target"""
         # If running on the EV3, steer picker to the desired target
-        self.pickermotor.go_to(reference * self.motor_deg_per_picker_deg,  # Reference position
-                                   self.abs_speed * self.motor_deg_per_picker_deg,  # Speed to get there
+        self.pickermotor.go_to(reference,  # Reference position
+                                   500,  # Speed to get there
                                    abs(self.tolerance*self.motor_deg_per_picker_deg))# Allowed tolerance
 
     def open(self):
