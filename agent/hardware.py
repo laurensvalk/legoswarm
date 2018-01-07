@@ -2,6 +2,7 @@ import sys
 import time
 import platform
 import ev3dev.auto as ev3
+from threading import Thread
 
 # Check if code is running on the ev3
 def running_on_ev3():
@@ -18,6 +19,24 @@ def eprint(*args, **kwargs):
     print(*args, file=sys.stderr, **kwargs)
 
 
+def limit(speed, max_speed=650):
+    return max(min(max_speed, speed), max_speed)
+
+
+def run_to_abs_pos(motor, target, max_speed=650, tolerance=3, speed_p=3, hold=0):
+    not_there_yet = True
+    while not_there_yet:
+        error = target-motor.position
+        speed = limit(error * speed_p, max_speed)
+        motor.run_forever(speed_sp=speed)
+        if -tolerance <= error <= tolerance: not_there_yet = False
+    end_time = time.time() + hold
+    while time.time() < end_time:
+        # Hold the position a while longer
+        error = target - motor.position
+        motor.run_forever(speed_sp=error)
+    motor.stop()
+
 class EZMotor(ev3.Motor):
     """
     Extending/subclassing the ev3dev motor class for ease of use.
@@ -30,7 +49,7 @@ class EZMotor(ev3.Motor):
         ev3.Motor.__init__(self, port)
 
     def set_speed(self, speed):
-        self.speed_sp = self.limit(speed)
+        self.speed_sp = limit(speed, self.max_speed_sp)
         self.run_forever()
 
     def get_speed(self):
@@ -42,14 +61,14 @@ class EZMotor(ev3.Motor):
     # def Stop(self):
     #     self.SetSpeed(0)
 
-    def limit(self, speed):
-        return max(min(self.max_speed_sp, speed), -self.max_speed_sp)       
-
     def go_to(self, reference, speed, tolerance):
-        if not self.is_running and not (reference - tolerance <= self.position <= reference + tolerance):
-            self.position_sp = reference
-            self.speed_sp = abs(self.limit(speed))
-            self.run_to_abs_pos()
+        # if not (reference - tolerance <= self.position <= reference + tolerance):
+        #     self.position_sp = reference
+        #     self.speed_sp = abs(limit(speed))
+        #     self.run_to_abs_pos()
+        if not self.is_running:
+            motor_thread = Thread(target=run_to_abs_pos(self, reference, speed, tolerance))
+            motor_thread.start()
 
     def wait_for_completion(self):
         self.wait_while('running')
@@ -64,7 +83,7 @@ class Picker:
     # Target positions for the gripper (degrees). 0 corresponds to the gripper all the way open
     target_open = 40
     target_closed = target_open + 90
-    target_store = target_closed + 160
+    target_store = target_closed + 155
     target_purge = target_store + 45    
 
     # Speed and tolerance parameters
