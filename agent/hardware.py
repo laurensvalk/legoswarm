@@ -44,7 +44,7 @@ class EZMotor(ev3.Motor):
     Extending/subclassing the ev3dev motor class for ease of use.
     """
     # degree per second. Errors are raised somewhere above this number.
-    max_speed_sp = 600
+    max_speed_sp = 650
 
     def __init__(self, port):
         # self.motor = ev3.Motor(port)
@@ -136,7 +136,7 @@ class Picker:
     def run(self):
         error = self.target - self.pickermotor.position
         speed = error * self.p
-        self.pickermotor.run_forever(speed_sp=speed)
+        self.pickermotor.set_speed(speed)
 
     def stop(self):
         """Stop the picker motor"""
