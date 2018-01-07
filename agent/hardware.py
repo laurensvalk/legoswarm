@@ -51,7 +51,7 @@ class EZMotor(ev3.Motor):
             self.running_on_ev3 = True
             ev3.Motor.__init__(self, port)
         else:
-            #TODO: virtualize the complete motor in case it is not running on an ev3, using logging.
+            #LATER: virtualize the complete motor in case it is not running on an ev3, using logging.
             ev3.Motor.__init__(self)
 
     def set_speed(self, speed):

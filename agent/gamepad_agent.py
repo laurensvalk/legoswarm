@@ -30,9 +30,7 @@ for device in devices:
     if device.name == 'PLAYSTATION(R)3 Controller':
         ps3dev = device.fn
 
-
 gamepad = evdev.InputDevice(ps3dev)
-
 
 
 turn_rate = 0
@@ -41,6 +39,7 @@ fwd_speed = 0
 triangle_pressed_time = 0
 eat = False
 running = True
+
 
 class MotorThread(threading.Thread):
     def __init__(self):
@@ -54,9 +53,14 @@ class MotorThread(threading.Thread):
         while running:
             self.base.drive_and_turn(fwd_speed, turn_rate)
             if eat:
-                self.picker.store()
+            #     self.picker.store()
+                self.picker.target = self.picker.target_store
             else:
-                self.picker.open()
+            #     self.picker.open()
+                self.picker.target = self.picker.target_open
+            self.picker.run()
+
+            # Give the Ev3 some time to handle other threads.
             time.sleep(0.04)
         self.base.stop()
 
