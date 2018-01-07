@@ -46,7 +46,13 @@ class EZMotor(ev3.Motor):
 
     def __init__(self, port):
         # self.motor = ev3.Motor(port)
-        ev3.Motor.__init__(self, port)
+        self.port = port
+        if running_on_ev3():
+            self.running_on_ev3 = True
+            ev3.Motor.__init__(self, port)
+        else:
+            #TODO: virtualize the complete motor in case it is not running on an ev3, using logging.
+            ev3.Motor.__init__(self)
 
     def set_speed(self, speed):
         self.speed_sp = limit(speed, self.max_speed_sp)
@@ -66,9 +72,12 @@ class EZMotor(ev3.Motor):
         #     self.position_sp = reference
         #     self.speed_sp = abs(limit(speed))
         #     self.run_to_abs_pos()
-        if not self.is_running:
-            motor_thread = Thread(target=run_to_abs_pos(self, reference, speed, tolerance))
-            motor_thread.start()
+        if self.running_on_ev3:
+            if not self.is_running:
+                motor_thread = Thread(target=run_to_abs_pos(self, reference, speed, tolerance))
+                motor_thread.start()
+        else:
+            print("Running {0} to: {1}".format(self, reference))
 
     def wait_for_completion(self):
         self.wait_while('running')
@@ -90,13 +99,16 @@ class Picker:
     abs_speed = 400
     tolerance = 4
 
-    def __init__(self, port=ev3.OUTPUT_A):
+    def __init__(self, port=ev3.OUTPUT_A, p=2):
 
         # Check if we're running on the EV3
         self.running_on_ev3 = running_on_ev3()
         
         # Amount of degrees the motor must turn to rotate the gripper by one degree
         self.motor_deg_per_picker_deg = -3
+
+        self.target = self.target_open
+        self.p = p
 
         # If running on the EV3, perform a reset routine
         if self.running_on_ev3:
@@ -117,6 +129,11 @@ class Picker:
         """Get the current picker speed"""
         return self.pickermotor.get_speed() / self.motor_deg_per_picker_deg
 
+    def run(self):
+        error = self.target - self.pickermotor.position
+        speed = error * self.p
+        self.pickermotor.run_forever(speed_sp=speed)
+
     def stop(self):
         """Stop the picker motor"""
         self.pickermotor.stop()
@@ -124,12 +141,9 @@ class Picker:
     def go_to(self, reference):
         """Steer Picker mechanism to desired target"""
         # If running on the EV3, steer picker to the desired target
-        if self.running_on_ev3:
-            self.pickermotor.go_to(reference * self.motor_deg_per_picker_deg,  # Reference position
+        self.pickermotor.go_to(reference * self.motor_deg_per_picker_deg,  # Reference position
                                    self.abs_speed * self.motor_deg_per_picker_deg,  # Speed to get there
                                    abs(self.tolerance*self.motor_deg_per_picker_deg))# Allowed tolerance
-        else:
-            print("Turning the gripper to: " + str(reference))
 
     def open(self):
         self.go_to(self.target_open)
