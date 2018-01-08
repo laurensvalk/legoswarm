@@ -70,6 +70,19 @@ class MotorThread(threading.Thread):
         self.picker.stop()
 
 
+class BallDetectorThread(threading.Thread):
+    def __init__(self):
+        self.ballsensor = hardware.BallSensor()
+
+    def run(self):
+        print("Sensor on!")
+        while running:
+            if self.ballsensor.check_ball()
+                gripper = STORE
+            # Give the Sensor some time to scan
+            time.sleep(0.15)
+
+
 if __name__ == "__main__":
     motor_thread = MotorThread()
     motor_thread.setDaemon(True)

@@ -87,6 +87,14 @@ class EZMotor(ev3.Motor):
     def __del__(self):
         self.stop()
 
+class BallSensor:
+    def __init__(self, port=ev3.INPUT_4):
+        self.irsensor = ev3.InfraredSensor(port)
+        self.threshold = 9
+
+    def check_ball(self):
+        return self.irsensor.proximity < self.threshold
+
 
 class Picker:
     """Steer the picker mechanism to the desired target"""
