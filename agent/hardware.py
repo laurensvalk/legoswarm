@@ -94,7 +94,7 @@ class BallSensor:
     def __init__(self, port=ev3.INPUT_4):
         self.irsensor = ev3.InfraredSensor(port)
         self.threshold = 7
-        self.min_time = 0.17
+        self.min_time = 0.25
         self.next_check = time.time()+self.min_time
         self.prox = 100
 
