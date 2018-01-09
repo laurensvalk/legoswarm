@@ -48,9 +48,11 @@ class MotorThread(threading.Thread):
     def __init__(self):
         self.base = hardware.DriveBase()
         self.picker = hardware.Picker()
+        self.ballsensor = hardware.BallSensor()
         threading.Thread.__init__(self)
 
     def run(self):
+        global gripper
         print("Engines running!")
         while running:
             self.base.drive_and_turn(fwd_speed, turn_rate)
@@ -60,6 +62,10 @@ class MotorThread(threading.Thread):
             elif gripper == OPEN:
             #     self.picker.open()
                 self.picker.target = self.picker.target_open
+                
+                if self.picker.target_open-10 <= self.picker.position <= self.picker.target_open+10:
+                     if self.ballsensor.check_ball():
+                         gripper = STORE
             elif gripper == PURGE:
                 self.picker.target = self.picker.target_purge
             self.picker.run()
@@ -73,11 +79,13 @@ class MotorThread(threading.Thread):
 class BallDetectorThread(threading.Thread):
     def __init__(self):
         self.ballsensor = hardware.BallSensor()
+        threading.Thread.__init__(self)
 
     def run(self):
+        global gripper
         print("Sensor on!")
         while running:
-            if self.ballsensor.check_ball()
+            if self.ballsensor.check_ball():
                 gripper = STORE
             # Give the Sensor some time to scan
             time.sleep(0.15)
@@ -85,8 +93,9 @@ class BallDetectorThread(threading.Thread):
 
 if __name__ == "__main__":
     motor_thread = MotorThread()
-    motor_thread.setDaemon(True)
     motor_thread.start()
+    #bs_thread = BallDetectorThread()
+    #bs_thread.start()
 
     for event in gamepad.read_loop(): #this loops infinitely
         if event.type == 3: #A stick is moved

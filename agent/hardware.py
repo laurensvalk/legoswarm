@@ -90,10 +90,17 @@ class EZMotor(ev3.Motor):
 class BallSensor:
     def __init__(self, port=ev3.INPUT_4):
         self.irsensor = ev3.InfraredSensor(port)
-        self.threshold = 9
+        self.threshold = 7
+        self.min_time = 0.17
+        self.next_check = time.time()+self.min_time
+        self.prox = 100
 
     def check_ball(self):
-        return self.irsensor.proximity < self.threshold
+        if time.time() > self.next_check:
+           self.prox = self.irsensor.proximity
+           self.next_check = time.time()+self.min_time   
+        print(self.prox)
+        return prox < self.threshold
 
 
 class Picker:
@@ -140,6 +147,10 @@ class Picker:
     def get_picking_rate(self):
         """Get the current picker speed"""
         return self.pickermotor.get_speed() / self.motor_deg_per_picker_deg
+
+    @property
+    def position(self):
+        return self.pickermotor.position
 
     def run(self):
         error = self.target - self.pickermotor.position
