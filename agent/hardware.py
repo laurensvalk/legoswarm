@@ -97,7 +97,7 @@ class BallSensor:
         self.irsensor = ev3.InfraredSensor(port)
         self.threshold = 7
 
-        frequency = 10  # Hz
+        frequency = 5  # Hz
         self.interval = 1/frequency
         self.next_reading_time = time.time()+self.interval
 
@@ -109,7 +109,7 @@ class BallSensor:
     def check_ball(self):
         # elapsed = time.time() - self.last_reading_t
         prox = self.irsensor.proximity
-        if time.time() > self.next_reading_time:
+        if time.time() > self.next_reading_time and prox < 100:
             self.readings.append(prox)
             self.next_reading_time = time.time() + self.interval
 
