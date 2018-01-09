@@ -99,7 +99,7 @@ class BallSensor:
         # self.last_reading_t = time.time()
         # self.last_prox = self.last_good_prox = 100
         # self.MAX_RATE = 10 # IR % increase per second.
-        self.readings = deque([100]*5)
+        self.readings = deque(maxlen=5)
 
     def check_ball(self):
         # elapsed = time.time() - self.last_reading_t
