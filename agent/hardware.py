@@ -22,6 +22,9 @@ def eprint(*args, **kwargs):
 def limit(speed, max_speed=650):
     return max(min(max_speed, speed), -max_speed)
 
+def is_within_tolerance(value, target, tolerance=0):
+    return target - tolerance < value < target + tolerance
+
 
 def run_to_abs_pos(motor, target, max_speed=650, tolerance=3, speed_p=3, hold=0):
     not_there_yet = True
@@ -97,10 +100,10 @@ class BallSensor:
 
     def check_ball(self):
         if time.time() > self.next_check:
-           self.prox = self.irsensor.proximity
-           self.next_check = time.time()+self.min_time   
+            self.prox = self.irsensor.proximity
+            self.next_check = time.time()+self.min_time
         print(self.prox)
-        return prox < self.threshold
+        return self.prox < self.threshold
 
 
 class Picker:
@@ -112,12 +115,12 @@ class Picker:
     # Target positions for the gripper (degrees). 0 corresponds to the gripper all the way open
     target_open = 40 * motor_deg_per_picker_deg
     target_closed = target_open + 90 * motor_deg_per_picker_deg
-    target_store = target_closed + 155 * motor_deg_per_picker_deg
+    target_store = target_closed + 145 * motor_deg_per_picker_deg
     target_purge = target_store + 45 * motor_deg_per_picker_deg
 
     # Speed and tolerance parameters
     abs_speed = 400
-    tolerance = 4
+    tolerance = 4 * motor_deg_per_picker_deg
 
     def __init__(self, port=ev3.OUTPUT_A, p=2):
 
@@ -152,6 +155,18 @@ class Picker:
     def position(self):
         return self.pickermotor.position
 
+    @property
+    def state(self):
+        p = self.pickermotor.position
+        if is_within_tolerance(p, self.target_open, self.tolerance):
+            return 'open'
+        elif is_within_tolerance(p, self.target_purge, self.tolerance):
+            return 'purge'
+        elif is_within_tolerance(p, self.target_store, self.tolerance):
+            return 'store'
+        else:
+            return 'running'
+
     def run(self):
         error = self.target - self.pickermotor.position
         speed = error * self.p
@@ -166,7 +181,7 @@ class Picker:
         # If running on the EV3, steer picker to the desired target
         self.pickermotor.go_to(reference,  # Reference position
                                    500,  # Speed to get there
-                                   abs(self.tolerance*self.motor_deg_per_picker_deg))# Allowed tolerance
+                                   abs(self.tolerance))# Allowed tolerance
 
     def open(self):
         self.go_to(self.target_open)

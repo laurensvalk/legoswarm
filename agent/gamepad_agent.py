@@ -56,18 +56,20 @@ class MotorThread(threading.Thread):
         print("Engines running!")
         while running:
             self.base.drive_and_turn(fwd_speed, turn_rate)
+            # Remote control:
             if gripper == STORE:
-            #     self.picker.store()
                 self.picker.target = self.picker.target_store
             elif gripper == OPEN:
-            #     self.picker.open()
                 self.picker.target = self.picker.target_open
-                
-                if self.picker.target_open-10 <= self.picker.position <= self.picker.target_open+10:
-                     if self.ballsensor.check_ball():
-                         gripper = STORE
             elif gripper == PURGE:
                 self.picker.target = self.picker.target_purge
+
+            # Autopicker
+            if self.picker.state == 'open':
+                if self.ballsensor.check_ball():
+                    gripper = STORE
+            elif self.picker.state == 'store' and gripper == STORE:
+                gripper = OPEN
             self.picker.run()
 
             # Give the Ev3 some time to handle other threads.
