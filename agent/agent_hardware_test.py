@@ -31,5 +31,5 @@ while True:
     #     picker.go_to(target_now)
     # if speed_now is not None and steering_now is not None:
     #     base.drive_and_turn(speed_now, steering_now)
-    # time.sleep(0.1)
     ballsensor.check_ball()
+    time.sleep(0.04)
