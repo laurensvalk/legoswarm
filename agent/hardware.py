@@ -2,6 +2,7 @@ import sys
 import time
 import platform
 import ev3dev.auto as ev3
+from collections import deque
 from threading import Thread
 
 # Check if code is running on the ev3
@@ -95,23 +96,26 @@ class BallSensor:
     def __init__(self, port=ev3.INPUT_4):
         self.irsensor = ev3.InfraredSensor(port)
         self.threshold = 7
-        self.last_reading_t = time.time()
-        self.last_prox = self.last_good_prox = 100
-        self.MAX_RATE = 10 # IR % increase per second.
+        # self.last_reading_t = time.time()
+        # self.last_prox = self.last_good_prox = 100
+        # self.MAX_RATE = 10 # IR % increase per second.
+        self.readings = deque([100]*5)
 
     def check_ball(self):
-        elapsed = time.time() - self.last_reading_t
+        # elapsed = time.time() - self.last_reading_t
         prox = self.irsensor.proximity
-        rate = (prox-self.last_prox)/elapsed
-        self.last_prox = prox
-        print(prox, rate)
-        if abs(rate) < self.MAX_RATE:
-            self.last_good_prox = prox
-            self.last_reading_t = time.time()
-            return prox < self.threshold
-        else:
-            return self.last_good_prox < self.threshold
-
+        self.readings.append(prox)
+        # rate = (prox-self.last_prox)/elapsed
+        # self.last_prox = prox
+        avg_prox = sum(self.readings)/5
+        print(prox, avg_prox)
+        # if abs(rate) < self.MAX_RATE:
+        #     self.last_good_prox = prox
+        #     self.last_reading_t = time.time()
+        #     return prox < self.threshold
+        # else:
+        #     return self.last_good_prox < self.threshold
+        return avg_prox < self.threshold
 
 class Picker:
     """Steer the picker mechanism to the desired target"""
