@@ -102,7 +102,7 @@ class BallSensor:
     def check_ball(self):
         elapsed = time.time() - self.last_reading_t
         prox = self.irsensor.proximity
-        rate = prox-self.last_prox/elapsed
+        rate = (prox-self.last_prox)/elapsed
         self.last_prox = prox
         print(prox, rate)
         if abs(rate) < self.MAX_RATE:
