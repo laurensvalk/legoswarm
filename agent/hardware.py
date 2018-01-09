@@ -108,21 +108,24 @@ class BallSensor:
 
     def check_ball(self):
         # elapsed = time.time() - self.last_reading_t
-        prox = self.irsensor.proximity
-        if time.time() > self.next_reading_time and prox < 100:
-            self.readings.append(prox)
-            self.next_reading_time = time.time() + self.interval
 
+        if time.time() > self.next_reading_time:
+            prox = self.irsensor.proximity
+            if prox < 100:
+                self.readings.append(prox)
+                self.next_reading_time = time.time() + self.interval
+                avg_prox = sum(self.readings) / 5
+                print(prox, avg_prox)
         # rate = (prox-self.last_prox)/elapsed
         # self.last_prox = prox
-        avg_prox = sum(self.readings)/5
-        print(prox, avg_prox)
+
         # if abs(rate) < self.MAX_RATE:
         #     self.last_good_prox = prox
         #     self.last_reading_t = time.time()
         #     return prox < self.threshold
         # else:
         #     return self.last_good_prox < self.threshold
+        avg_prox = sum(self.readings) / 5
         return avg_prox < self.threshold
 
 class Picker:
