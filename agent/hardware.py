@@ -90,20 +90,26 @@ class EZMotor(ev3.Motor):
     def __del__(self):
         self.stop()
 
+
 class BallSensor:
     def __init__(self, port=ev3.INPUT_4):
         self.irsensor = ev3.InfraredSensor(port)
         self.threshold = 7
-        self.min_time = 0.25
-        self.next_check = time.time()+self.min_time
-        self.prox = 100
+        self.last_reading_t = time.time()
+        self.last_prox = 100
+        self.MAX_RATE = 10 # IR % increase per second.
 
     def check_ball(self):
-        if time.time() > self.next_check:
-            self.prox = self.irsensor.proximity
-            self.next_check = time.time()+self.min_time
-        print(self.prox)
-        return self.prox < self.threshold
+        elapsed = time.time() - self.last_reading_t
+        prox = self.irsensor.proximity
+        rate = prox-self.last_prox/elapsed
+        print(prox, rate)
+        if abs(rate) < self.MAX_RATE:
+            self.last_prox = prox
+            self.last_reading_t = time.time()
+            return prox < self.threshold
+        else:
+            return self.last_prox < self.threshold
 
 
 class Picker:
