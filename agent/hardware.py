@@ -96,20 +96,21 @@ class BallSensor:
         self.irsensor = ev3.InfraredSensor(port)
         self.threshold = 7
         self.last_reading_t = time.time()
-        self.last_prox = 100
+        self.last_prox = self.last_good_prox = 100
         self.MAX_RATE = 10 # IR % increase per second.
 
     def check_ball(self):
         elapsed = time.time() - self.last_reading_t
         prox = self.irsensor.proximity
         rate = prox-self.last_prox/elapsed
+        self.last_prox = prox
         print(prox, rate)
         if abs(rate) < self.MAX_RATE:
-            self.last_prox = prox
+            self.last_good_prox = prox
             self.last_reading_t = time.time()
             return prox < self.threshold
         else:
-            return self.last_prox < self.threshold
+            return self.last_good_prox < self.threshold
 
 
 class Picker:
