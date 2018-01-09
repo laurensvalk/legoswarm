@@ -120,7 +120,7 @@ class Picker:
 
     # Speed and tolerance parameters
     abs_speed = 400
-    tolerance = 4 * motor_deg_per_picker_deg
+    tolerance = 4 * abs(motor_deg_per_picker_deg)
 
     def __init__(self, port=ev3.OUTPUT_A, p=2):
 
