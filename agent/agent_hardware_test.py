@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
-from hardware import Picker, DriveBase, IRRemoteControl, eprint
+from hardware import Picker, DriveBase, IRRemoteControl, eprint, BallSensor
 from collections import defaultdict
 import time
 
 # Configure the devices
-remote = IRRemoteControl('in4')
+# remote = IRRemoteControl('in4')
+ballsensor = BallSensor()
 base = DriveBase(left='outB',right='outC',wheel_diameter=0.043,wheel_span = 0.12)
 picker = Picker('outA')
 
@@ -24,10 +25,11 @@ actions = defaultdict(lambda: actions['NONE'], actions)
 
 # Main Loop: Drive around and control picker based on remote
 while True:
-    speed_now, steering_now, target_now = actions[remote.Button()]
-
-    if target_now is not None:
-        picker.go_to(target_now)
-    if speed_now is not None and steering_now is not None:
-        base.drive_and_turn(speed_now, steering_now)
-    time.sleep(0.1)
+    # speed_now, steering_now, target_now = actions[remote.Button()]
+    #
+    # if target_now is not None:
+    #     picker.go_to(target_now)
+    # if speed_now is not None and steering_now is not None:
+    #     base.drive_and_turn(speed_now, steering_now)
+    # time.sleep(0.1)
+    ballsensor.check_ball()
