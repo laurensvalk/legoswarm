@@ -111,6 +111,8 @@ class BallSensor:
         prox = self.irsensor.proximity
         if time.time() > self.next_reading_time:
             self.readings.append(prox)
+            self.next_reading_time = time.time() + self.interval
+
         # rate = (prox-self.last_prox)/elapsed
         # self.last_prox = prox
         avg_prox = sum(self.readings)/5
