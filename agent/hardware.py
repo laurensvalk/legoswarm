@@ -158,6 +158,7 @@ class Picker:
     @property
     def state(self):
         p = self.pickermotor.position
+        print(p,self.target_open,self.tolerance)
         if is_within_tolerance(p, self.target_open, self.tolerance):
             return 'open'
         elif is_within_tolerance(p, self.target_purge, self.tolerance):
