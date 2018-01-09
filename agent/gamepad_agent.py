@@ -65,7 +65,9 @@ class MotorThread(threading.Thread):
                 self.picker.target = self.picker.target_purge
 
             # Autopicker
+            print(self.picker.state)
             if self.picker.state == 'open':
+
                 if self.ballsensor.check_ball():
                     gripper = STORE
             elif self.picker.state == 'store' and gripper == STORE:
