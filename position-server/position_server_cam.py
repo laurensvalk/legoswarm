@@ -26,8 +26,8 @@ MIN_BALL_RADIUS_PX = 8
 MAX_BALL_RADIUS_PX = 15
 MIN_BALL_AREA = MIN_BALL_RADIUS_PX * 2 * 3.14
 MAX_BALL_AREA = MAX_BALL_RADIUS_PX * 2 * 3.14
-DARK_RED = np.array([])
-BRIGHT_RED = np.array([])
+DARK_RED = np.array([7, 14, 50])
+BRIGHT_RED = np.array([100, 100, 220])
 
 
 ### Initialize ###
@@ -134,12 +134,21 @@ while True:
     img_height, img_width = img.shape[:2]
     # width = np.size(img, 1)
 
+    # Let's first detect red balls
+    balls = []
+    img_red = cv2.inRange(img, DARK_RED, BRIGHT_RED)
+    contours = cv2.findContours(img_red, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
+    for contour in contours:
+        if len(contour) > 0:
+            print(contour)
+            center, radius = cv2.minEnclosingCircle(contour)
+            if MIN_BALL_RADIUS_PX < radius < MAX_BALL_RADIUS_PX:
+                balls += [tuple(center)]
+                cv2.circle(img, center, radius, (0, 255, 0), 2)
+    robot_broadcast_data['balls'] = balls
 
     # convert to grayscale
     img_grey = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    img_red = cv2.inRange(img, np.array([7, 14, 50]), np.array([100, 100, 220]))
-    #TODO: findcontours, filter with contourArea, https://docs.opencv.org/2.4/modules/imgproc/doc/structural_analysis_and_shape_descriptors.html
-    #TODO find centroids with minEnclosingCircle
 
     img_grey = adjust_gamma(img_grey)
 
@@ -147,10 +156,10 @@ while True:
 
     # Simple adaptive mean thresholding
     values, img_grey = cv2.threshold(img_grey, 230, 255, cv2.THRESH_BINARY)
-    #values, img_grey = cv2.threshold(img_grey, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+    # values, img_grey = cv2.threshold(img_grey, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
     # img_grey = cv2.adaptiveThreshold(img_grey, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 17, 2)
-    #img_grey = cv2.Canny(img_grey, 50, 150)
-    #img_grey = cv2.dilate(img_grey, np.ones((3, 3)))
+    # img_grey = cv2.Canny(img_grey, 50, 150)
+    # img_grey = cv2.dilate(img_grey, np.ones((3, 3)))
 
 
     # Find contours and tree
