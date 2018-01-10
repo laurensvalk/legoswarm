@@ -1,5 +1,6 @@
 ./dev/*
-.vscode/*
+.vscode*
+.idea*
 #################### Latex Ignore
 
 *~
@@ -288,4 +289,4 @@ ENV/
 
 # mypy
 .mypy_cache/
-.vscode/settings.json
+.vscode/*

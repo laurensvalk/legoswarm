@@ -22,7 +22,12 @@ except:
 THRESH = 70        # Threshold for b/w version of camera image
 WIDTH = 1920
 HEIGHT = 1080
-
+MIN_BALL_RADIUS_PX = 8
+MAX_BALL_RADIUS_PX = 15
+MIN_BALL_AREA = MIN_BALL_RADIUS_PX * 2 * 3.14
+MAX_BALL_AREA = MAX_BALL_RADIUS_PX * 2 * 3.14
+DARK_RED = np.array([])
+BRIGHT_RED = np.array([])
 
 
 ### Initialize ###
@@ -31,6 +36,12 @@ cv2.namedWindow("cam", cv2.WINDOW_OPENGL)
 cap = cv2.VideoCapture(0)
 cap.set(3, WIDTH)
 
+# create trackbars for color change
+def nothing(x):
+    pass
+cv2.createTrackbar('R','image',0,255,nothing)
+cv2.createTrackbar('G','image',0,255,nothing)
+cv2.createTrackbar('B','image',0,255,nothing)
 
 def adjust_gamma(image, gamma=1.0):
     # build a lookup table mapping the pixel values [0, 255] to
@@ -126,6 +137,9 @@ while True:
 
     # convert to grayscale
     img_grey = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    img_red = cv2.inRange(img, np.array([7, 14, 50]), np.array([100, 100, 220]))
+    #TODO: findcontours, filter with contourArea, https://docs.opencv.org/2.4/modules/imgproc/doc/structural_analysis_and_shape_descriptors.html
+    #TODO find centroids with minEnclosingCircle
 
     img_grey = adjust_gamma(img_grey)
 
@@ -144,7 +158,8 @@ while True:
     # logging.debug("found contours", t - time.time())
 
     # Uncomment to preview thresholded image
-    img = cv2.cvtColor(img_grey, cv2.COLOR_GRAY2BGR)
+    # img = cv2.cvtColor(img_grey, cv2.COLOR_GRAY2BGR)
+    img = cv2.cvtColor(img_red, cv2.COLOR_GRAY2BGR)
 
     robot_markers = {}
     # Find triangular contours with at least 2 children. These must be our markers!
@@ -251,6 +266,10 @@ while True:
 
     # Wait for the 'q' key. Dont use ctrl-c !!!
     keypress = cv2.waitKey(1) & 0xFF
+    r = cv2.getTrackbarPos('R','image')
+    g = cv2.getTrackbarPos('G','image')
+    b = cv2.getTrackbarPos('B','image')
+
     if keypress == ord('q'):
         break
     if n == 0:
