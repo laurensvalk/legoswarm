@@ -33,8 +33,10 @@ for device in devices:
     if device.name == 'PLAYSTATION(R)3 Controller':
         ps3dev = device.fn
 
-gamepad = evdev.InputDevice(ps3dev)
-
+try:
+    gamepad = evdev.InputDevice(ps3dev)
+except:
+    gamepad = hardware.GamePadStub()
 
 turn_rate = 0
 turn_speed = 0

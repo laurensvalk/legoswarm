@@ -24,7 +24,7 @@ if IR_REMOTE:
 else:
     ball_sensor = BallSensor()
 
-base = DriveBase(left='outB',right='outC',wheel_diameter=0.043, wheel_span = 0.12)
+base = DriveBase(left='outB', right='outC', wheel_diameter=0.043, wheel_span = 0.12)
 picker = Picker('outA')
 
 # Main Loop: Drive around and control picker based on remote

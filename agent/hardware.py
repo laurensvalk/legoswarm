@@ -123,18 +123,17 @@ class Picker:
     # Target positions for the gripper (degrees). 0 corresponds to the gripper all the way open
     target_open = 40 * motor_deg_per_picker_deg
     target_closed = target_open + 90 * motor_deg_per_picker_deg
-    target_store = target_closed + 145 * motor_deg_per_picker_deg
+    target_store = target_closed + 135 * motor_deg_per_picker_deg
     target_purge = target_store + 45 * motor_deg_per_picker_deg
 
     # Speed and tolerance parameters
     abs_speed = 400
     tolerance = 4 * abs(motor_deg_per_picker_deg)
 
-    def __init__(self, port=ev3.OUTPUT_A, p=2):
+    def __init__(self, port=ev3.OUTPUT_A, p=2.8):
 
         # Check if we're running on the EV3
         self.running_on_ev3 = running_on_ev3()
-        
 
         self.target = self.target_open
         self.p = p
@@ -277,3 +276,9 @@ class IRRemoteControl:
         else:
             # Always return that the button is not pressed if not running on the EV3
             return False
+
+
+class GamePadStub:
+    @staticmethod
+    def read_loop():
+        return []
