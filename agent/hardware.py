@@ -101,32 +101,18 @@ class BallSensor:
         self.interval = 1/frequency
         self.next_reading_time = time.time()+self.interval
 
-        # self.last_reading_t = time.time()
-        # self.last_prox = self.last_good_prox = 100
-        # self.MAX_RATE = 10 # IR % increase per second.
-        self.readings = deque([100]*5, maxlen=5)
+        self.num_readings = 3  # For averaging over
+        self.readings = deque([100] * self.num_readings, maxlen=self.num_readings)
 
     def check_ball(self):
-        # elapsed = time.time() - self.last_reading_t
-
         if time.time() > self.next_reading_time:
             prox = self.irsensor.proximity
             if prox < 100:
                 self.readings.append(prox)
                 self.next_reading_time = time.time() + self.interval
-                avg_prox = sum(self.readings) / 5
-                print(prox, avg_prox)
-        # rate = (prox-self.last_prox)/elapsed
-        # self.last_prox = prox
+        avg_proximity = sum(self.readings) / self.num_readings
+        return avg_proximity < self.threshold  # True if a ball is close enough to the sensor.
 
-        # if abs(rate) < self.MAX_RATE:
-        #     self.last_good_prox = prox
-        #     self.last_reading_t = time.time()
-        #     return prox < self.threshold
-        # else:
-        #     return self.last_good_prox < self.threshold
-        avg_prox = sum(self.readings) / 5
-        return avg_prox < self.threshold
 
 class Picker:
     """Steer the picker mechanism to the desired target"""
