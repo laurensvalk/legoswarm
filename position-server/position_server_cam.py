@@ -22,12 +22,12 @@ except:
 THRESH = 70        # Threshold for b/w version of camera image
 WIDTH = 1920
 HEIGHT = 1080
-MIN_BALL_RADIUS_PX = 8
-MAX_BALL_RADIUS_PX = 15
+MIN_BALL_RADIUS_PX = 10
+MAX_BALL_RADIUS_PX = 40
 MIN_BALL_AREA = MIN_BALL_RADIUS_PX * 2 * 3.14
 MAX_BALL_AREA = MAX_BALL_RADIUS_PX * 2 * 3.14
-DARK_RED = np.array([7, 14, 50])
-BRIGHT_RED = np.array([100, 100, 220])
+DARK_RED = np.array([113, 85, 65]) # HSV 8bit 0° 70% 30%
+BRIGHT_RED = np.array([120, 255, 245]) # HSV 8bit 4% 60% 60%
 
 
 ### Initialize ###
@@ -35,13 +35,14 @@ BRIGHT_RED = np.array([100, 100, 220])
 cv2.namedWindow("cam", cv2.WINDOW_OPENGL)
 cap = cv2.VideoCapture(0)
 cap.set(3, WIDTH)
+cap.set(cv2.CAP_PROP_GAIN, 0.5)
 
 # create trackbars for color change
-def nothing(x):
-    pass
-cv2.createTrackbar('R','image',0,255,nothing)
-cv2.createTrackbar('G','image',0,255,nothing)
-cv2.createTrackbar('B','image',0,255,nothing)
+# def nothing(x):
+#     pass
+# cv2.createTrackbar('R','image',0,255,nothing)
+# cv2.createTrackbar('G','image',0,255,nothing)
+# cv2.createTrackbar('B','image',0,255,nothing)
 
 def adjust_gamma(image, gamma=1.0):
     # build a lookup table mapping the pixel values [0, 255] to
@@ -128,6 +129,7 @@ socket_server = SocketThread()
 socket_server.start()
 
 while True:
+    time.sleep(2)
     ok, img = cap.read()
     if not ok:
         continue    #and try again.
@@ -136,15 +138,28 @@ while True:
 
     # Let's first detect red balls
     balls = []
-    img_red = cv2.inRange(img, DARK_RED, BRIGHT_RED)
-    contours = cv2.findContours(img_red, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
+    img_hsv = cv2.cvtColor(img, cv2.COLOR_RGB2HSV)
+    img_red = cv2.inRange(img_hsv, DARK_RED, BRIGHT_RED)
+    img_red = cv2.erode(img_red, np.ones((3,3)))
+    img_red = cv2.dilate(img_red, np.ones((8,8)))
+    img_red, contours, hierarchy = cv2.findContours(img_red, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
+    cv2.drawContours(img, np.array(contours), -1, (0,0,255))
     for contour in contours:
-        if len(contour) > 0:
-            print(contour)
-            center, radius = cv2.minEnclosingCircle(contour)
-            if MIN_BALL_RADIUS_PX < radius < MAX_BALL_RADIUS_PX:
-                balls += [tuple(center)]
-                cv2.circle(img, center, radius, (0, 255, 0), 2)
+        # print(len(contours),len(contour),contour)
+        # Is it about as wide as it high?
+        (x,y),(w,h),angle = cv2.minAreaRect(contour)
+        # print(list(rect))
+        if len(contour) > 1 and 0.8*h < w < 1.2*h:
+            # print(contour)
+            # center, radius = cv2.minEnclosingCircle(contour)
+            # print(center.astype(int),radius)
+
+            if MIN_BALL_RADIUS_PX < w < MAX_BALL_RADIUS_PX and MIN_BALL_RADIUS_PX < h < MAX_BALL_RADIUS_PX:
+                # center = tuple([int(n) for n in center])
+                center = (int(x+w/2), int(y+h/2))
+                radius = int((w+h)/4)
+                balls += [center]
+                cv2.circle(img, center, int(radius), (255, 0, 255), 2)
     robot_broadcast_data['balls'] = balls
 
     # convert to grayscale
@@ -168,7 +183,8 @@ while True:
 
     # Uncomment to preview thresholded image
     # img = cv2.cvtColor(img_grey, cv2.COLOR_GRAY2BGR)
-    img = cv2.cvtColor(img_red, cv2.COLOR_GRAY2BGR)
+    # img = cv2.cvtColor(img_red, cv2.COLOR_GRAY2BGR)
+    # img = cv2.cvtColor(img_hsv, cv2.COLOR_HSV2BGR)
 
     robot_markers = {}
     # Find triangular contours with at least 2 children. These must be our markers!
@@ -275,9 +291,9 @@ while True:
 
     # Wait for the 'q' key. Dont use ctrl-c !!!
     keypress = cv2.waitKey(1) & 0xFF
-    r = cv2.getTrackbarPos('R','image')
-    g = cv2.getTrackbarPos('G','image')
-    b = cv2.getTrackbarPos('B','image')
+    # r = cv2.getTrackbarPos('R','image')
+    # g = cv2.getTrackbarPos('G','image')
+    # b = cv2.getTrackbarPos('B','image')
 
     if keypress == ord('q'):
         break
