@@ -101,7 +101,7 @@ class BallSensor:
         self.interval = 1/frequency
         self.next_reading_time = time.time()+self.interval
 
-        self.num_readings = 3  # For averaging over
+        self.num_readings = 4  # For averaging over
         self.readings = deque([100] * self.num_readings, maxlen=self.num_readings)
 
     def check_ball(self):
@@ -111,7 +111,12 @@ class BallSensor:
                 self.readings.append(prox)
                 self.next_reading_time = time.time() + self.interval
         avg_proximity = sum(self.readings) / self.num_readings
-        return avg_proximity < self.threshold  # True if a ball is close enough to the sensor.
+        # print(self.readings, avg_proximity)
+        if avg_proximity < self.threshold:  # True if a ball is close enough to the sensor.
+           self.readings.extend([10]*4)
+           return True
+        else:
+           return False
 
 
 class Picker:
