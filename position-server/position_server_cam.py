@@ -19,40 +19,23 @@ except:
 
 
 ### Settings ###
-THRESH = 70        # Threshold for b/w version of camera image
+THRESHOLD = 150        # Threshold for b/w version of camera image. Was 230 most of the time
 WIDTH = 1920
 HEIGHT = 1080
-MIN_BALL_RADIUS_PX = 10
-MAX_BALL_RADIUS_PX = 40
-MIN_BALL_AREA = MIN_BALL_RADIUS_PX * 2 * 3.14
-MAX_BALL_AREA = MAX_BALL_RADIUS_PX * 2 * 3.14
-DARK_RED = np.array([113, 85, 65]) # HSV 8bit 0° 70% 30%
-BRIGHT_RED = np.array([120, 255, 245]) # HSV 8bit 4% 60% 60%
-
+CROP_RECT = (0, 50, WIDTH - 50, HEIGHT - 80)
+MIN_BALL_RADIUS_PX = 5
+MAX_BALL_RADIUS_PX = 16
+PLAYFIELD_COORDS = True
+ROBOT_FOOTPRINT_CENTER_OFFSET = np.array([60, -30])
 
 ### Initialize ###
 # Camera
 cv2.namedWindow("cam", cv2.WINDOW_OPENGL)
 cap = cv2.VideoCapture(0)
 cap.set(3, WIDTH)
-cap.set(cv2.CAP_PROP_GAIN, 0.5)
+cap.set(4, HEIGHT)
 
-# create trackbars for color change
-# def nothing(x):
-#     pass
-# cv2.createTrackbar('R','image',0,255,nothing)
-# cv2.createTrackbar('G','image',0,255,nothing)
-# cv2.createTrackbar('B','image',0,255,nothing)
 
-def adjust_gamma(image, gamma=1.0):
-    # build a lookup table mapping the pixel values [0, 255] to
-    # their adjusted gamma values
-    invGamma = 1.0 / gamma
-    table = np.array([min(255,i*2.5)
-                      for i in np.arange(0, 256)]).astype("uint8")
-
-    # apply gamma correction using the lookup table
-    return cv2.LUT(image, table)
 
 # Data & robot settings
 
@@ -90,6 +73,15 @@ def pixel(img_grey, vector):
         return 1
     else:
         return 0
+
+def adjust_curve(image, factor=2.5):
+    # build a lookup table mapping the pixel values [0, 255] to
+    # their steepened curve values
+    table = np.array([min(255, i*factor)
+                      for i in np.arange(0, 256)]).astype("uint8")
+
+    # apply gamma correction using the lookup table
+    return cv2.LUT(image, table)
 
 
 ### Thread(s) ###
@@ -129,48 +121,22 @@ socket_server = SocketThread()
 socket_server.start()
 
 while True:
-    time.sleep(2)
+    # time.sleep(2)
     ok, img = cap.read()
     if not ok:
         continue    #and try again.
+    img = np.array(img[50:1000, 0:1850])
     img_height, img_width = img.shape[:2]
-    # width = np.size(img, 1)
 
-    # Let's first detect red balls
-    balls = []
-    img_hsv = cv2.cvtColor(img, cv2.COLOR_RGB2HSV)
-    img_red = cv2.inRange(img_hsv, DARK_RED, BRIGHT_RED)
-    img_red = cv2.erode(img_red, np.ones((3,3)))
-    img_red = cv2.dilate(img_red, np.ones((8,8)))
-    img_red, contours, hierarchy = cv2.findContours(img_red, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
-    cv2.drawContours(img, np.array(contours), -1, (0,0,255))
-    for contour in contours:
-        # print(len(contours),len(contour),contour)
-        # Is it about as wide as it high?
-        (x,y),(w,h),angle = cv2.minAreaRect(contour)
-        # print(list(rect))
-        if len(contour) > 1 and 0.8*h < w < 1.2*h:
-            # print(contour)
-            # center, radius = cv2.minEnclosingCircle(contour)
-            # print(center.astype(int),radius)
-
-            if MIN_BALL_RADIUS_PX < w < MAX_BALL_RADIUS_PX and MIN_BALL_RADIUS_PX < h < MAX_BALL_RADIUS_PX:
-                # center = tuple([int(n) for n in center])
-                center = (int(x+w/2), int(y+h/2))
-                radius = int((w+h)/4)
-                balls += [center]
-                cv2.circle(img, center, int(radius), (255, 0, 255), 2)
-    robot_broadcast_data['balls'] = balls
-
-    # convert to grayscale
-    img_grey = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-
-    img_grey = adjust_gamma(img_grey)
+    # convert to grayscale and adjust gamma curve
+    img_grey = adjust_curve(cv2.cvtColor(img, cv2.COLOR_BGR2GRAY))
 
     # logging.debug("read greyscale image", t - time.time())
 
     # Simple adaptive mean thresholding
-    values, img_grey = cv2.threshold(img_grey, 230, 255, cv2.THRESH_BINARY)
+    values, img_grey = cv2.threshold(img_grey, THRESHOLD, 255, cv2.THRESH_BINARY)
+
+    ## Alternative thresholding:
     # values, img_grey = cv2.threshold(img_grey, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
     # img_grey = cv2.adaptiveThreshold(img_grey, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 17, 2)
     # img_grey = cv2.Canny(img_grey, 50, 150)
@@ -183,13 +149,10 @@ while True:
 
     # Uncomment to preview thresholded image
     # img = cv2.cvtColor(img_grey, cv2.COLOR_GRAY2BGR)
-    # img = cv2.cvtColor(img_red, cv2.COLOR_GRAY2BGR)
-    # img = cv2.cvtColor(img_hsv, cv2.COLOR_HSV2BGR)
 
     robot_markers = {}
     # Find triangular contours with at least 2 children. These must be our markers!
     for x in range(0, len(contours)):
-
         k = x
         c = 0
 
@@ -208,7 +171,7 @@ while True:
             # This marker has at least two children. Now let's check if it's a triangle.
             approx = cv2.approxPolyDP(contours[x], cv2.arcLength(contours[x], True)*0.05, True)
             if len(approx) == 3:
-                # We found a squarish object too.
+                # We found a triangular object!
                 # Let it's corners be these vectors.
                 a = approx[0][0]
                 b = approx[1][0]
@@ -230,8 +193,7 @@ while True:
                 center = center.astype(int)
                 heading = atan2_vec(front - center)
 
-                # Now read code
-                # Rotation matrix
+                # Rotation matrix for reading code
                 c = np.cos(heading)
                 s = np.sin(heading)
                 R = np.array([[-s, -c], [-c, s]])
@@ -242,7 +204,7 @@ while True:
                                                     [-0.125, 0.5],
                                                     [-0.375, 0.5]])
 
-                # Now do a dot product of the relative positions with the center position,
+                # Do a dot product of the relative positions with the center position,
                 # and offset this back to position of the robot to find matrix of absolute code pixel positions
                 locations = (center + np.dot(relative_code_positions * shortest, R)).astype(int)
 
@@ -251,7 +213,8 @@ while True:
                 for i in range(4):
                     try:
                         p = img_grey[locations[i][1], locations[i][0]]
-                    except: # The needed pixel is probably outside the image.
+                    except:
+                        # The needed pixel is probably outside the image.
                         robot_id = -1
                         break
                     if not p:
@@ -264,16 +227,36 @@ while True:
                             cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 255), 4)
 
                 # Draw binary robot id marker positions
-                for l in locations:
-                    cv2.circle(img, tuple(l), 4, (0, 255, 0), -1)
+                # for l in locations:
+                #     cv2.circle(img, tuple(l), 4, (0, 255, 0), -1)
 
                 # Draw the contour of our triangle
                 cv2.drawContours(img, [approx], -1, (0, 255, 0))
 
+                # Black out the shape of the robot in our source image
+                box_center_offset = np.dot(ROBOT_FOOTPRINT_CENTER_OFFSET, R)
+                blackout_region = (box_center_offset + center, (165, 290), -heading / 3.1415 * 180)
+                box = np.int0(cv2.boxPoints(blackout_region))
+                cv2.drawContours(img, [box], 0, (0, 0, 255), 2)
+                cv2.fillConvexPoly(img_grey, box, 255)
+
                 # Save the data in our global dictionary
                 robot_markers[robot_id] = [(center[0], center[1]),  # Triangle Center with origin at bottom left
-                                          (front[0], front[1])]    # Triangle Top with origin at bottom left
+                                           (front[0], front[1])]    # Triangle Top with origin at bottom left
 
+
+    # Found all robots, now let's detect balls.
+    balls = []
+    img_grey, contours, tree = cv2.findContours(img_grey, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
+    cv2.drawContours(img, contours, -1, (255, 0, 0))
+    for c in contours:
+        c, r = cv2.minEnclosingCircle(c)
+        c = tuple(map(int, c))
+        if 5 < r < 15:
+            cv2.circle(img, c, int(r), (0, 255, 255), 2)
+            balls += [c]
+
+    robot_broadcast_data['balls'] = balls
     robot_broadcast_data['markers'] = robot_markers
 
     # Calculations to save time on client side
@@ -282,8 +265,8 @@ while True:
     # logging.debug("found markers", t - time.time())
 
     # Draw a + at the middle of the screen
-    cv2.line(img, (img_width // 2 - 20, img_height // 2), (img_width // 2 + 20, img_height // 2), (0, 0, 255), 3)
-    cv2.line(img, (img_width // 2, img_height // 2 - 20), (img_width // 2, img_height // 2 + 20), (0, 0, 255), 3)
+    # cv2.line(img, (img_width // 2 - 20, img_height // 2), (img_width // 2 + 20, img_height // 2), (0, 0, 255), 3)
+    # cv2.line(img, (img_width // 2, img_height // 2 - 20), (img_width // 2, img_height // 2 + 20), (0, 0, 255), 3)
 
     # Show all calculations in the preview window
     cv2.imshow("cam", img)
@@ -291,9 +274,6 @@ while True:
 
     # Wait for the 'q' key. Dont use ctrl-c !!!
     keypress = cv2.waitKey(1) & 0xFF
-    # r = cv2.getTrackbarPos('R','image')
-    # g = cv2.getTrackbarPos('G','image')
-    # b = cv2.getTrackbarPos('B','image')
 
     if keypress == ord('q'):
         break
