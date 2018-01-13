@@ -7,7 +7,10 @@ import logging
 from hardware import DriveBase, eprint
 
 # My ID. Ultimately needs to come from elsewhere. E.g. Brick ID
-MY_ID = 3
+try:
+    from id import MY_ID
+except:
+    MY_ID = 3
 
 # Log settings
 logging.basicConfig(format='%(asctime)s, %(levelname)s, %(message)s',datefmt='%H:%M:%S',level=logging.DEBUG)

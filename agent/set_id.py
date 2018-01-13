@@ -15,7 +15,7 @@ try:
 except:
     MY_ID = 0
 
-dial.position = MY_ID * DEG_PER_ID
+dial.position = MY_ID * DEG_PER_ID - DEG_PER_ID//2
 while not btn.enter:
     p = dial.position
     id = (p % (TOTAL_IDS * DEG_PER_ID)) // DEG_PER_ID
@@ -23,7 +23,7 @@ while not btn.enter:
     screen.draw.text((70, 50), str(id), font=fonts.load('luBS24'))
     screen.update()
     # print(id)
-    time.sleep(0.1)
+    time.sleep(0.03)
 
 id_file = open("id.py", 'w')
 id_file.write("MY_ID = {0}\n".format(id))
