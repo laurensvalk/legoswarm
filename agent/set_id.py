@@ -6,11 +6,16 @@ import ev3dev.fonts as fonts
 TOTAL_IDS = 16
 DEG_PER_ID = 20
 
-dial = ev3.Motor(ev3.OUTPUT_B)
+dial = ev3.Motor(ev3.OUTPUT_C)
 screen = ev3.Screen()
 btn = ev3.Button()
 
+try:
+    from id import MY_ID
+except:
+    MY_ID = 0
 
+dial.position = MY_ID * DEG_PER_ID
 while not btn.enter:
     p = dial.position
     id = (p % (TOTAL_IDS * DEG_PER_ID)) // DEG_PER_ID
@@ -21,4 +26,4 @@ while not btn.enter:
     time.sleep(0.1)
 
 id_file = open("id.py", 'w')
-id_file.write("MY_ID = {0}".format(id))
+id_file.write("MY_ID = {0}\n".format(id))
