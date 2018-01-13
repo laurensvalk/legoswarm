@@ -57,7 +57,7 @@ class MotorThread(threading.Thread):
         global gripper
         print("Engines running!")
         while running:
-            self.base.drive_and_turn(fwd_speed, turn_rate)
+
             # Remote control:
             if gripper == STORE:
                 self.picker.target = self.picker.target_store
@@ -73,7 +73,9 @@ class MotorThread(threading.Thread):
                     gripper = STORE
             elif self.picker.state == 'store' and gripper == STORE:
                 gripper = OPEN
+
             self.picker.run()
+            self.base.drive_and_turn(fwd_speed, turn_rate)
 
             # Give the Ev3 some time to handle other threads.
             time.sleep(0.04)
@@ -81,26 +83,10 @@ class MotorThread(threading.Thread):
         self.picker.stop()
 
 
-class BallDetectorThread(threading.Thread):
-    def __init__(self):
-        self.ballsensor = hardware.BallSensor()
-        threading.Thread.__init__(self)
-
-    def run(self):
-        global gripper
-        print("Sensor on!")
-        while running:
-            if self.ballsensor.check_ball():
-                gripper = STORE
-            # Give the Sensor some time to scan
-            time.sleep(0.15)
-
 
 if __name__ == "__main__":
     motor_thread = MotorThread()
     motor_thread.start()
-    #bs_thread = BallDetectorThread()
-    #bs_thread.start()
 
     for event in gamepad.read_loop(): #this loops infinitely
         if event.type == 3: #A stick is moved
