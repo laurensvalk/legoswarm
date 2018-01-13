@@ -10,11 +10,15 @@ dial = ev3.Motor(ev3.OUTPUT_B)
 screen = ev3.Screen()
 btn = ev3.Button()
 
+
 while not btn.enter:
     p = dial.position
-    id = (p % (TOTAL_IDS * DEG_PER_ID))//TOTAL_IDS
+    id = (p % (TOTAL_IDS * DEG_PER_ID)) // DEG_PER_ID
     screen.clear()
-    screen.draw.text((60, 60), str(id), font=fonts.load('luBS24'))
+    screen.draw.text((70, 50), str(id), font=fonts.load('luBS24'))
     screen.update()
     # print(id)
-    time.sleep(0.3)
+    time.sleep(0.1)
+
+id_file = open("id.py", 'w')
+id_file.write("MY_ID = {0}".format(id))
