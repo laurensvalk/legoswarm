@@ -352,8 +352,22 @@ class AddGamePadSticks:
                     except KeyError:
                         # The button doesn't exist or has never been pressed
                         value = 0
-                    scale = gamepad_instance.settings[stick_name]['scale']
+
+                    try:
+                        scale = gamepad_instance.settings[stick_name]['scale']
+                    except KeyError:
+                        scale = (-100, 100)
+                        gamepad_instance.settings[stick_name]['scale'] = scale
+
+                    try:
+                        scale = gamepad_instance.settings[stick_name]['deadzone']
+                    except KeyError:
+                        deadzone = 5
+                        gamepad_instance.settings[stick_name]['deadzone'] = deadzone
+
                     scaled_value = self.scale(value, (255, 0), scale)
+                    if -deadzone < scaled_value < deadzone:
+                        scaled_value = 0
                     return scaled_value
                 # Return our closure as a property. It's much like using the @property decorator.
                 # It allows for looking up a button state without ()
@@ -392,12 +406,21 @@ class AddGamePadSticks:
     right_stick_y=5
 )
 class PS3GamePad:
-    MAX_SPEED = 40  # cm per s
-    MIN_SPEED = 3
-    MAX_TURNRATE = 80  # deg per s
-    MIN_TURNRATE = 4
+    """
+    PS3 Game pad class.
+    Optionallyinitialize with a settings dictionary like this one:
 
-    def __init__(self):
+    mysettings ={'right_stick_x': {'min_value': 5, 'scale': (-100,100) },
+     'right_stick_y': {'min_value': 5, 'scale': (-100, 100) },
+     'left_stick_x': {'min_value': 5, 'scale': (-100, 100) },
+     'left_stick_y': {'min_value': 5, 'scale': (-100, 100) }
+    }
+
+    Usage:
+    my_gamepad = PS3GamePad(my_settings)
+    print(my_gamepad.right_stick_x)
+    """
+    def __init__(self, settings={}):
         devices = [evdev.InputDevice(fn) for fn in evdev.list_devices()]
         for device in devices:
             if device.name == 'PLAYSTATION(R)3 Controller':
@@ -411,11 +434,8 @@ class PS3GamePad:
             print("No PS3 gamepad connected")
 
         self.states = {BUTTONS:{}, STICKS:{}}
-        self.settings = {'right_stick_x': {'min_value': 5, 'scale': (-100,100) },
-                         'right_stick_y': {'min_value': 5, 'scale': (-100, 100) },
-                         'left_stick_x': {'min_value': 5, 'scale': (-100, 100) },
-                         'left_stick_y': {'min_value': 5, 'scale': (-100, 100) }
-                         }
+        self.settings = settings
+
         self.right_stick_x_scale = (-40,40)
         self.right_stick_x_deadzone = 3
 
