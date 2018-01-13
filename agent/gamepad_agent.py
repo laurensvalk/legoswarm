@@ -11,9 +11,7 @@ MAX_SPEED = 40  # cm per s
 MIN_SPEED = 3
 MAX_TURNRATE = 80  # deg per s
 MIN_TURNRATE = 4
-OPEN = 0
-STORE = 2
-PURGE = 3
+
 
 def scale(val, src, dst):
     """
@@ -42,14 +40,13 @@ turn_rate = 0
 turn_speed = 0
 fwd_speed = 0
 triangle_pressed_time = 0
-gripper = OPEN
 running = True
+picker = hardware.Picker()
 
 
 class MotorThread(threading.Thread):
     def __init__(self):
         self.base = hardware.DriveBase()
-        self.picker = hardware.Picker()
         self.ballsensor = hardware.BallSensor()
         threading.Thread.__init__(self)
 
@@ -57,31 +54,20 @@ class MotorThread(threading.Thread):
         global gripper
         print("Engines running!")
         while running:
-
-            # Remote control:
-            if gripper == STORE:
-                self.picker.target = self.picker.target_store
-            elif gripper == OPEN:
-                self.picker.target = self.picker.target_open
-            elif gripper == PURGE:
-                self.picker.target = self.picker.target_purge
-
             # Autopicker
-            # print(self.picker.state)
-            if self.picker.state == 'open':
+            if picker.target == picker.OPEN and picker.is_at_target:
                 if self.ballsensor.check_ball():
-                    gripper = STORE
-            elif self.picker.state == 'store' and gripper == STORE:
-                gripper = OPEN
+                    gripper.target = picker.CLOSED
+            elif picker.target == picker.STORE and picker.is_at_target:
+                picker.target = picker.OPEN
 
-            self.picker.run()
+            picker.run()
             self.base.drive_and_turn(fwd_speed, turn_rate)
 
             # Give the Ev3 some time to handle other threads.
             time.sleep(0.04)
         self.base.stop()
-        self.picker.stop()
-
+        picker.stop()
 
 
 if __name__ == "__main__":
@@ -112,13 +98,13 @@ if __name__ == "__main__":
             elif event.code == 302:
                 if event.value == 1:
                     print("X button is pressed. Eating.")
-                    gripper = STORE
+                    picker.target = picker.STORE
                 if event.value == 0:
-                    gripper = OPEN
+                    picker.target = picker.OPEN
             elif event.code == 301:
                 if event.value == 1:
                     print("O button is pressed. Purging.")
-                    gripper = PURGE
+                    picker.target = picker.PURGE
                 if event.value == 0:
-                    gripper = OPEN
+                    picker.target = picker.OPEN
 

@@ -1,6 +1,5 @@
 import ev3dev.auto as ev3
 import time
-# from PIL import Image, ImageDraw, ImageFont
 import ev3dev.fonts as fonts
 
 TOTAL_IDS = 16

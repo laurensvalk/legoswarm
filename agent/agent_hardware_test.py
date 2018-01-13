@@ -15,9 +15,9 @@ if IR_REMOTE:
         'RIGHT_UP': (0, -40, None),
         'BOTH_UP': (6, 0, None),
         'BOTH_DOWN': (-6, 0, None),
-        'LEFT_DOWN': (None, None, Picker.target_store),
-        'RIGHT_DOWN': (None, None, Picker.target_open),
-        'BEACON': (None, None, Picker.target_purge)
+        'LEFT_DOWN': (None, None, Picker.STORE),
+        'RIGHT_DOWN': (None, None, Picker.OPEN),
+        'BEACON': (None, None, Picker.PURGE)
     }
     # Make unused buttons the same as no buttons case
     actions = defaultdict(lambda: actions['NONE'], actions)

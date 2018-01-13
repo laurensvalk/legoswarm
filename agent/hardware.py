@@ -10,10 +10,6 @@ def running_on_ev3():
     # Return True if 'ev3' occurs in the platform string
     return 'ev3' in platform.platform()
 
-# Import ev3dev only if we're running on the EV3
-# if running_on_ev3():
-#     import ev3dev.ev3 as ev3
-
 
 # Debug print
 def eprint(*args, **kwargs):
@@ -23,8 +19,9 @@ def eprint(*args, **kwargs):
 def limit(speed, max_speed=650):
     return max(min(max_speed, speed), -max_speed)
 
+
 def is_within_tolerance(value, target, tolerance=0):
-    return target - tolerance < value < target + tolerance
+    return target - abs(tolerance) < value < target + abs(tolerance)
 
 
 def run_to_abs_pos(motor, target, max_speed=650, tolerance=3, speed_p=3, hold=0):
@@ -126,13 +123,12 @@ class Picker:
     motor_deg_per_picker_deg = -3
 
     # Target positions for the gripper (degrees). 0 corresponds to the gripper all the way open
-    target_open = 40 * motor_deg_per_picker_deg
-    target_closed = target_open + 90 * motor_deg_per_picker_deg
-    target_store = target_closed + 135 * motor_deg_per_picker_deg
-    target_purge = target_store + 45 * motor_deg_per_picker_deg
+    OPEN = 40 * motor_deg_per_picker_deg
+    CLOSED = OPEN + 90 * motor_deg_per_picker_deg
+    STORE = CLOSED + 135 * motor_deg_per_picker_deg
+    PURGE = STORE + 45 * motor_deg_per_picker_deg
 
     # Speed and tolerance parameters
-    abs_speed = 400
     tolerance = 4 * abs(motor_deg_per_picker_deg)
 
     def __init__(self, port=ev3.OUTPUT_A, p=2.8):
@@ -140,20 +136,17 @@ class Picker:
         # Check if we're running on the EV3
         self.running_on_ev3 = running_on_ev3()
 
-        self.target = self.target_open
+        self.target = self.OPEN
         self.p = p
 
         # If running on the EV3, perform a reset routine
         if self.running_on_ev3:
             self.pickermotor = EZMotor(port)
             self.pick_at_rate(-40)
-            # time.sleep(0.5)
-            #
-            # while self.get_picking_rate() < -10:
-            #     time.sleep(0.02)
             self.pickermotor.wait_until('stalled')
             self.pickermotor.stop()
             self.pickermotor.position = 0
+            self.error = 0
 
     def pick_at_rate(self, rate):
         """Set the picker reference speed"""
@@ -168,21 +161,12 @@ class Picker:
         return self.pickermotor.position
 
     @property
-    def state(self):
-        pos = self.pickermotor.position
-
-        if is_within_tolerance(pos, self.target_open, self.tolerance):
-            return 'open'
-        elif is_within_tolerance(pos, self.target_purge, self.tolerance):
-            return 'purge'
-        elif is_within_tolerance(pos, self.target_store, self.tolerance):
-            return 'store'
-        else:
-            return 'running'
+    def is_at_target(self):
+        return is_within_tolerance(self.error, 0, self.tolerance)
 
     def run(self):
-        error = self.target - self.pickermotor.position
-        speed = error * self.p
+        self.error = self.target - self.pickermotor.position
+        speed = self.error * self.p
         self.pickermotor.set_speed(speed)
 
     def stop(self):
@@ -193,20 +177,20 @@ class Picker:
         """Steer Picker mechanism to desired target"""
         # If running on the EV3, steer picker to the desired target
         self.pickermotor.go_to(reference,  # Reference position
-                                   500,  # Speed to get there
-                                   abs(self.tolerance))# Allowed tolerance
+                               500,  # Speed to get there
+                               self.tolerance)# Allowed tolerance
 
     def open(self):
-        self.go_to(self.target_open)
+        self.go_to(self.OPEN)
 
     def close(self):
-        self.go_to(self.target_closed)
+        self.go_to(self.CLOSED)
 
     def store(self):
-        self.go_to(self.target_store)
+        self.go_to(self.STORE)
 
     def purge(self):
-        self.go_to(self.target_purge)
+        self.go_to(self.PURGE)
 
 
 class DriveBase:
