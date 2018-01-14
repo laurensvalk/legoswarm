@@ -326,7 +326,7 @@ class PS3GamePad(Thread):
         self.states = {0:{}, self.BUTTONS:{}, 2:{}, self.STICKS:{}, 4:{}}
         self.settings = settings
 
-        self.running=True
+        self.running = True
         self.start()
         print("done initializing gamepad")
 
@@ -373,7 +373,7 @@ class PS3GamePad(Thread):
 
     def run(self):
         for event in self.gamepad.read_loop():  # this loops infinitely
-            print("Event: event type {0}, even code {1}, event value {2}".format(event.type, event.code, result))
+            print("Event: event type {0}, even code {1}, event value {2}".format(event.type, event.code, event.value))
             if event.type == self.BUTTONS:
                 if event.value == self.DOWN:
                     result = self.PRESSED
