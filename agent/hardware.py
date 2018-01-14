@@ -365,11 +365,10 @@ class AddGamePadSticks:
                     except KeyError:
                         deadzone = 5
                         gamepad_instance.settings[stick_name]['deadzone'] = deadzone
-
+                    print("Returned stick value {0}, {1}, {2}".format(scale, value, deadzone))
                     scaled_value = self.scale(value, (255, 0), scale)
                     if -deadzone < scaled_value < deadzone:
                         scaled_value = 0
-                    print("Returned stick value")
                     return scaled_value
                 # Return our closure as a property. It's much like using the @property decorator.
                 # It allows for looking up a button state without ()
