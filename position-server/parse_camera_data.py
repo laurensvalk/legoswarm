@@ -1,6 +1,27 @@
 import numpy as np
 from robot_frames import transform_to_world_from_camera, transform_to_world_from_bot
 
+def bounding_box(settings, midbase_marker, apex_marker):
+    """Convert marker midbase and apex pixel location into bounding box, in pixels"""
+    
+    # Get transformation matrix from pixels to world frame
+    H_to_world_from_camera = transform_to_world_from_camera(settings)    
+    H_to_camera_from_world = H_to_world_from_camera.inverse()
+
+    # Obtain transformation matrix between the robot and the world, for this robot
+    H_to_world_from_bot = transform_to_world_from_bot(settings, 
+                                                      H_to_world_from_camera*midbase_marker, # Midbase marker in world
+                                                      H_to_world_from_camera*apex_marker) # Apex marker in world
+
+    # Matrix of bounding box locations, in the robot frame
+    bounding_box_in_robot = np.array(settings['bounding_box_cm']).T
+    # Matrix of bounding box locations, in the world frame
+    bounding_box_in_world = H_to_world_from_bot*bounding_box_in_robot
+    # Matrix of bounding box locations, in camera pixels
+    bounding_box_in_camera = H_to_camera_from_world*bounding_box_in_world
+    # Revert the indexing so this can be seen as a list of coordinates
+    return (bounding_box_in_camera.T).astype(int)
+
 def preparse_robot_data(markers, balls, settings):
 
     # Initialize empty dictionary which we'll return
@@ -9,28 +30,20 @@ def preparse_robot_data(markers, balls, settings):
     # Determine who's who
     agents = markers.keys()
 
-    # Empty dictionary of transformations from each robot to the world
-    H_to_world_from_bot = {}
+    # Get transformation matrix from pixels to world frame
+    H_to_world_from_camera = transform_to_world_from_camera(settings)    
 
-    # For every robot in the dataset, including me, determine position and orientation
-    for i, [midbase_marker, apex_marker] in markers.items():
-        # Get transformation matrix from pixels to world frame
-        H_to_world_from_camera = transform_to_world_from_camera(settings)
+    # Obtain transformation matrix between the robot and the world, for each robot
+    H_to_world_from_bot = {i: transform_to_world_from_bot(settings, 
+                                                          H_to_world_from_camera*midbase_marker, # Midbase marker in world
+                                                          H_to_world_from_camera*apex_marker) # Apex marker in world
+                            for i, [midbase_marker, apex_marker] in markers.items()}
 
-        # Transform marker locations to world coordinates
-        p_world_midbase_marker = H_to_world_from_camera*midbase_marker
-        p_world_apex_marker = H_to_world_from_camera*apex_marker
-
-        # Obtain transformation matrix between the robot and the world
-        H_to_world_from_bot[i] = transform_to_world_from_bot(settings, p_world_midbase_marker, p_world_apex_marker)
-
-
-    neighborgrippers = {}
+    # Empty dictionary of dictionaries of neighbor gripper locations
+    neighborgrippers = {i: {} for i in agents}
 
     # Do the following computations for all agents, using the previously computed frame conversions
     for me in agents:
-
-        neighborgrippers[me] = {}
 
         # List of everyone except me
         other_agents = [i for i in agents if me != i]
@@ -56,5 +69,4 @@ def preparse_robot_data(markers, balls, settings):
 
 
     localdata['neighborgrippers'] = neighborgrippers
-    print(neighborgrippers[1])
     return localdata

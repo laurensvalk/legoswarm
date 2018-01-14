@@ -17,9 +17,10 @@ def transform_to_world_from_camera(settings):
     H_to_centered_from_flipped = Transformation(rotation, translation)
 
     # Scale to centimeters
-    rotation = array([[settings['cm_per_px'], 0],[0, settings['cm_per_px']]]) # No rotation, but matrix plays role of scaling
+    rotation = identity(2) # No rotation
     translation = array([0,0]) # No translation 
-    H_to_world_from_centered = Transformation(rotation, translation)
+    scaling = settings['cm_per_px']
+    H_to_world_from_centered = Transformation(rotation, translation, scaling)
 
     # Return the composite transformation
     return H_to_world_from_centered@H_to_centered_from_flipped@H_to_flipped_from_camera

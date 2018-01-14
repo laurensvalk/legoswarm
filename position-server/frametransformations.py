@@ -1,4 +1,8 @@
-from numpy import ndarray, array, append, zeros
+# -----------------------------------------------------------------------------
+# Copyright (c) 2017 Laurens Valk <laurensvalk@gmail.com>
+# -----------------------------------------------------------------------------
+
+from numpy import ndarray, array, append, zeros, ones
 from numpy.linalg import det
 
 ROW, COL = 0, 1
@@ -71,26 +75,55 @@ class Transformation:
             self.translation = array(translation)
             self.scaling = scaling
             self.matrix = Transformation.make_matrix(rotation, translation, scaling)
-            self.inverse_matrix = Transformation.make_inverse_matrix(rotation, translation, scaling)
         else:
             # Extract rotation, translation, and scaling from matrix supplied as argument, and store them
             self.rotation, self.translation, self.scaling = self.dissect_matrix(matrix)    
             self.matrix = matrix
         
         # For either type of constructor, precompute the inverse
-        self.inverse_matrix = Transformation.make_inverse_matrix(self.rotation, self.translation) 
+        self.inverse_matrix = Transformation.make_inverse_matrix(self.rotation, self.translation, scaling) 
 
     def inverse(self):
         """Return a new transformation object, whose matrix is the inverse of this one"""
         return Transformation(matrix=self.inverse_matrix)          
 
-    def __mul__(self, point):
-        """Transform point to different frame: new = H@old"""
-        # Append 1 to facilitate transformation.
-        point_appended = append(array(point), 1)
-        transformed_point_appended = self.matrix@point_appended
-        # Return the result, without the appended 1
-        return transformed_point_appended[0:self.dimension]        
+    def __mul__(self, points):
+        """Transform points to different frame: output_points = H@input_points
+
+        Output has same dimension as input:
+            - input_points may be a 1D array representing a vector.
+            - input_points may be a 2D column array representing a vector.   
+            - input_points may be multiple horizontally concanated vectors        
+        """
+
+        # Cast input to array in case a plain list of tuple is used as argument
+        points = array(points)
+
+        # Input shape tuple
+        input_shape = points.shape
+
+        # Determine if input is a single array or a matrix of multiple arrays
+        if len(input_shape) == 1 or 1 in input_shape:
+            # The input is a 1D array, or 2D array representing a column vector
+            # So append a 1, and convert it to an explicit column vector
+            number_of_points = 1
+            appended_points = Transformation.column_vector(append(points,1))
+        else:
+            # The input is a matrix of multiple horizontally concatenated column vectors
+            assert input_shape[ROW] == self.dimension, "Dimension error"
+            number_of_points = input_shape[COL]
+            bottom_row = ones((1, number_of_points))
+            appended_points = append(points, bottom_row, axis=ROW)
+
+        # Do the matrix multiplications, giving the transformed
+        # coordinates, still with the 1 appended
+        transformed_points_appended = self.matrix@appended_points
+
+        # Obtain the result, without the appended 1
+        transformed_points = transformed_points_appended[0:self.dimension][:] 
+
+        # Return the result in the same shape as the input argument
+        return transformed_points.reshape(input_shape)
 
     def __matmul__(self, right): 
         """Create composite transformation from two transformations (self@right)"""   
