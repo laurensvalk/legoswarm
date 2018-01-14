@@ -5,12 +5,6 @@ __author__ = 'anton'
 import hardware
 import time
 
-MAX_SPEED = 40  # cm per s
-MIN_SPEED = 3
-MAX_TURNRATE = 80  # deg per s
-MIN_TURNRATE = 4
-
-
 turn_rate = 0
 turn_speed = 0
 fwd_speed = 0

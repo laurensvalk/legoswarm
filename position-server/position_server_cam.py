@@ -27,13 +27,16 @@ MIN_BALL_RADIUS_PX = 5
 MAX_BALL_RADIUS_PX = 16
 PLAYFIELD_COORDS = True
 ROBOT_FOOTPRINT_CENTER_OFFSET = np.array([60, -30])
+FILE = "test.jpg" # 1920 x 1080 afbeelding. png mag ook.
 
 ### Initialize ###
+
 # Camera
 cv2.namedWindow("cam", cv2.WINDOW_OPENGL)
-cap = cv2.VideoCapture(0)
-cap.set(3, WIDTH)
-cap.set(4, HEIGHT)
+if not FILE:
+    cap = cv2.VideoCapture(0)
+    cap.set(3, WIDTH)
+    cap.set(4, HEIGHT)
 
 
 
@@ -122,9 +125,12 @@ socket_server.start()
 
 while True:
     # time.sleep(2)
-    ok, img = cap.read()
-    if not ok:
-        continue    #and try again.
+    if not FILE:
+        ok, img = cap.read()
+        if not ok:
+            continue    #and try again.
+    else:
+        img = cv2.imread(FILE)
     img = np.array(img[50:1000, 0:1850])
     img_height, img_width = img.shape[:2]
 
