@@ -56,4 +56,5 @@ def preparse_robot_data(markers, balls, settings):
 
 
     localdata['neighborgrippers'] = neighborgrippers
+    print(neighborgrippers[1])
     return localdata
