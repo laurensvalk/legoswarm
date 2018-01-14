@@ -341,7 +341,7 @@ class PS3GamePad(Thread):
         except KeyError:
             # The button doesn't exist or has never been pressed
             state = 0
-        print("Called for state of {0} with value {1}".format(code, state))
+        # print("Called for state of {0} with value {1}".format(code, state))
         return state
 
     def get_stick_value(self, code, stick_name):
@@ -373,7 +373,7 @@ class PS3GamePad(Thread):
 
     def run(self):
         for event in self.gamepad.read_loop():  # this loops infinitely
-            print("Event: event type {0}, even code {1}, event value {2}".format(event.type, event.code, event.value))
+            # print("Event: event type {0}, even code {1}, event value {2}".format(event.type, event.code, event.value))
             if event.type == self.BUTTONS:
                 if event.value == self.DOWN:
                     result = self.PRESSED
@@ -401,8 +401,8 @@ class PS3GamePad(Thread):
 
     @property
     def left_stick_x(self):
-        return 0
+        return self.get_stick_value(2, "left_stick_x")
 
     @property
     def left_stick_y(self):
-        return 0
+        return self.get_stick_value(5, "left_stick_y")
