@@ -337,7 +337,7 @@ class PS3GamePad(Thread):
             value = self.states[self.STICKS][code]
         except KeyError:
             # The stick doesn't exist or has never been used
-            value = 0
+            value = 127
 
         try:
             scale = self.settings[stick_name]['scale']
@@ -379,6 +379,54 @@ class PS3GamePad(Thread):
         self.running = False
 
     @property
+    def back_btn(self):
+        return self.get_button_state(288)
+
+    @property
+    def start_btn(self):
+        return self.get_button_state(291)
+
+    @property
+    def up_btn(self):
+        return self.get_button_state(292)
+
+    @property
+    def right_btn(self):
+        return self.get_button_state(293)
+
+    @property
+    def down_btn(self):
+        return self.get_button_state(294)
+
+    @property
+    def left_btn(self):
+        return self.get_button_state(295)
+
+    @property
+    def l2_btn(self):
+        return self.get_button_state(296)
+
+    @property
+    def r2_btn(self):
+        return self.get_button_state(297)
+
+    @property
+    def l1_btn(self):
+        return self.get_button_state(298)
+
+    @property
+    def r1_btn(self):
+        return self.get_button_state(299)
+
+    @property
+    def triangle_btn(self):
+        return self.get_button_state(300)
+
+    @property
+    def circle_btn(self):
+        return self.get_button_state(301)
+
+    @property
     def cross_btn(self):
         return self.get_button_state(302)
 
@@ -387,12 +435,20 @@ class PS3GamePad(Thread):
         return self.get_button_state(303)
 
     @property
+    def right_stick_x(self):
+        return self.get_stick_value(2, "right_stick_x")
+
+    @property
+    def right_stick_y(self):
+        return self.get_stick_value(5, "right_stick_y")
+
+    @property
     def left_stick_x(self):
-        return self.get_stick_value(2, "left_stick_x")
+        return self.get_stick_value(0, "left_stick_x")
 
     @property
     def left_stick_y(self):
-        return self.get_stick_value(5, "left_stick_y")
+        return self.get_stick_value(1, "left_stick_y")
 
     @staticmethod
     def scale(val, src, dst):
