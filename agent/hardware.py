@@ -361,7 +361,7 @@ class AddGamePadSticks:
                         gamepad_instance.settings[stick_name]['scale'] = scale
 
                     try:
-                        scale = gamepad_instance.settings[stick_name]['deadzone']
+                        deadzone = gamepad_instance.settings[stick_name]['deadzone']
                     except KeyError:
                         deadzone = 5
                         gamepad_instance.settings[stick_name]['deadzone'] = deadzone
