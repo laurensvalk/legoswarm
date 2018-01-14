@@ -436,12 +436,12 @@ class PS3GamePad:
 
         self.running=True
 
-        event_thread = Thread(target=self.event_thread())
-        event_thread.setDaemon(True)
-        event_thread.start()
+        self.event_thread = Thread(target=self.event_loop())
+        self.event_thread.setDaemon(True)
+        self.event_thread.start()
         print("done initializing gamepad")
 
-    def event_thread(self):
+    def event_loop(self):
         for event in self.gamepad.read_loop():  # this loops infinitely
             try:
                 self.states[event.type][event.code] = event.value
