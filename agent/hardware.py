@@ -433,7 +433,7 @@ class PS3GamePad:
             self.gamepad = GamePadStub()
             print("No PS3 gamepad connected")
 
-        self.states = {BUTTONS:{}, STICKS:{}}
+        self.states = {0:{}, BUTTONS:{}, 2:{}, STICKS:{}}
         self.settings = settings
 
         self.right_stick_x_scale = (-40,40)
@@ -444,8 +444,10 @@ class PS3GamePad:
 
     def event_thread(self):
         for event in self.gamepad.read_loop():  # this loops infinitely
-            self.states[event.type][event.code] = event.value
-
+            try:
+                self.states[event.type][event.code] = event.value
+            except KeyError:
+                print("Keyerror: event type {0}, even code {1}, event value {2}".format(event.type,event.code,event.value))
             # if event.type == 3:  # A stick is moved
             #
             #     if event.code == 2:  # X axis on right stick
