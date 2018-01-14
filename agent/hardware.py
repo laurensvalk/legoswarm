@@ -434,8 +434,12 @@ class PS3GamePad:
         self.right_stick_x_scale = (-40,40)
         self.right_stick_x_deadzone = 3
 
+        self.running=True
+
         event_thread = Thread(target=self.event_thread())
+        event_thread.setDaemon(True)
         event_thread.start()
+        print("done initializing gamepad")
 
     def event_thread(self):
         for event in self.gamepad.read_loop():  # this loops infinitely
@@ -443,35 +447,7 @@ class PS3GamePad:
                 self.states[event.type][event.code] = event.value
             except KeyError:
                 print("Keyerror: event type {0}, even code {1}, event value {2}".format(event.type,event.code,event.value))
-            # if event.type == 3:  # A stick is moved
-            #
-            #     if event.code == 2:  # X axis on right stick
-            #         turn_rate = scale(event.value, (255, 0), (-MAX_TURNRATE, MAX_TURNRATE))
-            #         if -MIN_TURNRATE < turn_rate < MIN_TURNRATE: turn_rate = 0
-            #
-            #     if event.code == 5:  # Y axis on right stick
-            #         fwd_speed = scale(event.value, (255, 0), (-MAX_SPEED, MAX_SPEED))
-            #         if -MIN_SPEED < fwd_speed < MIN_SPEED: fwd_speed = 0
-            #
-            # if event.type == 1:
-            #     if event.code == 300:
-            #         if event.value == 1:
-            #             triangle_pressed_time = time.time()
-            #         if event.value == 0 and time.time() > triangle_pressed_time + 1:
-            #             print("Triangle button is pressed. Break.")
-            #             running = False
-            #             time.sleep(0.5)  # Wait for the motor thread to finish
-            #             break
-            #     elif event.code == 302:
-            #         if event.value == 1:
-            #             print("X button is pressed. Eating.")
-            #             picker.target = picker.STORE
-            #         if event.value == 0:
-            #             picker.target = picker.OPEN
-            #     elif event.code == 301:
-            #         if event.value == 1:
-            #             print("O button is pressed. Purging.")
-            #             picker.target = picker.PURGE
-            #         if event.value == 0:
-            #             picker.target = picker.OPEN
+            if not self.running: break
 
+    def __del__(self):
+        self.running = False
