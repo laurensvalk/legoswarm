@@ -288,8 +288,6 @@ class AddGamePadButtons:
         """
         This function runs whenever an instance of the decorated gamepad class is called.
         """
-        # key_const = {}
-
         # Let's through all button names and codes passed during initialisation within the decorator
         for key_name, key_code in self.kwargs.items():
             # Define a closure.
@@ -312,10 +310,12 @@ class AddGamePadButtons:
                     return state
                 # Return our closure as a property. It's much like using the @property decorator.
                 # It allows for looking up a button state without ()
+                print("Returned get_state")
                 return property(get_state)
 
             # Finish op by adding the attribute to the decorated class.
             setattr(gamepad_class, key_name, attach_key(key_code))
+            print("Set attr {0}, {1}, {2}".format(gamepad_class, key_name, attach_key(key_code)))
             # key_const[key_name.upper()] = key_code
 
         # We're done. Return the class as well behaved __call__ function does.
