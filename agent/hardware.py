@@ -308,6 +308,7 @@ class AddGamePadButtons:
                     except KeyError:
                         # The button doesn't exist or has never been pressed
                         state = 0
+                    print("Called for state of {0} with value {1}".format(key_name, state))
                     return state
                 # Return our closure as a property. It's much like using the @property decorator.
                 # It allows for looking up a button state without ()
@@ -399,12 +400,6 @@ class AddGamePadSticks:
     cross=302,
     square=303
 )
-@AddGamePadSticks(
-    left_stick_x=1, #????
-    left_stick_y=3, #????
-    right_stick_x=2,
-    right_stick_y=5
-)
 class PS3GamePad:
     """
     PS3 Game pad class.
@@ -433,7 +428,7 @@ class PS3GamePad:
             self.gamepad = GamePadStub()
             print("No PS3 gamepad connected")
 
-        self.states = {0:{}, BUTTONS:{}, 2:{}, STICKS:{}}
+        self.states = {0:{}, BUTTONS:{}, 2:{}, STICKS:{}, 4:{}}
         self.settings = settings
 
         self.right_stick_x_scale = (-40,40)
