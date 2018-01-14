@@ -267,119 +267,11 @@ class IRRemoteControl:
 
 ## Gamepad ##
 
-BUTTONS = 1
-STICKS = 3
-
 class GamePadStub:
     @staticmethod
     def read_loop():
         return []
 
-
-class AddGamePadButtons:
-    """
-    Decorator class to add buttons to the gamepad class
-    """
-
-    def __init__(self, **kwargs):
-        self.kwargs = kwargs
-
-    def __call__(self, gamepad_class):
-        """
-        This function runs whenever an instance of the decorated gamepad class is called.
-        """
-        # Let's through all button names and codes passed during initialisation within the decorator
-        for key_name, key_code in self.kwargs.items():
-            # Define a closure.
-            # i.e. a function that has access to self, key_name and key_code from the **kwargs dictionary
-
-            def attach_key(code):
-                """
-                Anothor closure. Returns the state of the button at code as a class property.
-                :param code: code for which to return the property
-                :return:
-                """
-                def get_state(self):
-                    try:
-                        # Try to look up the keycode in our dictionary of key states
-                        state = self.states[BUTTONS][code]
-                    except KeyError:
-                        # The button doesn't exist or has never been pressed
-                        state = 0
-                    print("Called for state of {0} with value {1}".format(key_name, state))
-                    return state
-                # Return our closure as a property. It's much like using the @property decorator.
-                # It allows for looking up a button state without ()
-                print("Returned get_state")
-                return property(get_state)
-
-            # Finish op by adding the attribute to the decorated class.
-            setattr(gamepad_class, key_name, attach_key(key_code))
-            print("Set attr {0}, {1}, {2}".format(gamepad_class, key_name, attach_key(key_code)))
-            # key_const[key_name.upper()] = key_code
-
-        # We're done. Return the class as well behaved __call__ function does.
-        return gamepad_class
-
-class AddGamePadSticks:
-    """
-    Decorator class to add buttons to the gamepad class
-    """
-
-    def __init__(self, **kwargs):
-        self.kwargs = kwargs
-
-    def __call__(self, gamepad_class):
-        """
-        This function runs whenever an instance of the decorated gamepad class is called.
-        """
-        # key_const = {}
-
-        # Let's through all button names and codes passed during initialisation within the decorator
-        for stick_name, stick_code in self.kwargs.items():
-            # Define a closure.
-            # i.e. a function that has access to self, key_name and key_code from the **kwargs dictionary
-
-            def attach_stick(code):
-                """
-                Anothor closure. Returns the state of the button at code as a class property.
-                :param code: code for which to return the property
-                :return:
-                """
-                def get_value(gamepad_instance):
-                    try:
-                        # Try to look up the keycode in our dictionary of key states
-                        value = gamepad_instance.states[STICKS][code]
-                    except KeyError:
-                        # The button doesn't exist or has never been pressed
-                        value = 0
-
-                    try:
-                        scale = gamepad_instance.settings[stick_name]['scale']
-                    except KeyError:
-                        scale = (-100, 100)
-                        gamepad_instance.settings[stick_name]['scale'] = scale
-
-                    try:
-                        deadzone = gamepad_instance.settings[stick_name]['deadzone']
-                    except KeyError:
-                        deadzone = 5
-                        gamepad_instance.settings[stick_name]['deadzone'] = deadzone
-                    print("Returned stick value {0}, {1}, {2}".format(scale, value, deadzone))
-                    scaled_value = self.scale(value, (255, 0), scale)
-                    if -deadzone < scaled_value < deadzone:
-                        scaled_value = 0
-                    return scaled_value
-                # Return our closure as a property. It's much like using the @property decorator.
-                # It allows for looking up a button state without ()
-                return property(get_value)
-
-            # Finish op by adding the attribute to the decorated class.
-            setattr(gamepad_class, stick_name, attach_stick(stick_code))
-            # key_const[key_name.upper()] = key_code
-
-        # We're done. Return the class as a well behaved __call__ function does.
-        return gamepad_class
 
     @staticmethod
     def scale(val, src, dst):
@@ -394,16 +286,6 @@ class AddGamePadSticks:
         """
         return (float(val - src[0]) / (src[1] - src[0])) * (dst[1] - dst[0]) + dst[0]
 
-@AddGamePadButtons(
-    triangle=300,
-    circle=301,
-    cross=302,
-    square=303
-)
-@AddGamePadSticks(
-    left_stick_x=2,
-    left_stick_y=5
-)
 class PS3GamePad(Thread):
     """
     PS3 Game pad class.
@@ -419,6 +301,14 @@ class PS3GamePad(Thread):
     my_gamepad = PS3GamePad(my_settings)
     print(my_gamepad.right_stick_x)
     """
+
+    UP = 0
+    DOWN = 1
+    PRESSED = 2
+    RELEASED = 3
+    BUTTONS = 1
+    STICKS = 3
+
     def __init__(self, settings={}):
         Thread.__init__(self)
         devices = [evdev.InputDevice(fn) for fn in evdev.list_devices()]
@@ -433,24 +323,85 @@ class PS3GamePad(Thread):
             self.gamepad = GamePadStub()
             print("No PS3 gamepad connected")
 
-        self.states = {0:{}, BUTTONS:{}, 2:{}, STICKS:{}, 4:{}}
+        self.states = {0:{}, self.BUTTONS:{}, 2:{}, self.STICKS:{}, 4:{}}
         self.settings = settings
-
-        self.right_stick_x_scale = (-40,40)
-        self.right_stick_x_deadzone = 3
 
         self.running=True
         self.start()
         print("done initializing gamepad")
 
+    def get_button_state(self, code):
+        try:
+            # Try to look up the keycode in our dictionary of key states
+            state = self.states[self.BUTTONS][code]
+            if state == self.PRESSED:
+                self.states[self.BUTTONS][code] = self.DOWN
+            elif state == self.RELEASED:
+                self.states[self.BUTTONS][code] = self.UP
+        except KeyError:
+            # The button doesn't exist or has never been pressed
+            state = 0
+        print("Called for state of {0} with value {1}".format(code, state))
+        return state
+
+    def get_stick_value(self, code, stick_name):
+        try:
+            # Try to look up the stick code in our dictionary of  states
+            value = self.states[self.STICKS][code]
+        except KeyError:
+            # The stick doesn't exist or has never been used
+            value = 0
+
+        try:
+            scale = self.settings[stick_name]['scale']
+        except KeyError:
+            scale = (-100, 100)
+            self.settings[stick_name]['scale'] = scale
+
+        try:
+            deadzone = self.settings[stick_name]['deadzone']
+        except KeyError:
+            deadzone = 5
+
+            self.settings[stick_name]['deadzone'] = deadzone
+
+        print("Returned stick value {0}, {1}, {2}".format(scale, value, deadzone))
+        scaled_value = self.scale(value, (255, 0), scale)
+        if -deadzone < scaled_value < deadzone:
+            scaled_value = 0
+        return scaled_value
+
     def run(self):
         for event in self.gamepad.read_loop():  # this loops infinitely
+            if event.type == self.BUTTONS:
+                if event.value == self.DOWN:
+                    result = self.PRESSED
+                elif event.value == self.UP:
+                    result = self.RELEASED
+            else:
+                result = event.value
             try:
-                self.states[event.type][event.code] = event.value
+                self.states[event.type][event.code] = result
             except KeyError:
-                print("Keyerror: event type {0}, even code {1}, event value {2}".format(event.type,event.code,event.value))
+                print("Keyerror: event type {0}, even code {1}, event value {2}".format(event.type,event.code,result))
             if not self.running:
                 break
 
     def __del__(self):
         self.running = False
+
+    @property
+    def cross_btn(self):
+        return self.get_button_state(302)
+
+    @property
+    def square_btn(self):
+        return self.get_button_state(303)
+
+    @property
+    def left_stick_x(self):
+        return 0
+
+    @property
+    def left_stick_y(self):
+        return 0
