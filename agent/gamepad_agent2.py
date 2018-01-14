@@ -33,10 +33,12 @@ while True:
 
     # Gamepad
     fwd_speed = gamepad.left_stick_y
+    print(fwd_speed)
     turn_rate = gamepad.left_stick_x
+    print(turn_rate)
     if gamepad.cross:
         picker.target = picker.STORE
-
+    print(gamepad.square)
     picker.run()
     base.drive_and_turn(fwd_speed, turn_rate)
 
