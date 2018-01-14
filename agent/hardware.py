@@ -400,7 +400,7 @@ class AddGamePadSticks:
     cross=302,
     square=303
 )
-class PS3GamePad:
+class PS3GamePad(Thread):
     """
     PS3 Game pad class.
     Optionallyinitialize with a settings dictionary like this one:
@@ -416,6 +416,7 @@ class PS3GamePad:
     print(my_gamepad.right_stick_x)
     """
     def __init__(self, settings={}):
+        Thread.__init__(self)
         devices = [evdev.InputDevice(fn) for fn in evdev.list_devices()]
         for device in devices:
             if device.name == 'PLAYSTATION(R)3 Controller':
@@ -435,19 +436,17 @@ class PS3GamePad:
         self.right_stick_x_deadzone = 3
 
         self.running=True
-
-        self.event_thread = Thread(target=self.event_loop())
-        self.event_thread.setDaemon(True)
-        self.event_thread.start()
+        self.start()
         print("done initializing gamepad")
 
-    def event_loop(self):
+    def run(self):
         for event in self.gamepad.read_loop():  # this loops infinitely
             try:
                 self.states[event.type][event.code] = event.value
             except KeyError:
                 print("Keyerror: event type {0}, even code {1}, event value {2}".format(event.type,event.code,event.value))
-            if not self.running: break
+            if not self.running:
+                break
 
     def __del__(self):
         self.running = False
