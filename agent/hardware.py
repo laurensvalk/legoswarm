@@ -270,21 +270,8 @@ class IRRemoteControl:
 class GamePadStub:
     @staticmethod
     def read_loop():
+        time.sleep(0.2)
         return []
-
-
-    @staticmethod
-    def scale(val, src, dst):
-        """
-        Scale the given value from the scale of src to the scale of dst.
-
-        val: float or int
-        src: tuple
-        dst: tuple
-
-        example: print scale(99, (0.0, 99.0), (-1.0, +1.0))
-        """
-        return (float(val - src[0]) / (src[1] - src[0])) * (dst[1] - dst[0]) + dst[0]
 
 class PS3GamePad(Thread):
     """
@@ -406,3 +393,16 @@ class PS3GamePad(Thread):
     @property
     def left_stick_y(self):
         return self.get_stick_value(5, "left_stick_y")
+
+    @staticmethod
+    def scale(val, src, dst):
+        """
+        Scale the given value from the scale of src to the scale of dst.
+
+        val: float or int
+        src: tuple
+        dst: tuple
+
+        example: print scale(99, (0.0, 99.0), (-1.0, +1.0))
+        """
+        return (float(val - src[0]) / (src[1] - src[0])) * (dst[1] - dst[0]) + dst[0]
