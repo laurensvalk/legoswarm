@@ -1,4 +1,5 @@
 from numpy import ndarray, array, append, zeros
+from numpy.linalg import det
 
 ROW, COL = 0, 1
 
@@ -24,49 +25,60 @@ class Transformation:
         return array(vector).reshape((1,-1))    
 
     @staticmethod
-    def make_matrix(rotation, translation):
+    def make_matrix(rotation, translation, scaling=1):
         """Homogeneous transformation matrix"""
         # Cast translation into column vector if not already the case
         translation_col = Transformation.column_vector(translation)
         # Compose a transformation matrix as follows:
-        # |  Rotation   translation  |
-        # |  0      0      1         |
-        return append(append(rotation, translation_col, axis=COL),
+        # |  scaling*Rotation   scaling*translation  |
+        # |  0                  1                    |
+        return append(append(scaling*rotation, scaling*translation_col, axis=COL),
                       Transformation.__bottom_row, axis=ROW)        
 
     @staticmethod
-    def make_inverse_matrix(rotation, translation):
+    def make_inverse_matrix(rotation, translation, scaling=1):
         """Inverse transformation matrix"""
         # Cast translation into column vector if not already the case
         translation_col = Transformation.column_vector(translation)
         # Given a transformation matrix as above, return its inverse as:
-        # |  Rotation^T   -Rotation^T@translation  |
-        # |  0      0             1                |
-        return append(append(rotation.T, -rotation.T@translation_col, axis=COL),
+        # |  1/scaling*Rotation^T   -Rotation^T@translation  |
+        # |  0                       1                |
+        return append(append(rotation.T/scaling, -rotation.T@translation_col, axis=COL),
                       Transformation.__bottom_row, axis=ROW)
 
     @staticmethod
     def dissect_matrix(matrix):
         """Extract rotation and translation from a given transformation matrix"""
-        n = Transformation.dimension
-        rotation = matrix[0:n, 0:n]
-        translation = matrix[0:n, n]  
-        return rotation, translation     
+        # Vector dimension equals that of the transformation, minus the appended 1
+        n = matrix.shape[ROW]-1
+
+        # Obtain the scaling factor relative to a identity matrix whose determinant is 1
+        scaling = abs(det(matrix))**(1/n)
+
+        # Obtain the rotation and translation, accounted for scaling
+        rotation = matrix[0:n, 0:n]/scaling
+        translation = matrix[0:n, n]/scaling
+
+        # Return results
+        return rotation, translation, scaling 
 
 
-    def __init__(self, rotation = None, translation = None, matrix = None):
+    def __init__(self, rotation = None, translation = None, scaling=1, matrix = None):
         """Store translation and rotation"""
         if matrix is None:
-            # Store rotation and translation if supplied and make matrix
+            # Store rotation, translation, and scaling if supplied as arguments, and make matrix
             self.rotation = rotation
             self.translation = array(translation)
-            self.matrix = Transformation.make_matrix(rotation, translation)
-            self.inverse_matrix = Transformation.make_inverse_matrix(rotation, translation)
+            self.scaling = scaling
+            self.matrix = Transformation.make_matrix(rotation, translation, scaling)
+            self.inverse_matrix = Transformation.make_inverse_matrix(rotation, translation, scaling)
         else:
-            # Extract rotation and translation from existing matrix, and store them
-            self.rotation, self.translation = self.dissect_matrix(matrix)    
+            # Extract rotation, translation, and scaling from matrix supplied as argument, and store them
+            self.rotation, self.translation, self.scaling = self.dissect_matrix(matrix)    
             self.matrix = matrix
-            self.inverse_matrix = Transformation.make_inverse_matrix(self.rotation, self.translation) 
+        
+        # For either type of constructor, precompute the inverse
+        self.inverse_matrix = Transformation.make_inverse_matrix(self.rotation, self.translation) 
 
     def inverse(self):
         """Return a new transformation object, whose matrix is the inverse of this one"""
