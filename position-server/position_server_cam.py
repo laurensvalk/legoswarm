@@ -27,7 +27,7 @@ MIN_BALL_RADIUS_PX = 5
 MAX_BALL_RADIUS_PX = 16
 PLAYFIELD_COORDS = True
 ROBOT_FOOTPRINT_CENTER_OFFSET = np.array([60, -30])
-FILE = "test_images/test.jpg" # 1920 x 1080 afbeelding. png mag ook.
+FILE = "" #"test_images/test.jpg" # 1920 x 1080 afbeelding. png mag ook.
 
 ### Initialize ###
 
@@ -131,7 +131,8 @@ while True:
             continue    #and try again.
     else:
         img = cv2.imread(FILE)
-    img = np.array(img[50:1000, 0:1850])
+    # crop
+    # img = np.array(img[50:1000, 0:1850])
     img_height, img_width = img.shape[:2]
 
     # convert to grayscale and adjust gamma curve
@@ -161,6 +162,9 @@ while True:
     for x in range(0, len(contours)):
         k = x
         c = 0
+
+        if len(contours[x]) == 4:
+            cv2.drawContours(img, [contours[x]], -1, (255,0,255))
 
         # Look for nested triangles
         while (hierarchy[0][k][2] != -1):
