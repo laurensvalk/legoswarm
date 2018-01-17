@@ -51,7 +51,7 @@ while True:
         sum_of_springs = np.array([0, 0])
         for spring in p_me_neighborgrippers.values():
             stretch = np.sqrt((spring*spring).sum())
-            force = np.interp(stretch, [0, 500], [-15, 485])
+            force = np.interp(stretch, [0, 500], [-30, 470])
             sum_of_springs += spring / stretch * force
 
         # Decompose stretch into forward and sideways force
