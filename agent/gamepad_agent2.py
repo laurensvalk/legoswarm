@@ -10,7 +10,7 @@ turn_speed = 0
 fwd_speed = 0
 triangle_pressed_time = 0
 picker = hardware.Picker()
-gamepad_settings = {'left_stick_x': {'min_value': 3, 'scale': (-40, 40) },
+gamepad_settings = {'left_stick_x': {'min_value': 3, 'scale': (40, -40) },
                     'left_stick_y': {'min_value': 4, 'scale': (-60, 60) }}
 gamepad = hardware.PS3GamePad(gamepad_settings)
 base = hardware.DriveBase()

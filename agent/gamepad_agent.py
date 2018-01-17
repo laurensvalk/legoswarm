@@ -62,7 +62,7 @@ class MotorThread(threading.Thread):
                 picker.target = picker.OPEN
 
             picker.run()
-            self.base.drive_and_turn(fwd_speed, turn_rate)
+            self.base.drive_and_turn(fwd_speed, -turn_rate)
 
             # Give the Ev3 some time to handle other threads.
             time.sleep(0.04)
