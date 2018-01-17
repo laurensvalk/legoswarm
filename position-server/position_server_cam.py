@@ -126,13 +126,14 @@ socket_server.start()
 while True:
     # time.sleep(2)
     if not FILE:
-        ok, img = cap.read()
+        ok, img_cam = cap.read()
         if not ok:
             continue    #and try again.
     else:
         img = cv2.imread(FILE)
     # crop
     # img = np.array(img[50:1000, 0:1850])
+    # img = np.array(img_cam)
     img_height, img_width = img.shape[:2]
 
     # convert to grayscale and adjust gamma curve
@@ -289,6 +290,7 @@ while True:
         break
     if n == 0:
         logging.info("Looptime: {0}, contours: {1}".format((time.time()-t)/100, len(contours)))
+        # cv2.imwrite("test_images/{0}.jpg".format(int(time.time())), img_cam)
         print(robot_broadcast_data)
         n = 100
         t = time.time()
