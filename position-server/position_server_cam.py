@@ -27,7 +27,7 @@ MIN_BALL_RADIUS_PX = 5
 MAX_BALL_RADIUS_PX = 16
 PLAYFIELD_COORDS = True
 ROBOT_FOOTPRINT_CENTER_OFFSET = np.array([60, -30])
-FILE = "test.jpg" # 1920 x 1080 afbeelding. png mag ook.
+FILE = "test_images/test.jpg" # 1920 x 1080 afbeelding. png mag ook.
 
 ### Initialize ###
 

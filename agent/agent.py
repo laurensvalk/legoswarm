@@ -48,9 +48,11 @@ while True:
         p_me_neighborgrippers = localdata['neighborgrippers'][MY_ID]
 
         # Linear spring, sum of neighbor distances, otherwise 0
-        sum_of_springs = np.array([0,0])
-        for i in p_me_neighborgrippers:
-            sum_of_springs = sum_of_springs + p_me_neighborgrippers[i]
+        sum_of_springs = np.array([0, 0])
+        for spring in p_me_neighborgrippers.values():
+            stretch = np.sqrt((spring*spring).sum())
+            force = np.interp(stretch, [0, 500], [-15, 485])
+            sum_of_springs += spring / stretch * force
 
         # Decompose stretch into forward and sideways force
         forward_stretch, left_stretch = sum_of_springs[1], -sum_of_springs[0]
@@ -58,7 +60,7 @@ while True:
         logging.debug(str(time.time() - t) + "Done spring calculations")
 
         # Obtain speed and turnrate
-        speed =  forward_stretch * settings['speed_per_cm_spring_extension']
+        speed = forward_stretch * settings['speed_per_cm_spring_extension']
         turnrate = left_stretch * settings['turnrate_per_cm_spring_extension']
         logging.debug("Speed: {0} = {1} stretch x {2} rate".format(speed, forward_stretch,
                                                                    settings['speed_per_cm_spring_extension']))
