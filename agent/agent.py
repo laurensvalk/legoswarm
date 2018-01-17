@@ -13,7 +13,7 @@ except:
     MY_ID = 3
 
 # Log settings
-logging.basicConfig(format='%(asctime)s, %(levelname)s, %(message)s',datefmt='%H:%M:%S',level=logging.DEBUG)
+logging.basicConfig(format='%(asctime)s, %(levelname)s, %(message)s',datefmt='%H:%M:%S', level=logging.WARNING)
 
 # Start data thread
 camera_thread = CameraUDP()
@@ -35,9 +35,9 @@ while True:
         logging.warning("No data. Waiting 1s")
         base.stop()
         time.sleep(1)
-        break
+        continue
 
-    logging.debug(str(time.time()-t) + "Got data")
+    logging.debug(str(time.time()-t) + " Got data")
     # Before doing anything, make sure the camera saw me. 
     # TODO: This currently relies on markers. Remove dependency; use only localdata
     if MY_ID not in markers:
