@@ -48,7 +48,7 @@ class EZMotor(ev3.Motor):
     # degree per second. Errors are raised somewhere above this number.
     max_speed_sp = 650
 
-    def __init__(self, port):
+    def __init__(self, port, inversed = False):
         # self.motor = ev3.Motor(port)
         self.port = port
         if running_on_ev3():
@@ -57,6 +57,8 @@ class EZMotor(ev3.Motor):
         else:
             #LATER: virtualize the complete motor in case it is not running on an ev3, using logging.
             ev3.Motor.__init__(self)
+        if inversed:
+            self.polarity = 'inversed'
 
     def set_speed(self, speed):
         self.speed_sp = limit(speed, self.max_speed_sp)
@@ -211,8 +213,8 @@ class DriveBase:
 
         # Initialize motors if running on the EV3
         if self.running_on_ev3:
-            self.left = EZMotor(left)
-            self.right = EZMotor(right)
+            self.left = EZMotor(left, inversed=True)
+            self.right = EZMotor(right, inversed=True)
 
     def drive_and_turn(self, speed_cm_sec, turnrate_deg_sec):
         """Set speed of two motors to attain desired forward speed and turnrate"""
@@ -352,7 +354,7 @@ class PS3GamePad(Thread):
 
             self.settings[stick_name]['deadzone'] = deadzone
 
-        print("Returned stick value {0}, {1}, {2}".format(scale, value, deadzone))
+        # print("Returned stick value {0}, {1}, {2}".format(scale, value, deadzone))
         scaled_value = self.scale(value, (255, 0), scale)
         if -deadzone < scaled_value < deadzone:
             scaled_value = 0
