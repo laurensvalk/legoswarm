@@ -10,7 +10,7 @@ from threading import Thread
 import socket
 import logging
 from settings import robot_broadcast_data, SERVER_ADDR
-from parse_camera_data import preparse_robot_data
+from parse_camera_data import preparse_robot_data, bounding_box
 
 try:
     import cPickle as pickle
@@ -277,17 +277,17 @@ while True:
                 shortest = min(lengths)
                 shortest_idx = lengths.index(shortest)
                 if shortest_idx == 0:
-                    center = (a+b)/2
-                    front = c
+                    midbase_marker = (a + b) / 2
+                    apex_marker = c
                 elif shortest_idx == 1:
-                    center = (c+b)/2
-                    front = a
+                    midbase_marker = (c + b) / 2
+                    apex_marker = a
                 else:   # shortest == 'ac':
-                    center = (a+c)/2
-                    front = b
+                    midbase_marker = (a + c) / 2
+                    apex_marker = b
 
-                center = center.astype(int)
-                heading = atan2_vec(front - center)
+                midbase_marker = midbase_marker.astype(int)
+                heading = atan2_vec(apex_marker - midbase_marker)
 
                 # Rotation matrix for reading code
                 c = np.cos(heading)
@@ -302,7 +302,7 @@ while True:
 
                 # Do a dot product of the relative positions with the center position,
                 # and offset this back to position of the robot to find matrix of absolute code pixel positions
-                locations = (center + np.dot(relative_code_positions * shortest, R)).astype(int)
+                locations = (midbase_marker + np.dot(relative_code_positions * shortest, R)).astype(int)
 
                 # Now check all code pixels and do a binary addition
                 robot_id = 0
@@ -318,8 +318,8 @@ while True:
 
                 # Draw the data
                 cv2.putText(img,
-                            u"{0:.2f} rad, code: {1}, x:{2}, y:{3}".format(heading, robot_id, center[0], center[1]),
-                            tuple(center),
+                            u"{0:.2f} rad, code: {1}, x:{2}, y:{3}".format(heading, robot_id, midbase_marker[0], midbase_marker[1]),
+                            tuple(midbase_marker),
                             cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 255), 4)
 
                 # Draw binary robot id marker positions
@@ -331,14 +331,17 @@ while True:
 
                 # Black out the shape of the robot in our source image
                 box_center_offset = np.dot(ROBOT_FOOTPRINT_CENTER_OFFSET, R)
-                blackout_region = (box_center_offset + center, (165, 290), -heading / 3.1415 * 180)
+                blackout_region = (box_center_offset + midbase_marker, (165, 290), -heading / 3.1415 * 180)
                 box = np.int0(cv2.boxPoints(blackout_region))
                 cv2.drawContours(img, [box], 0, (0, 0, 255), 2)
                 cv2.fillConvexPoly(img_grey, box, 255)
 
+                bb = bounding_box(robot_broadcast_data['settings'], midbase_marker, apex_marker)
+                cv2.drawContours(img, [bb], 0, (0, 0, 255), 2)
+
                 # Save the data in our global dictionary
-                robot_markers[robot_id] = [(center[0], center[1]),  # Triangle Center with origin at bottom left
-                                           (front[0], front[1])]    # Triangle Top with origin at bottom left
+                robot_markers[robot_id] = [(midbase_marker[0], midbase_marker[1]),  # Triangle Center with origin at bottom left
+                                           (apex_marker[0], apex_marker[1])]    # Triangle Top with origin at bottom left
 
 
     # Found all robots, now let's detect balls.
