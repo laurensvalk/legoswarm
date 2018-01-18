@@ -7,8 +7,6 @@ from numpy.linalg import det
 
 ROW, COL = 0, 1
 
-#TODO needs fix: used inverse for attribute name AND function
-
 class Transformation:
     """Class to store both translation and rotation"""
 
