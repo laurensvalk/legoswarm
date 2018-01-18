@@ -9,6 +9,7 @@ import time
 from threading import Thread
 import socket
 import logging
+from platform import platform
 from settings import robot_broadcast_data, SERVER_ADDR
 from parse_camera_data import preparse_robot_data, bounding_box
 
@@ -31,8 +32,13 @@ FILE = "test_images/1516199702.jpg" #"test_images/test.jpg" # 1920 x 1080 afbeel
 
 ### Initialize ###
 
-# Camera
-cv2.namedWindow("cam", cv2.WINDOW_OPENGL)
+# Initialize output window
+if 'Ubuntu' in platform():
+    # On Ubuntu without OpenGL
+    cv2.namedWindow("cam")
+else:
+    # On Mac with OpenGL
+    cv2.namedWindow("cam", cv2.WINDOW_OPENGL)        
 if not FILE:
     cap = cv2.VideoCapture(0)
     cap.set(3, WIDTH)
