@@ -81,7 +81,7 @@ class Transformation:
             self.matrix = matrix
         
         # For either type of constructor, precompute the inverse
-        self.inverse_matrix = Transformation.make_inverse_matrix(self.rotation, self.translation, scaling) 
+        self.inverse_matrix = Transformation.make_inverse_matrix(self.rotation, self.translation, self.scaling) 
 
     def inverse(self):
         """Return a new transformation object, whose matrix is the inverse of this one"""
