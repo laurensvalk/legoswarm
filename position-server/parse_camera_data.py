@@ -22,10 +22,7 @@ def bounding_box(settings, midbase_marker, apex_marker):
     # Revert the indexing so this can be seen as a list of coordinates
     return (bounding_box_in_camera.T).astype(int)
 
-def preparse_robot_data(markers, balls, settings):
-
-    # Initialize empty dictionary which we'll return
-    localdata = {}
+def make_data_for_robots(markers, balls, settings, robot_settings):
 
     # Determine who's who
     agents = markers.keys()
@@ -39,34 +36,33 @@ def preparse_robot_data(markers, balls, settings):
                                                           H_to_world_from_camera*apex_marker) # Apex marker in world
                             for i, [midbase_marker, apex_marker] in markers.items()}
 
-    # Empty dictionary of dictionaries of neighbor gripper locations
-    neighborgrippers = {i: {} for i in agents}
+    # Empty dictionaries that will get an entry for each agent in the loop that follows
+    # For each robot, it contains information about its neighbors, from its own point of view
+    neighbor_info = {}
 
     # Do the following computations for all agents, using the previously computed frame conversions
     for me in agents:
 
         # List of everyone except me
-        other_agents = [i for i in agents if me != i]
+        neighbors = [i for i in agents if me != i]
 
-        # Empty dictionary of neighboring gripper locations, in my frame of reference
-        
+        # I need an empty dictionary to store information about all my neighbors
+        neighbor_info[me] = {neighbor : {} for neighbor in neighbors}
 
-        # Determine gripper location of everyone else in my reference frame
-        for i in other_agents:
-            # First, obtain the constant location a gripper in a robot frame
-            p_bot_gripper = np.array(settings['p_bot_gripper'])
-
+        # Determine gripper location and other properties of everyone else in my reference frame
+        for neighbor in neighbors:
             # Transformation from another robot, to my reference frame
-            H_to_me_from_otherbot = H_to_world_from_bot[me].inverse()@H_to_world_from_bot[i]
-
+            H_to_me_from_neighbor = H_to_world_from_bot[me].inverse()@H_to_world_from_bot[neighbor]
             # Gripper location of other robot, in my reference frame:
-            p_me_othergripper = H_to_me_from_otherbot*p_bot_gripper
+            neighbor_info[me][neighbor]['gripper_location'] = H_to_me_from_neighbor*np.array(settings['p_bot_gripper'])
+            # Scalar distance to that gripper
+            distance = np.linalg.norm(neighbor_info[me][neighbor]['gripper_location'])
+            neighbor_info[me][neighbor]['gripper_distance'] = distance
+            # Check if that other gripper is in our "virtual" field of view
+            neighbor_info[me][neighbor]['is_visible'] = True if distance < settings['sight_range'] else False
 
-            # If that other gripper is in our field of view,
-            # we consider it a neighbor and store the result
-            if np.linalg.norm(p_me_othergripper) < settings['sight_range']:
-                neighborgrippers[me][i] = p_me_othergripper
+    # TODO: Ball locations & distances
 
-
-    localdata['neighborgrippers'] = neighborgrippers
-    return localdata
+    # Create data for returning
+    return {'neighbor_info': neighbor_info,
+            'robot_settings' : robot_settings}

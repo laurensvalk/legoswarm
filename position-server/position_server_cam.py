@@ -10,16 +10,18 @@ from threading import Thread
 import socket
 import logging
 from platform import platform
-from settings import robot_broadcast_data, SERVER_ADDR
-from parse_camera_data import preparse_robot_data, bounding_box
+from settings import settings, robot_settings
+data_to_transmit = {}
+
+from parse_camera_data import make_data_for_robots, bounding_box
 
 try:
     import cPickle as pickle
 except:
     import pickle
 
-
 ### Settings ###
+SERVER_ADDR = settings['SERVER_ADDR']
 THRESHOLD = 150        # Threshold for b/w version of camera image. Was 230 most of the time
 WIDTH = 1920
 HEIGHT = 1080
@@ -105,11 +107,11 @@ class SocketThread(Thread):
         Thread.__init__(self)
 
     def run(self):
-        global robot_broadcast_data, running
+        global data_to_transmit, running
 
         while running:
-            data = pickle.dumps(robot_broadcast_data)
-            #print(robot_broadcast_data)
+            data = pickle.dumps(data_to_transmit)
+            #print(data_to_transmit)
             try:
                 sent = self.server_socket.sendto(data, SERVER_ADDR)
                 # print(sent)
@@ -342,7 +344,7 @@ while True:
                 cv2.drawContours(img, [box], 0, (0, 0, 255), 2)
                 cv2.fillConvexPoly(img_grey, box, 255)
 
-                bb = bounding_box(robot_broadcast_data['settings'], midbase_marker, apex_marker)
+                bb = bounding_box(settings, midbase_marker, apex_marker)
                 cv2.drawContours(img, [bb], 0, (0, 0, 255), 2)
 
                 # Save the data in our global dictionary
@@ -361,11 +363,8 @@ while True:
             cv2.circle(img, c, int(r), (0, 255, 255), 2)
             balls += [c]
 
-    robot_broadcast_data['balls'] = balls
-    robot_broadcast_data['markers'] = robot_markers
-
     # Calculations to save time on client side
-    robot_broadcast_data['localdata'] = preparse_robot_data(robot_broadcast_data['markers'], robot_broadcast_data['balls'], robot_broadcast_data['settings'])
+    data_to_transmit = make_data_for_robots(robot_markers, balls, settings, robot_settings)
     
     # logging.debug("found markers", t - time.time())
 
@@ -385,7 +384,7 @@ while True:
     if n == 0:
         logging.info("Looptime: {0}, contours: {1}".format((time.time()-t)/100, len(contours)))
         # cv2.imwrite("test_images/{0}.jpg".format(int(time.time())), img_cam)
-        print(robot_broadcast_data)
+        print(data_to_transmit)
         n = 100
         t = time.time()
     else:
