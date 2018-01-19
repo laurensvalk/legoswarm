@@ -394,6 +394,7 @@ while True:
 
 ### clean up ###
 running = False
-cap.release()
+if not FILE:
+    cap.release()
 cv2.destroyAllWindows()
 logging.info("Cleaned up")

@@ -4,7 +4,9 @@ from camera_client import CameraUDP
 import numpy as np
 import time
 import logging
-from hardware import DriveBase, eprint
+from hardware import DriveBase
+# from hardware_old import DriveBase
+from springs import Spring
 
 # My ID. Ultimately needs to come from elsewhere. E.g. Brick ID
 try:
@@ -22,6 +24,7 @@ camera_thread.start()
 # Activate hardware if we're a robot
 base = DriveBase(left='outB', right='outC', wheel_diameter=0.043, wheel_span=0.12)
 
+
 # Every time step, read camera data, process it, and steer robot accordingly
 while True:
     t = time.time()
@@ -30,6 +33,7 @@ while True:
         # Get robot positions and settings from server
         data = camera_thread.get_data()
         markers, balls, settings, localdata = data['markers'], data['balls'], data['settings'], data['localdata']
+        spring_between_robots = Spring(settings['spring_between_robots'])
     except:
         # Stop the loop if we're unable to get server data
         logging.warning("No data. Waiting 1s")
@@ -48,24 +52,23 @@ while True:
         p_me_neighborgrippers = localdata['neighborgrippers'][MY_ID]
 
         # Linear spring, sum of neighbor distances, otherwise 0
-        sum_of_springs = np.array([0, 0])
-        for spring in p_me_neighborgrippers.values():
-            stretch = np.sqrt((spring*spring).sum())
-            force = np.interp(stretch, [0, 500], [-30, 470])
-            sum_of_springs += spring / stretch * force
+        total_force = np.array([0, 0])
+        for (neighbor, gripper) in p_me_neighborgrippers.items():
+            total_force = total_force + spring_between_robots.get_force_vector(gripper)    
 
         # Decompose stretch into forward and sideways force
-        forward_stretch, left_stretch = sum_of_springs[1], -sum_of_springs[0]
+        forward_force, sideways_force = total_force
 
         logging.debug(str(time.time() - t) + "Done spring calculations")
 
         # Obtain speed and turnrate
-        speed = forward_stretch * settings['speed_per_cm_spring_extension']
-        turnrate = left_stretch * settings['turnrate_per_cm_spring_extension']
-        logging.debug("Speed: {0} = {1} stretch x {2} rate".format(speed, forward_stretch,
-                                                                   settings['speed_per_cm_spring_extension']))
-        logging.debug("Turnrate: {0} = {1} stretch x {2} rate".format(speed, left_stretch,
-                                                                   settings['turnrate_per_cm_spring_extension']))
+        # TODO: remove MINUS sign in turn rate below. Instead make CW/CCW a configurable option in drivebase
+        speed = forward_force * settings['speed_per_unit_force']
+        turnrate = -sideways_force * settings['turnrate_per_unit_force']
+        logging.debug("Speed: {0} = {1} stretch x {2} rate".format(speed, forward_force,
+                                                                   settings['speed_per_unit_force']))
+        logging.debug("Turnrate: {0} = {1} stretch x {2} rate".format(turnrate, sideways_force,
+                                                                   settings['turnrate_per_unit_force']))
 
         # Drive!
         base.drive_and_turn(speed, turnrate)

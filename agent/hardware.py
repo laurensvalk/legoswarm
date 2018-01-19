@@ -1,7 +1,7 @@
 import sys
 import time
 import platform
-import evdev
+# import evdev
 import ev3dev.auto as ev3
 from collections import deque
 from threading import Thread

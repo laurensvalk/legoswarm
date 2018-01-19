@@ -5,13 +5,13 @@
     "version": "0.2.0",
     "configurations": [
     {
-        "name": "Download and Run",
+        "name": "Agent EV3 stretch",
         "type": "ev3devBrowser",
         "request": "launch",
         "program": "/home/robot/${workspaceRootFolderName}/agent.py"
     },
         {
-            "name": "Python",
+            "name": "Server PC",
             "type": "python",
             "request": "launch",
             "stopOnEntry": false,
@@ -24,6 +24,22 @@
             "debugOptions": [
                 "RedirectOutput"
             ]
-        }
+        },
+        {
+            "name": "Agent PC",
+            "type": "python",
+            "request": "launch",
+            "stopOnEntry": false,
+            "pythonPath": "${config:python.pythonPath}",
+            // "program": "${file}",
+            "program": "${workspaceFolder}/agent/agent.py",
+            "cwd": "${workspaceFolder}/agent/",
+            "env": {},
+            "envFile": "${workspaceFolder}/.env",
+            "debugOptions": [
+                "RedirectOutput"
+            ]
+        }        
+
     ]
 }
