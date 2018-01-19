@@ -1,6 +1,6 @@
 """Several constant or frequently used composite transformations"""
 
-from frametransformations import Transformation, ROW, COL
+from referenceframes.transformations import Transformation, ROW, COL
 from numpy import array, identity, append
 from numpy.linalg import norm
 
