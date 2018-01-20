@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
 
+# TODO: REVISE USING NEW HARDWARE CLASSES
+
 __author__ = 'anton'
 
-import hardware
+import hardware.old_anton_version as hardware
 import time
 
 turn_rate = 0
