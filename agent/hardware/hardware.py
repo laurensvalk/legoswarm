@@ -15,8 +15,7 @@ if running_on_ev3():
 def eprint(*args, **kwargs):
     print(*args, file=sys.stderr, **kwargs)
 
-# TODO: account for motor orientation, flipping etc
-
+# TODO: This class (and whole module) needs better documentation
 class Motor:
 
     max_speed_sp = 500 # degree per second
@@ -134,19 +133,19 @@ class DriveBase:
             self.left = Motor(left)
             self.right = Motor(right)
 
-    def drive_and_turn(self, speed_cm_sec, turnrate_deg_sec_ccw):
+    def DriveAndTurn(self, speed_cm_sec, turnrate_deg_sec):
         """Set speed of two motors to attain desired forward speed and turnrate"""
         nett_speed = speed_cm_sec / self.wheel_cm_sec_per_deg_s
-        difference = turnrate_deg_sec_ccw * self.wheel_cm_sec_per_base_deg_sec / self.wheel_cm_sec_per_deg_s
+        difference = turnrate_deg_sec * self.wheel_cm_sec_per_base_deg_sec / self.wheel_cm_sec_per_deg_s
         if self.running_on_ev3:
-            self.left.SetSpeed(nett_speed + difference)
-            self.right.SetSpeed(nett_speed - difference)
+            self.left.SetSpeed(nett_speed - difference)
+            self.right.SetSpeed(nett_speed + difference)
         else:
-            print("Setting Drivebase to Speed cm/s: " + str(speed_cm_sec) + ", Turnrate deg/s: " + str(turnrate_deg_sec_ccw))
+            print("Setting Drivebase to Speed cm/s: " + str(speed_cm_sec) + ", Turnrate deg/s: " + str(turnrate_deg_sec))
 
-    def stop(self):
+    def Stop(self):
         """Stop the robot by setting both motors to zero speed"""
-        self.drive_and_turn(0,0)
+        self.DriveAndTurn(0,0)
 
 class RemoteControl:
     """Configures IR Sensor as IR Receiver and reads IR button status"""

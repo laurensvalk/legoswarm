@@ -1,1 +1,0 @@
-../position-server/settings.py
