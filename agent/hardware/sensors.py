@@ -1,8 +1,35 @@
 from .compat_device import CompatInfraredSensor
+import time
+from collections import deque
+
 
 class BallSensor(CompatInfraredSensor):
-    pass
+    def __init__(self, port):
+        self.threshold = 7
 
+        frequency = 5  # Hz
+        self.interval = 1/frequency
+        self.next_reading_time = time.time()+self.interval
+
+        self.num_readings = 4  # For averaging over
+        self.readings = deque([100] * self.num_readings, maxlen=self.num_readings)
+
+        CompatInfraredSensor.__init__(self, port)
+
+    def check_ball(self):
+        now = time.time() 
+        if now > self.next_reading_time:
+            distance = self.proximity
+            if distance < 100:
+                self.readings.append(distance)
+                self.next_reading_time = now + self.interval
+        avg_distance = sum(self.readings) / self.num_readings
+
+        if avg_distance < self.threshold:  # True if a ball is close enough to the sensor.
+           self.readings.extend([10]*4)
+           return True
+        else:
+           return False
 
 class RemoteControl(CompatInfraredSensor):
     """Configures IR Sensor as IR Receiver and reads IR button status"""
@@ -14,7 +41,7 @@ class RemoteControl(CompatInfraredSensor):
 
     def __init__(self, port):
         """Configure IR sensor in remote mode"""
-        CompatInfraredSensor.__init__(self,port)
+        CompatInfraredSensor.__init__(self, port)
         self.mode = self.MODE_IR_REMOTE        
 
     @property
