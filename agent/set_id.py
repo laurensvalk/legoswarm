@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import ev3dev.auto as ev3
 import time
 import ev3dev.fonts as fonts

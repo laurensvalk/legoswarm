@@ -5,7 +5,8 @@ import numpy as np
 import time
 import logging
 #from hardware import DriveBase
-from hardware_old import DriveBase
+from hardware.motors import DriveBase, Picker
+from hardware.sensors import BallSensor
 from springs import Spring
 
 #################################################################
@@ -26,6 +27,8 @@ camera_thread.start()
 
 # Activate hardware if we're a robot
 base = DriveBase(left='outB', right='outC', wheel_diameter=0.043, wheel_span=0.12)
+picker = Picker('outA')
+ballsensor = BallSensor('in4')
 
 #################################################################
 ###### At every time step, read camera data, process it,
@@ -75,6 +78,13 @@ while True:
     # TODO: remove MINUS sign in turn rate below. Instead make CW/CCW a configurable option in drivebase
     speed = forward_force * robot_settings['speed_per_unit_force']
     turnrate = -sideways_force * robot_settings['turnrate_per_unit_force']
+
+    # Check for balls
+    if picker.target == picker.OPEN and picker.is_at_target:
+        if ballsensor.check_ball():
+            picker.target = picker.CLOSED
+    elif picker.target == picker.STORE and picker.is_at_target:
+        picker.target = picker.OPEN
 
     # Drive!
     base.drive_and_turn(speed, turnrate)

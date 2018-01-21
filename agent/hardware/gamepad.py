@@ -1,3 +1,6 @@
+import time, evdev
+from threading import Thread
+
 class GamePadStub:
     @staticmethod
     def read_loop():

@@ -33,7 +33,7 @@ class Picker(Motor):
     # # Amount of degrees the motor must turn to rotate the gripper by one degree
     motor_deg_per_picker_deg = -3 
 
-    def __init__(self, port):   
+    def __init__(self, port='outA'):
         # Initialize motor
         Motor.__init__(self, port)
 
@@ -64,7 +64,7 @@ class Picker(Motor):
               
 class DriveBase:
     """Easily control two large motors to drive a skid steering robot using specified forward speed and turnrate"""
-    def __init__(self, left, right, wheel_diameter, wheel_span, counter_clockwise_is_positive=True):   
+    def __init__(self, left, right, wheel_diameter, wheel_span, reverse_motors = True, counter_clockwise_is_positive=True):
         """Set up two Large motors and predefine conversion constants"""   
         
         # Store which is the positive direction
@@ -83,14 +83,14 @@ class DriveBase:
         self.wheel_cm_sec_per_base_deg_sec =  wheel_base_radius / deg_per_rad
 
         # Initialize left motor
-        left_name, left_polarity = left      
-        self.leftmotor = Motor(left_name)
-        self.leftmotor.polarity = left_polarity
+        self.leftmotor = Motor(left)
         
         # Initialize right motor
-        right_name, right_polarity = right
-        self.rightmotor = Motor(right_name)
-        self.rightmotor.polarity = right_polarity
+        self.rightmotor = Motor(right)
+
+        if reverse_motors:
+            self.leftmotor.polarity = 'inversed'
+            self.rightmotor.polarity = 'inversed'
 
     def drive_and_turn(self, speed_cm_sec, turnrate_deg_sec):
         """Set speed of two motors to attain desired forward speed and turnrate"""
