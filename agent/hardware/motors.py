@@ -3,7 +3,7 @@ from .compat_device import CompatMotor
 
 
 class Motor(CompatMotor):
-
+    """Add a few convenience functions to standard ev3dev motor class"""
     def run_forever_at_speed(self, speed):
         self.speed_sp = self.limit(speed)
         self.run_forever() 
