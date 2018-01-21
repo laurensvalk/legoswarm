@@ -18,7 +18,7 @@ except:
     MY_ID = 3
 
 # Log settings
-logging.basicConfig(format='%(asctime)s, %(levelname)s, %(message)s',datefmt='%H:%M:%S', level=logging.WARNING)
+logging.basicConfig(format='%(asctime)s, %(levelname)s, %(message)s',datefmt='%H:%M:%S', level=logging.DEBUG)
 
 # Start data thread
 camera_thread = CameraUDP()
@@ -83,9 +83,10 @@ while True:
 
     # Check for balls
     if ballsensor.check_ball():
+        logging.debug('ball detected')
         base.stop()
-        picker.go_to_target(picker.STORE)
-        picker.go_to_target(picker.OPEN)
+        picker.go_to_target(picker.STORE, blocking=True)
+        picker.go_to_target(picker.OPEN, blocking=True)
 
     # Drive!
     base.drive_and_turn(speed, turnrate)

@@ -56,11 +56,18 @@ class Picker(Motor):
         """Set the picker reference speed"""
         self.run_forever_at_speed(rate * self.motor_deg_per_picker_deg)
 
-    def go_to_target(self, target):
+    def go_to_target(self, target, blocking=False):
         """Steer Picker mechanism to desired target"""
         self.go_to(target*self.motor_deg_per_picker_deg,             # Reference position
                    self.abs_speed*self.motor_deg_per_picker_deg,     # Speed to get there
                    abs(self.tolerance*self.motor_deg_per_picker_deg))# Allowed tolerance
+        # If blocking is chosen, wait for the action to complete
+        if blocking:
+            # Give some time to get the action started
+            time.sleep(0.1)
+            # Wait for completion
+            while self.is_running:
+                time.sleep(0.01)
               
 class DriveBase:
     """Easily control two large motors to drive a skid steering robot using specified forward speed and turnrate"""

@@ -15,6 +15,7 @@ class BallSensor(CompatInfraredSensor):
         self.readings = deque([100] * self.num_readings, maxlen=self.num_readings)
 
         CompatInfraredSensor.__init__(self, port)
+        self.mode = self.MODE_IR_PROX
 
     @ property
     def most_recent_value(self):
