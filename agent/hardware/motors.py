@@ -45,6 +45,7 @@ class Picker(Motor):
             time.sleep(0.1)
         self.stop()
         self.reset()
+        self.target = self.OPEN
 
     @property
     def pick_rate(self):

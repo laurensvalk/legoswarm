@@ -5,8 +5,8 @@ import numpy as np
 import time
 import logging
 #from hardware import DriveBase
-from hardware.motors import DriveBase, Picker
-from hardware.sensors import BallSensor
+from hardware.motors import DriveBase
+from hardware.old_anton_version import Picker, BallSensor
 from springs import Spring
 
 #################################################################
