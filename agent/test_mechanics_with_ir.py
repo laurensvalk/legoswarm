@@ -5,7 +5,7 @@ from collections import defaultdict
 import time
 
 # # Configure the devices
-remote = RemoteControl('in3')
+remote = RemoteControl('in4')
 base = DriveBase(left=('outC', Motor.POLARITY_INVERSED),
                  right=('outB', Motor.POLARITY_INVERSED),
                  wheel_diameter=4.3,
