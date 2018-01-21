@@ -30,7 +30,7 @@ MIN_BALL_RADIUS_PX = 5
 MAX_BALL_RADIUS_PX = 16
 PLAYFIELD_COORDS = True
 ROBOT_FOOTPRINT_CENTER_OFFSET = np.array([60, -30])
-FILE = "test_images/1516199702.jpg" #"test_images/test.jpg" # 1920 x 1080 afbeelding. png mag ook.
+FILE = ''#"test_images/1516199702.jpg" #"test_images/test.jpg" # 1920 x 1080 afbeelding. png mag ook.
 
 ### Initialize ###
 
@@ -154,7 +154,7 @@ while True:
                 largest = area
                 cv2.drawContours(img, [approx], -1, (255,0,255))
     cv2.drawContours(img, [playing_field], -1, (0, 255, 0), thickness=8)
-    cv2.putText(img, "Press k if the playing field is detected", (150, 500), cv2.FONT_HERSHEY_SIMPLEX, 2, (0,255,0), 4)
+    cv2.putText(img, "Press y if the playing field is detected, press n if not", (100, 500), cv2.FONT_HERSHEY_SIMPLEX, 2, (0,255,0), 4)
     cv2.imshow("cam", img)
 
     # now that we have our screen contour, we need to determine
@@ -210,10 +210,13 @@ while True:
     M = cv2.getPerspectiveTransform(rect, dst)
 
 
-    # Wait for the 'q' key. Dont use ctrl-c !!!
+    # Wait for the 'k' key. Dont use ctrl-c !!!
     keypress = cv2.waitKey(1) & 0xFF
 
-    if keypress == ord('k'):
+    if keypress == ord('y'):
+        break
+    elif keypress == ord('n'):
+        M = []
         break
 
 
@@ -228,7 +231,8 @@ while True:
     # crop
     # img = np.array(img[50:1000, 0:1850])
     # img = np.array(img_cam)
-    img = cv2.warpPerspective(img, M, (maxWidth, maxHeight))
+    if M is not []:
+        img = cv2.warpPerspective(img, M, (maxWidth, maxHeight))
     img_height, img_width = img.shape[:2]
 
     # convert to grayscale and adjust gamma curve
@@ -338,14 +342,15 @@ while True:
                 cv2.drawContours(img, [approx], -1, (0, 255, 0))
 
                 # Black out the shape of the robot in our source image
-                box_center_offset = np.dot(ROBOT_FOOTPRINT_CENTER_OFFSET, R)
-                blackout_region = (box_center_offset + midbase_marker, (165, 290), -heading / 3.1415 * 180)
-                box = np.int0(cv2.boxPoints(blackout_region))
-                cv2.drawContours(img, [box], 0, (0, 0, 255), 2)
-                cv2.fillConvexPoly(img_grey, box, 255)
+                # box_center_offset = np.dot(ROBOT_FOOTPRINT_CENTER_OFFSET, R)
+                # blackout_region = (box_center_offset + midbase_marker, (165, 290), -heading / 3.1415 * 180)
+                # box = np.int0(cv2.boxPoints(blackout_region))
+                # cv2.drawContours(img, [box], 0, (0, 0, 255), 2)
+                # cv2.fillConvexPoly(img_grey, box, 255)
 
                 bb = bounding_box(settings, midbase_marker, apex_marker)
                 cv2.drawContours(img, [bb], 0, (0, 0, 255), 2)
+                cv2.fillConvexPoly(img_grey, bb, 255)
 
                 # Save the data in our global dictionary
                 robot_markers[robot_id] = [(midbase_marker[0], midbase_marker[1]),  # Triangle Center with origin at bottom left
@@ -382,7 +387,7 @@ while True:
     if keypress == ord('q'):
         break
     if n == 0:
-        logging.info("Looptime: {0}, contours: {1}".format((time.time()-t)/100, len(contours)))
+        logging.info("Looptime: {0}, contours analyzed: {1}".format((time.time()-t)/100, len(contours)))
         # cv2.imwrite("test_images/{0}.jpg".format(int(time.time())), img_cam)
         print(data_to_transmit)
         n = 100
