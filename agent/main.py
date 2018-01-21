@@ -27,8 +27,8 @@ camera_thread.start()
 
 # Activate hardware if we're a robot
 base = DriveBase(left='outB', right='outC', wheel_diameter=0.043, wheel_span=0.12)
-picker = Picker()
-ballsensor = BallSensor()
+picker = Picker('outA')
+ballsensor = BallSensor('in4')
 
 #################################################################
 ###### At every time step, read camera data, process it,

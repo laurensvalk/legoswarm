@@ -33,7 +33,7 @@ class Picker(Motor):
     # # Amount of degrees the motor must turn to rotate the gripper by one degree
     motor_deg_per_picker_deg = -3 
 
-    def __init__(self, port):   
+    def __init__(self, port='outA'):
         # Initialize motor
         Motor.__init__(self, port)
 
