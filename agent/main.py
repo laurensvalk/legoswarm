@@ -4,9 +4,8 @@ from camera_client import CameraUDP
 import numpy as np
 import time
 import logging
-#from hardware import DriveBase
-from hardware.motors import DriveBase
-from hardware.old_anton_version import Picker, BallSensor
+from hardware.motors import Motor, DriveBase, Picker
+from hardware.sensors import BallSensor
 from springs import Spring
 
 #################################################################
@@ -25,10 +24,14 @@ logging.basicConfig(format='%(asctime)s, %(levelname)s, %(message)s',datefmt='%H
 camera_thread = CameraUDP()
 camera_thread.start()
 
-# Activate hardware if we're a robot
-base = DriveBase(left='outB', right='outC', wheel_diameter=0.043, wheel_span=0.12)
-picker = Picker('outA')
+# Configure the devices
 ballsensor = BallSensor('in4')
+base = DriveBase(left=('outC', Motor.POLARITY_INVERSED),
+                 right=('outB', Motor.POLARITY_INVERSED),
+                 wheel_diameter=4.3,
+                 wheel_span=12,
+                 counter_clockwise_is_positive=False) 
+picker = Picker('outA')
 
 #################################################################
 ###### At every time step, read camera data, process it,
@@ -75,16 +78,14 @@ while True:
     logging.debug(str(time.time() - loopstart) + "Done spring calculations")
 
     # Obtain speed and turnrate
-    # TODO: remove MINUS sign in turn rate below. Instead make CW/CCW a configurable option in drivebase
     speed = forward_force * robot_settings['speed_per_unit_force']
-    turnrate = -sideways_force * robot_settings['turnrate_per_unit_force']
+    turnrate = sideways_force * robot_settings['turnrate_per_unit_force']
 
     # Check for balls
-    if picker.target == picker.OPEN and picker.is_at_target:
-        if ballsensor.check_ball():
-            picker.target = picker.CLOSED
-    elif picker.target == picker.STORE and picker.is_at_target:
-        picker.target = picker.OPEN
+    if ballsensor.check_ball():
+        base.stop()
+        picker.go_to_target(picker.STORE)
+        picker.go_to_target(picker.OPEN)
 
     # Drive!
     base.drive_and_turn(speed, turnrate)
