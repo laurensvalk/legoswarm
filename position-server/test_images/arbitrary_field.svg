@@ -1,0 +1,4954 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.91 r13725"
+   width="2400"
+   height="1350"
+   viewBox="0 0 2400 1350"
+   sodipodi:docname="arbitrary_field.svg"
+   inkscape:export-filename="/home/laurens/github/legoswarm/position-server/test_images/test_collison_avoidance.png"
+   inkscape:export-xdpi="72"
+   inkscape:export-ydpi="72">
+  <metadata
+     id="metadata8">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs6" />
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1861"
+     inkscape:window-height="1056"
+     id="namedview4"
+     showgrid="false"
+     inkscape:zoom="0.49666667"
+     inkscape:cx="1213.1358"
+     inkscape:cy="483.1039"
+     inkscape:window-x="59"
+     inkscape:window-y="24"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg2" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/empty_field_no_balls.jpg"
+     xlink:href="empty_field_no_balls.jpg"
+     sodipodi:insensitive="true"
+     width="2400"
+     height="1350"
+     preserveAspectRatio="none"
+     id="image10"
+     x="0"
+     y="0" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/robot1.png"
+     xlink:href="robot1.png"
+     y="169.88965"
+     x="1352.7629"
+     id="image4165"
+     preserveAspectRatio="none"
+     height="415"
+     width="321.25" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/robot3.png"
+     xlink:href="robot3.png"
+     y="584.88965"
+     x="1674.0129"
+     id="image4176"
+     preserveAspectRatio="none"
+     height="288.75"
+     width="416.25" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4144"
+     x="851.31915"
+     y="662.18579" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="631.22021"
+     x="851.31915"
+     id="image4147"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4149"
+     x="896.87769"
+     y="595.62756" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="659.33838"
+     x="932.82623"
+     id="image4151"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4153"
+     x="847.75989"
+     y="566.79755" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="610.93237"
+     x="739.20239"
+     id="image4155"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4157"
+     x="858.79358"
+     y="593.492" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="664.32135"
+     x="771.23572"
+     id="image4159"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4161"
+     x="771.23572"
+     y="664.32135" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="747.49402"
+     x="805.76062"
+     id="image4163"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4166"
+     x="805.76062"
+     y="716.52844" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="680.93579"
+     x="851.31915"
+     id="image4168"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4170"
+     x="887.2677"
+     y="744.64661" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="652.10577"
+     x="802.20135"
+     id="image4172"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4174"
+     x="693.64386"
+     y="696.2406" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="678.80023"
+     x="813.23505"
+     id="image4177"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4179"
+     x="725.67719"
+     y="749.62958" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="749.62958"
+     x="725.67719"
+     id="image4181"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4183"
+     x="805.76062"
+     y="747.49402" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="716.52844"
+     x="805.76062"
+     id="image4185"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4188"
+     x="851.31915"
+     y="680.93579" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="744.64661"
+     x="887.2677"
+     id="image4190"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4192"
+     x="802.20135"
+     y="652.10577" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="696.2406"
+     x="693.64386"
+     id="image4194"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4196"
+     x="813.23505"
+     y="678.80023" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="749.62958"
+     x="725.67719"
+     id="image4198"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4200"
+     x="725.67719"
+     y="749.62958" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="490.75839"
+     x="857.82666"
+     id="image4202"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4204"
+     x="857.82666"
+     y="459.79282" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="424.20016"
+     x="903.38513"
+     id="image4206"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4208"
+     x="939.33374"
+     y="487.91098" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="395.37015"
+     x="854.26733"
+     id="image4210"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4212"
+     x="745.70984"
+     y="439.50497" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="422.06461"
+     x="865.30103"
+     id="image4214"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4216"
+     x="777.74316"
+     y="492.89395" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="492.89395"
+     x="777.74316"
+     id="image4218"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4220"
+     x="812.26807"
+     y="576.06665" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="545.10107"
+     x="812.26807"
+     id="image4222"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4224"
+     x="857.82666"
+     y="509.50839" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="573.21924"
+     x="893.77515"
+     id="image4226"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4228"
+     x="808.70886"
+     y="480.67838" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="524.81323"
+     x="700.15137"
+     id="image4230"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4232"
+     x="819.74255"
+     y="507.37283" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="578.20215"
+     x="732.18469"
+     id="image4234"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4236"
+     x="732.18469"
+     y="578.20215" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="576.06665"
+     x="812.26807"
+     id="image4238"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4240"
+     x="812.26807"
+     y="545.10107" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="509.50839"
+     x="857.82666"
+     id="image4242"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4244"
+     x="893.77515"
+     y="573.21924" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="480.67838"
+     x="808.70886"
+     id="image4246"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4248"
+     x="700.15137"
+     y="524.81323" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="507.37283"
+     x="819.74255"
+     id="image4250"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4252"
+     x="732.18469"
+     y="578.20215" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="578.20215"
+     x="732.18469"
+     id="image4254"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     y="-31.534079"
+     x="1271.1652"
+     id="image4256"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4258"
+     x="1271.1652"
+     y="-62.499657" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     y="-98.092308"
+     x="1316.7236"
+     id="image4260"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4262"
+     x="1352.6722"
+     y="-34.381493" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     y="-126.92233"
+     x="1267.6058"
+     id="image4264"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4266"
+     x="1159.0483"
+     y="-82.787498" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     y="-100.22787"
+     x="1278.6395"
+     id="image4268"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4270"
+     x="1191.0817"
+     y="-29.398521" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     y="-29.398521"
+     x="1191.0817"
+     id="image4272"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4274"
+     x="1225.6066"
+     y="53.774147" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     y="22.808571"
+     x="1225.6066"
+     id="image4276"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4278"
+     x="1271.1652"
+     y="-12.78408" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     y="50.926727"
+     x="1307.1136"
+     id="image4280"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4282"
+     x="1222.0474"
+     y="-41.614098" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     y="2.52073"
+     x="1113.4897"
+     id="image4284"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4286"
+     x="1233.0811"
+     y="-14.919639" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     y="55.909714"
+     x="1145.5231"
+     id="image4288"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4290"
+     x="1145.5231"
+     y="55.909714" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     y="53.774147"
+     x="1225.6066"
+     id="image4292"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4294"
+     x="1225.6066"
+     y="22.808571" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     y="-12.78408"
+     x="1271.1652"
+     id="image4296"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4298"
+     x="1307.1136"
+     y="50.926727" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     y="-41.614098"
+     x="1222.0474"
+     id="image4300"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4302"
+     x="1113.4897"
+     y="2.52073" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     y="-14.919639"
+     x="1233.0811"
+     id="image4304"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4306"
+     x="1145.5231"
+     y="55.909714" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     y="55.909714"
+     x="1145.5231"
+     id="image4308"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4310"
+     x="1277.6726"
+     y="-202.9615" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     y="-233.92708"
+     x="1277.6726"
+     id="image4312"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4314"
+     x="1323.2311"
+     y="-269.51974" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     y="-205.80891"
+     x="1359.1797"
+     id="image4316"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4318"
+     x="1274.1133"
+     y="-298.34976" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     y="-254.21492"
+     x="1165.5558"
+     id="image4320"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4322"
+     x="1285.147"
+     y="-271.6553" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     y="-200.82594"
+     x="1197.5891"
+     id="image4324"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4326"
+     x="1197.5891"
+     y="-200.82594" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     y="-117.65322"
+     x="1232.114"
+     id="image4328"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4330"
+     x="1232.114"
+     y="-148.61882" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     y="-184.2115"
+     x="1277.6726"
+     id="image4332"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4334"
+     x="1313.6211"
+     y="-120.50063" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     y="-213.04152"
+     x="1228.5548"
+     id="image4336"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4338"
+     x="1119.9973"
+     y="-168.90666" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     y="-186.34706"
+     x="1239.5885"
+     id="image4340"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4342"
+     x="1152.0306"
+     y="-115.51772" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     y="-115.51772"
+     x="1152.0306"
+     id="image4344"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4346"
+     x="1232.114"
+     y="-117.65322" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     y="-148.61882"
+     x="1232.114"
+     id="image4348"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4350"
+     x="1277.6726"
+     y="-184.2115" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     y="-120.50063"
+     x="1313.6211"
+     id="image4352"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4354"
+     x="1228.5548"
+     y="-213.04152" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     y="-168.90666"
+     x="1119.9973"
+     id="image4356"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4358"
+     x="1239.5885"
+     y="-186.34706" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     y="-115.51772"
+     x="1152.0306"
+     id="image4360"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4362"
+     x="1152.0306"
+     y="-115.51772" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4472"
+     x="1770.5431"
+     y="513.71069" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="342.28326"
+     x="1777.0505"
+     id="image4474"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4476"
+     x="1940.4625"
+     y="-555.95557"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="-586.92114"
+     x="1940.4625"
+     id="image4478"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4480"
+     x="1986.021"
+     y="-622.51379"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="-558.80298"
+     x="2021.9696"
+     id="image4482"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4484"
+     x="1936.9032"
+     y="-651.34381"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="-607.20898"
+     x="1828.3457"
+     id="image4486"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4488"
+     x="1947.9369"
+     y="-624.64935"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="-553.82001"
+     x="1860.379"
+     id="image4490"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4492"
+     x="1860.379"
+     y="-553.82001"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="-470.64737"
+     x="1894.9039"
+     id="image4494"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4496"
+     x="1894.9039"
+     y="-501.61295"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="-537.20557"
+     x="1940.4625"
+     id="image4498"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4500"
+     x="1976.411"
+     y="-473.49478"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="-566.03558"
+     x="1891.3447"
+     id="image4502"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4504"
+     x="1782.7871"
+     y="-521.90076"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="-539.34113"
+     x="1902.3784"
+     id="image4506"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4508"
+     x="1814.8204"
+     y="-468.51178"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="-468.51178"
+     x="1814.8204"
+     id="image4510"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4512"
+     x="1894.9039"
+     y="-470.64737"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="-501.61295"
+     x="1894.9039"
+     id="image4514"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4516"
+     x="1940.4625"
+     y="-537.20557"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="-473.49478"
+     x="1976.411"
+     id="image4518"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4520"
+     x="1891.3447"
+     y="-566.03558"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="-521.90076"
+     x="1782.7871"
+     id="image4522"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4524"
+     x="1902.3784"
+     y="-539.34113"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="-468.51178"
+     x="1814.8204"
+     id="image4526"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4528"
+     x="1814.8204"
+     y="-468.51178"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="-727.383"
+     x="1946.97"
+     id="image4530"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4532"
+     x="1946.97"
+     y="-758.34857"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="-793.94122"
+     x="1992.5284"
+     id="image4534"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4536"
+     x="2028.4771"
+     y="-730.23041"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="-822.77124"
+     x="1943.4106"
+     id="image4538"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4540"
+     x="1834.8531"
+     y="-778.63641"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="-796.07678"
+     x="1954.4443"
+     id="image4542"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4544"
+     x="1866.8865"
+     y="-725.24744"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="-725.24744"
+     x="1866.8865"
+     id="image4546"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4548"
+     x="1901.4114"
+     y="-642.07471"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="-673.04028"
+     x="1901.4114"
+     id="image4550"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4552"
+     x="1946.97"
+     y="-708.633"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="-644.92212"
+     x="1982.9185"
+     id="image4554"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4556"
+     x="1897.8522"
+     y="-737.46301"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="-693.32812"
+     x="1789.2947"
+     id="image4558"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4560"
+     x="1908.8859"
+     y="-710.76855"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="-639.93921"
+     x="1821.328"
+     id="image4562"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4564"
+     x="1821.328"
+     y="-639.93921"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="-642.07471"
+     x="1901.4114"
+     id="image4566"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4568"
+     x="1901.4114"
+     y="-673.04028"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="-708.633"
+     x="1946.97"
+     id="image4570"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4572"
+     x="1982.9185"
+     y="-644.92212"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="-737.46301"
+     x="1897.8522"
+     id="image4574"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4576"
+     x="1789.2947"
+     y="-693.32812"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="-710.76855"
+     x="1908.8859"
+     id="image4578"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4580"
+     x="1821.328"
+     y="-639.93921"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="-639.93921"
+     x="1821.328"
+     id="image4582"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="915.1955"
+     x="1192.5189"
+     id="image4584"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4586"
+     x="1199.0264"
+     y="743.76807" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     y="71.12307"
+     x="1620.9717"
+     id="image4588"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4590"
+     x="1620.9717"
+     y="40.157494" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     y="4.5648437"
+     x="1666.5302"
+     id="image4592"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4594"
+     x="1702.4788"
+     y="68.275658" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     y="-24.265173"
+     x="1617.4124"
+     id="image4596"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4598"
+     x="1508.8549"
+     y="19.869654" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     y="2.4292846"
+     x="1628.446"
+     id="image4600"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4602"
+     x="1540.8882"
+     y="73.258629" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     y="73.258629"
+     x="1540.8882"
+     id="image4604"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4606"
+     x="1575.4131"
+     y="156.43127" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     y="125.46569"
+     x="1575.4131"
+     id="image4608"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4610"
+     x="1620.9717"
+     y="89.87307" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     y="153.58386"
+     x="1656.9202"
+     id="image4612"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4614"
+     x="1571.8539"
+     y="61.043053" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     y="105.17788"
+     x="1463.2963"
+     id="image4616"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4618"
+     x="1582.8876"
+     y="87.737511" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     y="158.56686"
+     x="1495.3296"
+     id="image4620"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4622"
+     x="1495.3296"
+     y="158.56686" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     y="156.43127"
+     x="1575.4131"
+     id="image4624"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4626"
+     x="1575.4131"
+     y="125.46569" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     y="89.87307"
+     x="1620.9717"
+     id="image4628"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4630"
+     x="1656.9202"
+     y="153.58386" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     y="61.043053"
+     x="1571.8539"
+     id="image4632"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4634"
+     x="1463.2963"
+     y="105.17788" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     y="87.737511"
+     x="1582.8876"
+     id="image4636"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4638"
+     x="1495.3296"
+     y="158.56686" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     y="158.56686"
+     x="1495.3296"
+     id="image4640"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4642"
+     x="1627.4791"
+     y="-100.30436" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     y="-131.26993"
+     x="1627.4791"
+     id="image4644"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4646"
+     x="1673.0376"
+     y="-166.86258" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     y="-103.15177"
+     x="1708.9862"
+     id="image4648"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4650"
+     x="1623.9198"
+     y="-195.6926" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     y="-151.55777"
+     x="1515.3623"
+     id="image4652"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4654"
+     x="1634.9535"
+     y="-168.99814" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     y="-98.1688"
+     x="1547.3956"
+     id="image4656"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4658"
+     x="1547.3956"
+     y="-98.1688" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     y="-14.99607"
+     x="1581.9205"
+     id="image4660"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4662"
+     x="1581.9205"
+     y="-45.961647" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     y="-81.554359"
+     x="1627.4791"
+     id="image4664"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4666"
+     x="1663.4276"
+     y="-17.843481" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     y="-110.38438"
+     x="1578.3613"
+     id="image4668"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4670"
+     x="1469.8038"
+     y="-66.249489" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     y="-83.689919"
+     x="1589.395"
+     id="image4672"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4674"
+     x="1501.8372"
+     y="-12.860572" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     y="-12.860572"
+     x="1501.8372"
+     id="image4676"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4678"
+     x="1581.9205"
+     y="-14.99607" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     y="-45.961647"
+     x="1581.9205"
+     id="image4680"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4682"
+     x="1627.4791"
+     y="-81.554359" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     y="-17.843481"
+     x="1663.4276"
+     id="image4684"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4686"
+     x="1578.3613"
+     y="-110.38438" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     y="-66.249489"
+     x="1469.8038"
+     id="image4688"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4690"
+     x="1589.395"
+     y="-83.689919" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     y="-12.860572"
+     x="1501.8372"
+     id="image4692"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4694"
+     x="1501.8372"
+     y="-12.860572" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4696"
+     x="1192.5189"
+     y="915.1955" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="743.76807"
+     x="1199.0264"
+     id="image4698"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4700"
+     x="1620.9717"
+     y="71.12307"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="40.157494"
+     x="1620.9717"
+     id="image4702"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4704"
+     x="1666.5302"
+     y="4.5648437"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="68.275658"
+     x="1702.4788"
+     id="image4706"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4708"
+     x="1617.4124"
+     y="-24.265173"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="19.869654"
+     x="1508.8549"
+     id="image4710"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4712"
+     x="1628.446"
+     y="2.4292846"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="73.258629"
+     x="1540.8882"
+     id="image4714"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4716"
+     x="1540.8882"
+     y="73.258629"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="156.43127"
+     x="1575.4131"
+     id="image4718"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4720"
+     x="1575.4131"
+     y="125.46569"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="89.87307"
+     x="1620.9717"
+     id="image4722"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4724"
+     x="1656.9202"
+     y="153.58386"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="61.043053"
+     x="1571.8539"
+     id="image4726"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4728"
+     x="1463.2963"
+     y="105.17788"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="87.737511"
+     x="1582.8876"
+     id="image4730"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4732"
+     x="1495.3296"
+     y="158.56686"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="158.56686"
+     x="1495.3296"
+     id="image4734"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4736"
+     x="1575.4131"
+     y="156.43127"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="125.46569"
+     x="1575.4131"
+     id="image4738"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4740"
+     x="1620.9717"
+     y="89.87307"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="153.58386"
+     x="1656.9202"
+     id="image4742"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4744"
+     x="1571.8539"
+     y="61.043053"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="105.17788"
+     x="1463.2963"
+     id="image4746"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4748"
+     x="1582.8876"
+     y="87.737511"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="158.56686"
+     x="1495.3296"
+     id="image4750"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4752"
+     x="1495.3296"
+     y="158.56686"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="-100.30436"
+     x="1627.4791"
+     id="image4754"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4756"
+     x="1627.4791"
+     y="-131.26993"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="-166.86258"
+     x="1673.0376"
+     id="image4758"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4760"
+     x="1708.9862"
+     y="-103.15177"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="-195.6926"
+     x="1623.9198"
+     id="image4762"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4764"
+     x="1515.3623"
+     y="-151.55777"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="-168.99814"
+     x="1634.9535"
+     id="image4766"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4768"
+     x="1547.3956"
+     y="-98.1688"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="-98.1688"
+     x="1547.3956"
+     id="image4770"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4772"
+     x="1581.9205"
+     y="-14.99607"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="-45.961647"
+     x="1581.9205"
+     id="image4774"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4776"
+     x="1627.4791"
+     y="-81.554359"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="-17.843481"
+     x="1663.4276"
+     id="image4778"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4780"
+     x="1578.3613"
+     y="-110.38438"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="-66.249489"
+     x="1469.8038"
+     id="image4782"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4784"
+     x="1589.395"
+     y="-83.689919"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="-12.860572"
+     x="1501.8372"
+     id="image4786"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4788"
+     x="1501.8372"
+     y="-12.860572"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="-14.99607"
+     x="1581.9205"
+     id="image4790"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4792"
+     x="1581.9205"
+     y="-45.961647"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="-81.554359"
+     x="1627.4791"
+     id="image4794"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4796"
+     x="1663.4276"
+     y="-17.843481"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="-110.38438"
+     x="1578.3613"
+     id="image4798"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4800"
+     x="1469.8038"
+     y="-66.249489"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="-83.689919"
+     x="1589.395"
+     id="image4802"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4804"
+     x="1501.8372"
+     y="-12.860572"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="-12.860572"
+     x="1501.8372"
+     id="image4806"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="697.77844"
+     x="350.17502"
+     id="image4920"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4922"
+     x="350.17502"
+     y="666.81287" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="631.22021"
+     x="395.73355"
+     id="image4924"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4926"
+     x="431.6821"
+     y="694.93103" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="602.3902"
+     x="346.61575"
+     id="image4928"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4930"
+     x="238.05826"
+     y="646.52502" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="629.08466"
+     x="357.64944"
+     id="image4932"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4934"
+     x="270.09158"
+     y="699.914" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="699.914"
+     x="270.09158"
+     id="image4936"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4938"
+     x="304.61649"
+     y="783.08667" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="752.12109"
+     x="304.61649"
+     id="image4940"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4942"
+     x="350.17502"
+     y="716.52844" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="780.23926"
+     x="386.12357"
+     id="image4944"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4946"
+     x="301.05722"
+     y="687.69843" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="731.83325"
+     x="192.49973"
+     id="image4948"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4950"
+     x="312.09091"
+     y="714.39288" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="785.22223"
+     x="224.53305"
+     id="image4952"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4954"
+     x="224.53305"
+     y="785.22223" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="783.08667"
+     x="304.61649"
+     id="image4956"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4958"
+     x="304.61649"
+     y="752.12109" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="716.52844"
+     x="350.17502"
+     id="image4960"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4962"
+     x="386.12357"
+     y="780.23926" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="687.69843"
+     x="301.05722"
+     id="image4964"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4966"
+     x="192.49973"
+     y="731.83325" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="714.39288"
+     x="312.09091"
+     id="image4968"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4970"
+     x="224.53305"
+     y="785.22223" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="785.22223"
+     x="224.53305"
+     id="image4972"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4974"
+     x="356.68253"
+     y="526.35101" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="495.38544"
+     x="356.68253"
+     id="image4976"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4978"
+     x="402.241"
+     y="459.79279" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="523.5036"
+     x="438.18961"
+     id="image4980"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4982"
+     x="353.1232"
+     y="430.96277" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="475.0976"
+     x="244.5657"
+     id="image4984"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4986"
+     x="364.15689"
+     y="457.65723" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="528.48657"
+     x="276.59903"
+     id="image4988"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4990"
+     x="276.59903"
+     y="528.48657" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="611.6593"
+     x="311.12393"
+     id="image4992"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4994"
+     x="311.12393"
+     y="580.69373" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="545.10101"
+     x="356.68253"
+     id="image4996"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image4998"
+     x="392.63101"
+     y="608.81189" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="516.271"
+     x="307.56473"
+     id="image5000"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image5002"
+     x="199.00723"
+     y="560.40588" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="542.96545"
+     x="318.59842"
+     id="image5004"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image5006"
+     x="231.04056"
+     y="613.7948" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="613.7948"
+     x="231.04056"
+     id="image5008"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image5010"
+     x="311.12393"
+     y="611.6593" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="580.69373"
+     x="311.12393"
+     id="image5012"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image5014"
+     x="356.68253"
+     y="545.10101" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="608.81189"
+     x="392.63101"
+     id="image5016"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image5018"
+     x="307.56473"
+     y="516.271" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="560.40588"
+     x="199.00723"
+     id="image5020"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image5022"
+     x="318.59842"
+     y="542.96545" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="613.7948"
+     x="231.04056"
+     id="image5024"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image5026"
+     x="231.04056"
+     y="613.7948" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image5028"
+     x="846.41083"
+     y="236.78668"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="205.82111"
+     x="846.41083"
+     id="image5030"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image5032"
+     x="891.9693"
+     y="170.22845"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="233.93927"
+     x="927.91791"
+     id="image5034"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image5036"
+     x="842.8515"
+     y="141.39842"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="185.53326"
+     x="734.29401"
+     id="image5038"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image5040"
+     x="853.88519"
+     y="168.0929"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="238.92224"
+     x="766.32733"
+     id="image5042"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image5044"
+     x="766.32733"
+     y="238.92224"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="322.09491"
+     x="800.85223"
+     id="image5046"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image5048"
+     x="800.85223"
+     y="291.12933"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="255.53668"
+     x="846.41083"
+     id="image5050"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image5052"
+     x="882.35931"
+     y="319.2475"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="226.70667"
+     x="797.29303"
+     id="image5054"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image5056"
+     x="688.73541"
+     y="270.84149"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="253.40112"
+     x="808.32672"
+     id="image5058"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image5060"
+     x="720.76874"
+     y="324.23047"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="324.23047"
+     x="720.76874"
+     id="image5062"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image5064"
+     x="800.85223"
+     y="322.09491"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="291.12933"
+     x="800.85223"
+     id="image5066"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image5068"
+     x="846.41083"
+     y="255.53668"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="319.2475"
+     x="882.35931"
+     id="image5070"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image5072"
+     x="797.29303"
+     y="226.70667"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="270.84149"
+     x="688.73541"
+     id="image5074"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image5076"
+     x="808.32672"
+     y="253.40112"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="324.23047"
+     x="720.76874"
+     id="image5078"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image5080"
+     x="720.76874"
+     y="324.23047"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="65.359261"
+     x="852.91827"
+     id="image5082"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image5084"
+     x="852.91827"
+     y="34.393681"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="-1.1989857"
+     x="898.47675"
+     id="image5086"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image5088"
+     x="934.42535"
+     y="62.511845"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="-30.029003"
+     x="849.35895"
+     id="image5090"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image5092"
+     x="740.80145"
+     y="14.105839"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="-3.3345449"
+     x="860.39264"
+     id="image5094"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image5096"
+     x="772.83478"
+     y="67.49482"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="67.49482"
+     x="772.83478"
+     id="image5098"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image5100"
+     x="807.35968"
+     y="150.66754"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="119.70194"
+     x="807.35968"
+     id="image5102"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image5104"
+     x="852.91827"
+     y="84.109261"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="147.82013"
+     x="888.86676"
+     id="image5106"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image5108"
+     x="803.80048"
+     y="55.27924"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="99.414101"
+     x="695.24298"
+     id="image5110"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image5112"
+     x="814.83417"
+     y="81.973701"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="152.80304"
+     x="727.27631"
+     id="image5114"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image5116"
+     x="727.27631"
+     y="152.80304"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="150.66754"
+     x="807.35968"
+     id="image5118"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image5120"
+     x="807.35968"
+     y="119.70194"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="84.109261"
+     x="852.91827"
+     id="image5122"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image5124"
+     x="888.86676"
+     y="147.82013"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="55.27924"
+     x="803.80048"
+     id="image5126"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image5128"
+     x="695.24298"
+     y="99.414101"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="81.973701"
+     x="814.83417"
+     id="image5130"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image5132"
+     x="727.27631"
+     y="152.80304"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="152.80304"
+     x="727.27631"
+     id="image5134"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="549.30334"
+     x="1269.3989"
+     id="image5136"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image5138"
+     x="1275.9064"
+     y="377.87589" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image5140"
+     x="691.37482"
+     y="950.78815" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="779.36072"
+     x="697.88226"
+     id="image5142"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image5144"
+     x="1196.2173"
+     y="339.44382"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="308.47824"
+     x="1196.2173"
+     id="image5146"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image5148"
+     x="1241.7758"
+     y="272.88559"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="336.59641"
+     x="1277.7244"
+     id="image5150"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image5152"
+     x="1192.658"
+     y="244.05559"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="288.1904"
+     x="1084.1005"
+     id="image5154"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image5156"
+     x="1203.6917"
+     y="270.75003"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="341.57938"
+     x="1116.1338"
+     id="image5158"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image5160"
+     x="1116.1338"
+     y="341.57938"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="424.75204"
+     x="1150.6587"
+     id="image5162"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image5164"
+     x="1150.6587"
+     y="393.78644"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="358.19382"
+     x="1196.2173"
+     id="image5166"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image5168"
+     x="1232.1658"
+     y="421.90463"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="329.3638"
+     x="1147.0995"
+     id="image5170"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image5172"
+     x="1038.5419"
+     y="373.49863"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="356.05826"
+     x="1158.1332"
+     id="image5174"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image5176"
+     x="1070.5752"
+     y="426.88763"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="426.88763"
+     x="1070.5752"
+     id="image5178"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image5180"
+     x="1150.6587"
+     y="424.75204"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="393.78644"
+     x="1150.6587"
+     id="image5182"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image5184"
+     x="1196.2173"
+     y="358.19382"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="421.90463"
+     x="1232.1658"
+     id="image5186"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image5188"
+     x="1147.0995"
+     y="329.3638"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="373.49863"
+     x="1038.5419"
+     id="image5190"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image5192"
+     x="1158.1332"
+     y="356.05826"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="426.88763"
+     x="1070.5752"
+     id="image5194"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image5196"
+     x="1070.5752"
+     y="426.88763"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="168.0164"
+     x="1202.7247"
+     id="image5198"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image5200"
+     x="1202.7247"
+     y="137.05083"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="101.45818"
+     x="1248.2832"
+     id="image5202"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image5204"
+     x="1284.2318"
+     y="165.16899"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="72.628166"
+     x="1199.1654"
+     id="image5206"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image5208"
+     x="1090.6079"
+     y="116.76299"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="99.322624"
+     x="1210.1991"
+     id="image5210"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image5212"
+     x="1122.6412"
+     y="170.15196"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="170.15196"
+     x="1122.6412"
+     id="image5214"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image5216"
+     x="1157.1661"
+     y="253.32469"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="222.35912"
+     x="1157.1661"
+     id="image5218"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image5220"
+     x="1202.7247"
+     y="186.7664"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="250.47728"
+     x="1238.6732"
+     id="image5222"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image5224"
+     x="1153.6069"
+     y="157.93639"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="202.07127"
+     x="1045.0494"
+     id="image5226"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image5228"
+     x="1164.6406"
+     y="184.63084"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="255.46019"
+     x="1077.0828"
+     id="image5230"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image5232"
+     x="1077.0828"
+     y="255.46019"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="253.32469"
+     x="1157.1661"
+     id="image5234"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image5236"
+     x="1157.1661"
+     y="222.35912"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="186.7664"
+     x="1202.7247"
+     id="image5238"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image5240"
+     x="1238.6732"
+     y="250.47728"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="157.93639"
+     x="1153.6069"
+     id="image5242"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image5244"
+     x="1045.0494"
+     y="202.07127"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="184.63084"
+     x="1164.6406"
+     id="image5246"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image5248"
+     x="1077.0828"
+     y="255.46019"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="255.46019"
+     x="1077.0828"
+     id="image5250"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     y="950.78815"
+     x="691.37482"
+     id="image5252"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image5254"
+     x="697.88226"
+     y="779.36072" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     y="339.44382"
+     x="1196.2173"
+     id="image5256"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image5258"
+     x="1196.2173"
+     y="308.47824" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     y="272.88559"
+     x="1241.7758"
+     id="image5260"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image5262"
+     x="1277.7244"
+     y="336.59641" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     y="244.05559"
+     x="1192.658"
+     id="image5264"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image5266"
+     x="1084.1005"
+     y="288.1904" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     y="270.75003"
+     x="1203.6917"
+     id="image5268"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image5270"
+     x="1116.1338"
+     y="341.57938" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     y="341.57938"
+     x="1116.1338"
+     id="image5272"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image5274"
+     x="1150.6587"
+     y="424.75204" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     y="393.78644"
+     x="1150.6587"
+     id="image5276"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image5278"
+     x="1196.2173"
+     y="358.19382" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     y="421.90463"
+     x="1232.1658"
+     id="image5280"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image5282"
+     x="1147.0995"
+     y="329.3638" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     y="373.49863"
+     x="1038.5419"
+     id="image5284"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image5286"
+     x="1158.1332"
+     y="356.05826" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     y="426.88763"
+     x="1070.5752"
+     id="image5288"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image5290"
+     x="1070.5752"
+     y="426.88763" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     y="424.75204"
+     x="1150.6587"
+     id="image5292"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image5294"
+     x="1150.6587"
+     y="393.78644" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     y="358.19382"
+     x="1196.2173"
+     id="image5296"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image5298"
+     x="1232.1658"
+     y="421.90463" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     y="329.3638"
+     x="1147.0995"
+     id="image5300"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image5302"
+     x="1038.5419"
+     y="373.49863" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     y="356.05826"
+     x="1158.1332"
+     id="image5304"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image5306"
+     x="1070.5752"
+     y="426.88763" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     y="426.88763"
+     x="1070.5752"
+     id="image5308"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image5310"
+     x="1202.7247"
+     y="168.0164" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     y="137.05083"
+     x="1202.7247"
+     id="image5312"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image5314"
+     x="1248.2832"
+     y="101.45818" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     y="165.16899"
+     x="1284.2318"
+     id="image5316"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image5318"
+     x="1199.1654"
+     y="72.628166" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     y="116.76299"
+     x="1090.6079"
+     id="image5320"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image5322"
+     x="1210.1991"
+     y="99.322624" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     y="170.15196"
+     x="1122.6412"
+     id="image5324"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image5326"
+     x="1122.6412"
+     y="170.15196" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     y="253.32469"
+     x="1157.1661"
+     id="image5328"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image5330"
+     x="1157.1661"
+     y="222.35912" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     y="186.7664"
+     x="1202.7247"
+     id="image5332"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image5334"
+     x="1238.6732"
+     y="250.47728" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     y="157.93639"
+     x="1153.6069"
+     id="image5336"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image5338"
+     x="1045.0494"
+     y="202.07127" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     y="184.63084"
+     x="1164.6406"
+     id="image5340"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image5342"
+     x="1077.0828"
+     y="255.46019" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     y="255.46019"
+     x="1077.0828"
+     id="image5344"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image5346"
+     x="1157.1661"
+     y="253.32469" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     y="222.35912"
+     x="1157.1661"
+     id="image5348"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image5350"
+     x="1202.7247"
+     y="186.7664" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     y="250.47728"
+     x="1238.6732"
+     id="image5352"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image5354"
+     x="1153.6069"
+     y="157.93639" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     y="202.07127"
+     x="1045.0494"
+     id="image5356"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image5358"
+     x="1164.6406"
+     y="184.63084" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     y="255.46019"
+     x="1077.0828"
+     id="image5360"
+     preserveAspectRatio="none"
+     height="18.75"
+     width="20" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/redball.png"
+     xlink:href="redball.png"
+     transform="matrix(0.88115121,0.47283458,-0.47283458,0.88115121,0,0)"
+     width="20"
+     height="18.75"
+     preserveAspectRatio="none"
+     id="image5362"
+     x="1077.0828"
+     y="255.46019" />
+  <image
+     sodipodi:absref="/home/laurens/github/legoswarm/position-server/test_images/robot2.png"
+     xlink:href="robot2.png"
+     y="281.6593"
+     x="311.12393"
+     id="image4187"
+     preserveAspectRatio="none"
+     height="330"
+     width="496.25" />
+</svg>
