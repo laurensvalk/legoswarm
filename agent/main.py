@@ -73,7 +73,7 @@ while True:
     #################################################################
 
     # Decompose stretch into forward and sideways force
-    forward_force, sideways_force = total_force
+    sideways_force, forward_force  = total_force
 
     logging.debug(str(time.time() - loopstart) + "Done spring calculations")
 

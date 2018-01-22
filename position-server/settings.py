@@ -7,8 +7,8 @@ settings = {
             'field_height': 1080,
             'field_width': 1920,
             'cm_per_px': 0.1,
-            'speed_per_unit_force': 0.2,
-            'turnrate_per_unit_force': 0.8,
+            'speed_per_unit_force': 1,
+            'turnrate_per_unit_force': 2,
             'bounding_box_cm' : [
                 # List of points in centimeters, encircling the robot
                 # Starting at left wheel, then go counterclockwise
@@ -32,13 +32,13 @@ settings = {
             #            /
             # ----------a                                    -20 (push when too close)
             # 
-            #          0      10     20      30      
+            #          0      20    160     200      
             # 
             #                                     
                 [0,  -20], #a
-                [10,  0 ], #b
-                [20,  15],#c
-                [30,  0 ]  #d
+                [20,  0 ], #b
+                [160,  15],#c
+                [200,  0 ]  #d
             ]                                     
 }
 
