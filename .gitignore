@@ -1,6 +1,9 @@
 ./dev/*
-.vscode*
+position-server/position_server_cam_old.py
 .idea*
+
+
+
 #################### Latex Ignore
 
 *~
