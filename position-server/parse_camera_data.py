@@ -22,8 +22,38 @@ def bounding_box(settings, midbase_marker, apex_marker):
     # Revert the indexing so this can be seen as a list of coordinates
     return (bounding_box_in_camera.T).astype(int)
 
-def make_data_for_robots(markers, balls, settings, robot_settings):
+def get_ball_info(H_to_bot_from_world, ball_locations, settings):
 
+    # Get transformation matrix from pixels to world frame
+    H_to_world_from_camera = transform_to_world_from_camera(settings)    
+
+    # Matrix of balls, in pixels
+    balls_pixels = np.array(ball_locations).T
+
+    # Matrix of balls, in world frame
+    balls_world = H_to_world_from_camera*balls_pixels
+
+    # Empty dictionary to fill during loop below
+    sorted_balls_in_agent_frames = {}
+    for (agent, transformation) in H_to_bot_from_world.items():
+        # Matrix of balls, transformed to the agent frame
+        balls_in_agent_frame = transformation*balls_world
+
+        # Scalar distance to the ball as seen from the current agent
+        distances = np.linalg.norm(balls_in_agent_frame, axis=0)
+        # Sort by distance
+        sorted_index = np.argsort(distances)
+
+        # Rebuild the array in order of distance
+        sorted_balls_in_agent_frames[agent] = [balls_in_agent_frame[:,index] for index in sorted_index]
+
+    # For each agent, return a sorted list of ball locations
+    return sorted_balls_in_agent_frames
+
+def get_wall_info(H_to_bot_from_world, field_corners, settings):
+    return 0
+
+def get_neighbor_info(markers, settings):
     # Determine who's who
     agents = markers.keys()
 
@@ -35,6 +65,9 @@ def make_data_for_robots(markers, balls, settings, robot_settings):
                                                           H_to_world_from_camera*midbase_marker, # Midbase marker in world
                                                           H_to_world_from_camera*apex_marker) # Apex marker in world
                             for i, [midbase_marker, apex_marker] in markers.items()}
+
+    # Precompute their inverses for later use
+    H_to_bot_from_world = {i: H_to_world_from_bot[i].inverse() for i in agents}                        
 
     # Empty dictionaries that will get an entry for each agent in the loop that follows
     # For each robot, it contains information about its neighbors, from its own point of view
@@ -52,7 +85,7 @@ def make_data_for_robots(markers, balls, settings, robot_settings):
         # Determine gripper location and other properties of everyone else in my reference frame
         for neighbor in neighbors:
             # Transformation from another robot, to my reference frame
-            H_to_me_from_neighbor = H_to_world_from_bot[me].inverse()@H_to_world_from_bot[neighbor]
+            H_to_me_from_neighbor = H_to_bot_from_world[me]@H_to_world_from_bot[neighbor]
             # Gripper location of other robot, in my reference frame:
             neighbor_info[me][neighbor]['gripper_location'] = H_to_me_from_neighbor*np.array(settings['p_bot_gripper'])
             # Scalar distance to that gripper
@@ -61,8 +94,23 @@ def make_data_for_robots(markers, balls, settings, robot_settings):
             # Check if that other gripper is in our "virtual" field of view
             neighbor_info[me][neighbor]['is_visible'] = True if distance < settings['sight_range'] else False
 
-    # TODO: Ball locations & distances
+    # Return computed results
+    return neighbor_info, H_to_bot_from_world
+
+
+def make_data_for_robots(markers, ball_locations, field_corners, settings, robot_settings):
+
+    # Information about the neighbors of each robot, in their own frame of reference
+    neighbor_info, H_to_bot_from_world = get_neighbor_info(markers, settings)
+
+    # Get the ball locations in each robot frame, sorted by distance from gripper
+    ball_info = get_ball_info(H_to_bot_from_world, ball_locations, settings)
+
+    # Get perpendicular lines to each wall in each robot frame of reference
+    wall_info = get_wall_info(H_to_bot_from_world, field_corners, settings)
 
     # Create data for returning
     return {'neighbor_info': neighbor_info,
+            'ball_info': ball_info,
+            'wall_info': wall_info,
             'robot_settings' : robot_settings}

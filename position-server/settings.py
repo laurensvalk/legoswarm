@@ -25,7 +25,7 @@ settings = {
             #                        / \
             #                      /     \
             #                    /         \ 
-            #                  b             d------------   0 (no force at at 10 cm or beyond 30)
+            #                  b             d------------   0 (no force at at 200 cm or beyond)
             #                /        
             #              / 
             #            /
@@ -38,7 +38,21 @@ settings = {
                 [30,  0 ], #b
                 [160,  15],#c
                 [200,  0 ]  #d
-            ]                                     
+            ],
+            'spring_to_walls' : [
+            #
+            #                  b ----------   0 (no force at at 10 cm or beyond)
+            #                /        
+            #              / 
+            #            /
+            # ----------a                    -20 (push when too close)
+            # 
+            #          0      30      
+            # 
+            #                                     
+                [0,  -20], #a
+                [30,  0 ], #b
+            ]                                      
 }
 
 # The robots don't need all the settings. They need just these (add more if needed):
