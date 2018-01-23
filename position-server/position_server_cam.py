@@ -10,7 +10,7 @@ import socket
 import logging
 from threading import Thread
 from platform import platform
-from settings import settings, robot_settings, WIDTH, HEIGHT, FILE, SERVER_ADDR, THRESHOLD
+from settings import settings, robot_settings, WIDTH, HEIGHT, FILE, SERVER_ADDR, THRESHOLD, PLAYING_FIELD_OFFSET
 from parse_camera_data import make_data_for_robots, bounding_box
 try:
     import cPickle as pickle
@@ -66,6 +66,8 @@ def pixel(img_grey, vector):
     else:
         return 0
 
+def unit_vector(vector):
+    return vector / vec_length(vector)
 
 def adjust_curve(image, factor=2.5):
     # build a lookup table mapping the pixel values [0, 255] to
@@ -131,7 +133,9 @@ if __name__ == '__main__':
 
         # Sift trough all contours for the largest rectangle
         img_grey, contours, hierarchy = cv2.findContours(img_grey, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
-        img = cv2.cvtColor(img_grey, cv2.COLOR_GRAY2BGR)
+
+        # Preview dilated image
+        # img = cv2.cvtColor(img_grey, cv2.COLOR_GRAY2BGR)
         largest = 0
         for c in contours:
             approx = cv2.approxPolyDP(c, cv2.arcLength(c, True) * 0.02, True)
@@ -146,7 +150,7 @@ if __name__ == '__main__':
         # Present the largest rectangle to the user
         cv2.drawContours(img, [playing_field], -1, (0, 255, 0), thickness=8)
         cv2.putText(img, "Press y if the playing field is detected, press n if not", (100, 500), cv2.FONT_HERSHEY_SIMPLEX, 2, (0,255,0), 4)
-        cv2.imshow("cam", img)
+
 
         # now that we have our playing field contour, we need to determine
         # the top-left, top-right, bottom-right, and bottom-left
@@ -170,9 +174,24 @@ if __name__ == '__main__':
         rect[1] = pts[np.argmin(diff)]
         rect[3] = pts[np.argmax(diff)]
 
+        # First offset the playing field to include a bit of the black border
+        offset_rect = np.zeros((4, 2), dtype="float32")
+        for i in range(4):
+            to_prev = rect[(i-1)] - rect[i]
+            to_next = rect[(i+1)%4] - rect[i]
+
+            # the vertex p is moved to p' along the line which halves the angle a between the vectors v1 and v2.
+            # The vector w in this direction is
+            w = unit_vector(to_prev) + unit_vector(to_next)
+
+            # The new point p' is
+            offset_rect[i] = rect[i] + PLAYING_FIELD_OFFSET * w
+
+        cv2.drawContours(img, [offset_rect.astype(int)], -1, (255, 0, 255), thickness=8)
+
         # now that we have our rectangle of points, let's compute
         # the width of our new image
-        (tl, tr, br, bl) = rect
+        (tl, tr, br, bl) = offset_rect
         widthA = np.sqrt(((br[0] - bl[0]) ** 2) + ((br[1] - bl[1]) ** 2))
         widthB = np.sqrt(((tr[0] - tl[0]) ** 2) + ((tr[1] - tl[1]) ** 2))
 
@@ -195,16 +214,30 @@ if __name__ == '__main__':
 
         # calculate the perspective transform matrix and warp
         # the perspective to grab the screen
-        M = cv2.getPerspectiveTransform(rect, dst)
+        M = cv2.getPerspectiveTransform(offset_rect, dst)
 
+        cv2.imshow("cam", img)
         # Wait for the 'k' key. Dont use ctrl-c !!!
         keypress = cv2.waitKey(10) & 0xFF
 
         if keypress == ord('y'):
             found_playing_field = True
+            field_corners = [
+                [-PLAYING_FIELD_OFFSET, -PLAYING_FIELD_OFFSET],
+                [-PLAYING_FIELD_OFFSET, maxWidth + PLAYING_FIELD_OFFSET - 1],
+                [maxWidth - 1 + PLAYING_FIELD_OFFSET, maxHeight - 1 + PLAYING_FIELD_OFFSET],
+                [maxWidth - 1 + PLAYING_FIELD_OFFSET, -PLAYING_FIELD_OFFSET]
+            ]
             break
         elif keypress == ord('n'):
             found_playing_field = False
+            field_corners = [
+                [0, 0],
+                [0, WIDTH],
+                [WIDTH, HEIGHT],
+                [HEIGHT,0]
+
+            ]
             break
 
     # Now we run the main image analysis loop, looking for balls and robots
@@ -342,7 +375,14 @@ if __name__ == '__main__':
         # Found all robots, now let's detect balls.
         balls = []
 
-        # Now all robots are blacked out let's look for contours again.
+        # First erase the borders
+        if found_playing_field:
+            cv2.polylines(img_grey,
+                          np.array([[[0,0],[img_width,0],[img_width,img_height],[0,img_height]]]),
+                          True,
+                          255,
+                          thickness=abs(PLAYING_FIELD_OFFSET)*2)
+        # Now all robots & border are blacked out let's look for contours again.
         img_grey, contours, tree = cv2.findContours(img_grey, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
         for c in contours:
             c, r = cv2.minEnclosingCircle(c)
@@ -355,6 +395,7 @@ if __name__ == '__main__':
         data_to_transmit = make_data_for_robots(robot_markers, balls, settings, robot_settings)
 
         # Show all calculations in the preview window
+        # img = cv2.cvtColor(img_grey, cv2.COLOR_GRAY2BGR)
         cv2.imshow("cam", img)
 
         # Wait for the 'q' key. Dont use ctrl-c !!!
