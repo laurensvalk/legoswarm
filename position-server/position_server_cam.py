@@ -10,6 +10,9 @@ import socket
 import logging
 from threading import Thread
 from platform import platform
+
+from antoncv import adjust_curve, find_largest_n_side, sorted_rect, offset_convex_polygon
+from linalg import atan2_vec, vec_length
 from settings import settings, robot_settings, WIDTH, HEIGHT, FILE, SERVER_ADDR, THRESHOLD, PLAYING_FIELD_OFFSET
 from parse_camera_data import make_data_for_robots, bounding_box
 try:
@@ -44,41 +47,6 @@ logging.basicConfig(#filename='position_server.log',     # To a file. Or not.
                     datefmt='%H:%M:%S',
                     level=logging.INFO, )              # Log info, and warning
 
-
-### Helper functions ###
-def atan2_vec(vector):
-    """
-    Angle relative to horizontal axis. With vectors where the Y axis pointing down.
-    A turn to the left is positive.
-    :param vector:
-    :return:
-    """
-    return -np.arctan2(vector[1], vector[0])
-
-
-def vec_length(vector):
-    return np.dot(vector, vector)**0.5
-
-
-def pixel(img_grey, vector):
-    if img_grey[vector[1], vector[0]]:
-        return 1
-    else:
-        return 0
-
-def unit_vector(vector):
-    return vector / vec_length(vector)
-
-def adjust_curve(image, factor=2.5):
-    # build a lookup table mapping the pixel values [0, 255] to
-    # their steepened curve values
-    table = np.array([min(255, i*factor)
-                      for i in np.arange(0, 256)]).astype("uint8")
-
-    # apply gamma correction using the lookup table
-    return cv2.LUT(image, table)
-
-
 ### UDP Server thread(s) ###
 
 class SocketThread(Thread):
@@ -87,7 +55,7 @@ class SocketThread(Thread):
         self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self.server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         self.server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
-        logging.info("Position server started on UDP {0}".format(SERVER_ADDR))
+        logging.info("Position broadcast started on UDP {0}".format(SERVER_ADDR))
         Thread.__init__(self)
 
     def run(self):
@@ -112,6 +80,7 @@ class SocketThread(Thread):
 
 ### Start it all up ###
 
+
 if __name__ == '__main__':
     socket_server = SocketThread()
     socket_server.start()
@@ -125,67 +94,21 @@ if __name__ == '__main__':
         else:
             img = cv2.imread(FILE)
 
-        # Find edges
-        img_grey = cv2.Canny(img, 80, 180)
+        img_grey, playing_field = find_largest_n_side(img, sides=4)
 
-        # Enlarge edges
-        img_grey = cv2.dilate(img_grey, np.ones((3,3)))
-
-        # Sift trough all contours for the largest rectangle
-        img_grey, contours, hierarchy = cv2.findContours(img_grey, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
-
-        # Preview dilated image
+        # Optionally review edge-finding image
         # img = cv2.cvtColor(img_grey, cv2.COLOR_GRAY2BGR)
-        largest = 0
-        for c in contours:
-            approx = cv2.approxPolyDP(c, cv2.arcLength(c, True) * 0.02, True)
-            if len(approx) == 4:
-                # It has four corners, it must be a rectangle!
-                area = cv2.contourArea(approx)
-                if area > largest:
-                    playing_field = approx
-                    largest = area
-                    cv2.drawContours(img, [approx], -1, (255,0,255))
 
         # Present the largest rectangle to the user
         cv2.drawContours(img, [playing_field], -1, (0, 255, 0), thickness=8)
         cv2.putText(img, "Press y if the playing field is detected, press n if not", (100, 500), cv2.FONT_HERSHEY_SIMPLEX, 2, (0,255,0), 4)
 
-
         # now that we have our playing field contour, we need to determine
         # the top-left, top-right, bottom-right, and bottom-left
-        # points so that we can later warp the image -- we'll start
-        # by reshaping our contour to be our finals and initializing
-        # our output rectangle in top-left, top-right, bottom-right,
-        # and bottom-left order
-        pts = playing_field.reshape(4, 2)
-        rect = np.zeros((4, 2), dtype="float32")
+        # points so that we can later warp the image
+        rect = sorted_rect(playing_field)
 
-        # the top-left point has the smallest sum whereas the
-        # bottom-right has the largest sum
-        s = pts.sum(axis=1)
-        rect[0] = pts[np.argmin(s)]
-        rect[2] = pts[np.argmax(s)]
-
-        # compute the difference between the points -- the top-right
-        # will have the minumum difference and the bottom-left will
-        # have the maximum difference
-        diff = np.diff(pts, axis=1)
-        rect[1] = pts[np.argmin(diff)]
-        rect[3] = pts[np.argmax(diff)]
-
-        # First offset the playing field to include a bit of the black border
-        offset_rect = np.zeros((4, 2), dtype="float32")
-        for i in range(4):
-            to_prev = rect[(i-1)] - rect[i]
-            to_next = rect[(i+1)%4] - rect[i]
-
-            # the vertex p is moved to p' along the line which halves the angle a between the vectors v1 and v2.
-            # The vector w in this direction is
-            w = unit_vector(to_prev) + unit_vector(to_next)
-
-            # The new point p' is
-            offset_rect[i] = rect[i] + PLAYING_FIELD_OFFSET * w
+        offset_rect = offset_convex_polygon(rect, PLAYING_FIELD_OFFSET)
 
         cv2.drawContours(img, [offset_rect.astype(int)], -1, (255, 0, 255), thickness=8)
 
@@ -302,7 +225,7 @@ if __name__ == '__main__':
                     c = approx[2][0]
 
                     # Now lets find the middle of the base of the triangle and the apex.
-                    lengths = [vec_length(a-b), vec_length(b-c), vec_length(a-c)]
+                    lengths = [vec_length(a - b), vec_length(b - c), vec_length(a - c)]
                     shortest = min(lengths)
                     shortest_idx = lengths.index(shortest)
                     if shortest_idx == 0:
