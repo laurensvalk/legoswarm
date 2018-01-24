@@ -11,7 +11,7 @@ import logging
 from threading import Thread
 from platform import platform
 
-from antoncv import adjust_curve, find_largest_n_side, sorted_rect, offset_convex_polygon
+from antoncv import adjust_curve, find_largest_n_side, sorted_rect, offset_convex_polygon, rect_from_image_size
 from linalg import atan2_vec, vec_length
 from settings import settings, robot_settings, WIDTH, HEIGHT, FILE, SERVER_ADDR, THRESHOLD, PLAYING_FIELD_OFFSET
 from parse_camera_data import make_data_for_robots, bounding_box
@@ -79,8 +79,6 @@ class SocketThread(Thread):
 
 
 ### Start it all up ###
-
-
 if __name__ == '__main__':
     socket_server = SocketThread()
     socket_server.start()
@@ -129,11 +127,7 @@ if __name__ == '__main__':
 
         # construct our destination points which will be used to
         # map the screen to a top-down, "birds eye" view
-        dst = np.array([
-            [0, 0],
-            [maxWidth - 1, 0],
-            [maxWidth - 1, maxHeight - 1],
-            [0, maxHeight - 1]], dtype="float32")
+        dst = rect_from_image_size(maxWidth - 1, maxHeight - 1)
 
         # calculate the perspective transform matrix and warp
         # the perspective to grab the screen
@@ -145,22 +139,11 @@ if __name__ == '__main__':
 
         if keypress == ord('y'):
             found_playing_field = True
-            field_corners = [
-                [-PLAYING_FIELD_OFFSET, -PLAYING_FIELD_OFFSET],
-                [-PLAYING_FIELD_OFFSET, maxWidth + PLAYING_FIELD_OFFSET - 1],
-                [maxWidth - 1 + PLAYING_FIELD_OFFSET, maxHeight - 1 + PLAYING_FIELD_OFFSET],
-                [maxWidth - 1 + PLAYING_FIELD_OFFSET, -PLAYING_FIELD_OFFSET]
-            ]
+            field_corners = offset_convex_polygon(dst, -PLAYING_FIELD_OFFSET)
             break
         elif keypress == ord('n'):
             found_playing_field = False
-            field_corners = [
-                [0, 0],
-                [0, WIDTH],
-                [WIDTH, HEIGHT],
-                [HEIGHT,0]
-
-            ]
+            field_corners = rect_from_image_size(WIDTH, HEIGHT)
             break
 
     # Now we run the main image analysis loop, looking for balls and robots

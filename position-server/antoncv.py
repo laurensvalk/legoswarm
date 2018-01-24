@@ -93,3 +93,11 @@ def offset_convex_polygon(polygon, offset):
         offset_polygon[i] = polygon[i] + offset * w
 
     return offset_polygon
+
+
+def rect_from_image_size(width, height):
+    return np.array([
+        [0, 0],
+        [width, 0],
+        [width, height],
+        [0, height]], dtype="float32")
