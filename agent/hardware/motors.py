@@ -48,7 +48,7 @@ class Picker(Motor):
 
     @property
     def beak_position(self):
-        return self.position*self.motor_deg_per_picker_deg
+        return self.position/self.motor_deg_per_picker_deg
 
     @property
     def is_open(self):
@@ -56,7 +56,7 @@ class Picker(Motor):
 
     @property
     def is_at_store(self):
-        print(self.STORE, self.tolerance, self.beak_position)
+        # print(self.STORE, self.tolerance, self.beak_position)
         return self.STORE - self.tolerance < self.beak_position < self.STORE + self.tolerance
 
     @property
