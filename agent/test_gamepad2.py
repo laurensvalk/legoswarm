@@ -25,7 +25,7 @@ ballsensor = BallSensor('in4')
 print("Engines running!")
 while True:
     # Autopicker
-    if ballsensor.check_ball() and not picker.is_running:
+    if ballsensor.ball_detected() and not picker.is_running:
         picker.go_to_target(picker.STORE)
 
     # Close after storing
