@@ -29,7 +29,7 @@ class CameraUDP(Thread):
         self.running = False
 
     def get_data(self):
-        if time.time() > self.data_timestamp + self.DECAY:
+        if self.robot_broadcast_data and time.time() > self.data_timestamp + self.DECAY:
             self.robot_broadcast_data = {}
         return self.robot_broadcast_data
 
