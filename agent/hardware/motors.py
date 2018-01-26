@@ -23,7 +23,7 @@ class Picker(Motor):
     # Target positions for the gripper (degrees). 0 corresponds to the gripper all the way open
     OPEN = 40
     CLOSED = 130
-    STORE = 255
+    STORE = 270
     PURGE = 287
 
     # Speed and tolerance parameters
