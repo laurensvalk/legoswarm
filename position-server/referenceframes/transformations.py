@@ -2,7 +2,7 @@
 # Copyright (c) 2017 Laurens Valk <laurensvalk@gmail.com>
 # -----------------------------------------------------------------------------
 
-from numpy import ndarray, array, append, zeros, ones
+from numpy import ndarray, array, append, zeros, ones, eye
 from numpy.linalg import det
 
 ROW, COL = 0, 1
@@ -12,6 +12,10 @@ class Transformation:
 
     # 2D vectors
     dimension = 2
+
+    # Default rotation and translation: None
+    no_translation = zeros(dimension)
+    no_rotation = eye(dimension)
 
     # Bottom row is 0 0 1 for 2D or 0 0 0 1 for 3D
     __bottom_row = append(zeros(dimension),1).reshape((1, -1))
@@ -67,7 +71,7 @@ class Transformation:
         return rotation, translation, scaling 
 
 
-    def __init__(self, rotation = None, translation = None, scaling=1, matrix = None):
+    def __init__(self, rotation=no_rotation, translation=no_translation, scaling=1, matrix=None):
         """Store translation and rotation"""
         if matrix is None:
             # Store rotation, translation, and scaling if supplied as arguments, and make matrix
