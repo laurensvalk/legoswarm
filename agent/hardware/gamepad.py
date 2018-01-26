@@ -94,7 +94,8 @@ class PS3GamePad(Thread):
 
     def run(self):
         for event in self.gamepad.read_loop():  # this loops infinitely
-            # print("Event: event type {0}, even code {1}, event value {2}".format(event.type, event.code, event.value))
+            if event.type == self.STICKS:
+                print("Event: event type {0}, even code {1}, event value {2}".format(event.type, event.code, event.value))
             if event.type == self.BUTTONS:
                 if event.value == self.DOWN:
                     result = self.PRESSED
