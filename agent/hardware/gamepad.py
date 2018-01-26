@@ -108,6 +108,7 @@ class PS3GamePad(Thread):
                 print("Keyerror: event type {0}, even code {1}, event value {2}".format(event.type,event.code,result))
             if not self.running:
                 break
+            time.sleep(0.015)
 
     def __del__(self):
         self.running = False
