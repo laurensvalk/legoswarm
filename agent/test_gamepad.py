@@ -10,7 +10,7 @@ from hardware.sensors import BallSensor
 import threading
 import time
 
-MAX_SPEED = 40  # cm per s
+MAX_SPEED = 20  # cm per s
 MIN_SPEED = 3
 MAX_TURNRATE = 80  # deg per s
 MIN_TURNRATE = 4
@@ -64,12 +64,12 @@ class MotorThread(threading.Thread):
         while running:
             # Autopicker
             if self.ballsensor.ball_detected() and not self.picker.is_running:
-                print(self.picker.is_running)
+                # print(self.picker.is_running)
                 self.picker.go_to_target(self.picker.STORE)
 
             # Close after storing
             if self.picker.is_at_store:
-                print("at store")
+                # print("at store")
                 self.picker.go_to_target(self.picker.OPEN)
 
             # if cross_btn:
@@ -102,7 +102,7 @@ if __name__ == "__main__":
         if event.type == 3: #A stick is moved
 
             if event.code == 2: #X axis on right stick
-                turn_rate = scale(event.value, (255, 0), (-MAX_TURNRATE, MAX_TURNRATE))
+                turn_rate = scale(event.value, (255, 0), (MAX_TURNRATE, -MAX_TURNRATE))
                 if -MIN_TURNRATE < turn_rate < MIN_TURNRATE: turn_rate = 0
 
 
