@@ -40,7 +40,6 @@ while True:
         picker.go_to_target(picker.STORE)
     if gamepad.square_btn:
         break
-    picker.run()
     base.drive_and_turn(fwd_speed, turn_rate)
 
     # Give the Ev3 some time to handle other threads.
