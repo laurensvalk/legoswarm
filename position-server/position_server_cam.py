@@ -318,6 +318,10 @@ if __name__ == '__main__':
         else:
             n -= 1
 
+        # Don't run so often while debugging
+        if 'Ubuntu' in platform():
+            time.sleep(2)   
+
     # User has hit q. Time to clean up.
     running = False
     if not FILE:

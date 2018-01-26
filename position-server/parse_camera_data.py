@@ -93,8 +93,12 @@ def get_wall_info(H_to_bot_from_world, field_corners, settings):
     wall_info = {}
     for (agent, transformation) in H_to_bot_from_world.items():
 
+        # Corners as seen by the agent
+        corners_agent = transformation*corners_world
+
         # Extract the corner points
-        A, B, C, D = corners_world.T
+        A_agent, B_agent, C_agent, D_agent = corners_agent.T
+        A_world, B_world, C_world, D_world = corners_world.T
 
         # Location of my gripper in the world frame
         my_gripper_world = transformation.inverse()*my_gripper
@@ -103,17 +107,17 @@ def get_wall_info(H_to_bot_from_world, field_corners, settings):
         X, Y = 0, 1
 
         # Distances
-        distance_to_top = (A[Y]+B[Y])/2 - my_gripper_world[Y]
-        distance_to_bottom = my_gripper_world[Y] - (C[Y]+D[Y])/2
-        distance_to_left = my_gripper_world[X] - (A[X]+D[X])/2
-        distance_to_right = (B[X]+C[X])/2 - my_gripper_world[X]
+        distance_to_top = (A_world[Y]+B_world[Y])/2 - my_gripper_world[Y]
+        distance_to_bottom = my_gripper_world[Y] - (C_world[Y]+D_world[Y])/2
+        distance_to_left = my_gripper_world[X] - (A_world[X]+D_world[X])/2
+        distance_to_right = (B_world[X]+C_world[X])/2 - my_gripper_world[X]
 
         # Distances as tuple
         distances = (distance_to_top, distance_to_bottom, distance_to_left, distance_to_right)
 
         # Lines e and f in agent frames, as unit vectors
-        world_x = (B - A)/np.linalg.norm(B-A) 
-        world_y = (C - B)/np.linalg.norm(C-B) 
+        world_x = (B_agent - A_agent)/np.linalg.norm(B_agent-A_agent) 
+        world_y = (B_agent - C_agent)/np.linalg.norm(B_agent-C_agent) 
 
         # Store information as dictionary for this agent
         wall_info[agent] = {'distances': distances, 'world_x' : world_x, 'world_y': world_y}

@@ -60,6 +60,7 @@ settings = {
 robot_keys = ['speed_per_unit_force',
               'turnrate_per_unit_force',
               'spring_between_robots',
+              'spring_to_walls',
               'p_bot_gripper']
 
 # Create the settings dictionary with the above items
