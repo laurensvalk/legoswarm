@@ -56,6 +56,7 @@ class Picker(Motor):
 
     @property
     def is_at_store(self):
+        print(self.STORE, self.tolerance, self.beak_position)
         return self.STORE - self.tolerance < self.beak_position < self.STORE + self.tolerance
 
     @property

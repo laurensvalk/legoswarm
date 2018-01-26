@@ -64,10 +64,12 @@ class MotorThread(threading.Thread):
         while running:
             # Autopicker
             if self.ballsensor.ball_detected() and not self.picker.is_running:
+                print(self.picker.is_running)
                 self.picker.go_to_target(self.picker.STORE)
 
             # Close after storing
             if self.picker.is_at_store:
+                print("at store")
                 self.picker.go_to_target(self.picker.OPEN)
 
             # if cross_btn:
