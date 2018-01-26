@@ -106,7 +106,7 @@ while True:
         speed = forward_force * robot_settings['speed_per_unit_force']
         turnrate = sideways_force * robot_settings['turnrate_per_unit_force']
 
-    if state in (FLOCKING, SEEK_BALL):
+    if state in (SEEK_BALL,):
         # Check for balls
         if ballsensor.ball_detected():
             logging.debug('ball detected')
