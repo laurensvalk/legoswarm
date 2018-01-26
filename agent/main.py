@@ -89,9 +89,9 @@ while True:
 
         total_force = np.array([0, 0])
         for neighbor in neighbors:
-            neighbor_gripper = neighbor_info[neighbor]['center_location']
-            spring_attachment = neighbor_gripper - np.array(robot_settings['p_bot_gripper'])
-            total_force = total_force + spring_between_robots.get_force_vector(spring_attachment)
+            neighbor_center = neighbor_info[neighbor]['center_location']
+            spring_extension = neighbor_center - my_gripper
+            total_force = total_force + spring_between_robots.get_force_vector(spring_extension)
 
         #################################################################
         ###### Actuation based on processed data
