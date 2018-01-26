@@ -51,6 +51,7 @@ def get_ball_info(H_to_bot_from_world, ball_locations, settings):
     return sorted_balls_in_agent_frames
 
 def get_wall_info(H_to_bot_from_world, field_corners, settings):
+    # In progress
     return 0
 
 def get_neighbor_info(markers, settings):
