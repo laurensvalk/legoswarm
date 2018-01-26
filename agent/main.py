@@ -46,6 +46,7 @@ EXIT = 11
 
 state = FLOCKING
 
+no_force = np.array([0, 0])
 
 #################################################################
 ###### At every time step, read camera data, process it,
@@ -69,9 +70,13 @@ while True:
         neighbors = neighbor_info.keys()
         my_gripper = np.array(robot_settings['p_bot_gripper'])
 
+        # Check how many balls are near me
+        number_of_balls = len(ball_info)
+        
         # Unpack spring characteristics
         spring_between_robots = Spring(robot_settings['spring_between_robots'])
-        spring_to_walls = Spring(robot_settings['spring_to_walls'])        
+        spring_to_walls = Spring(robot_settings['spring_to_walls'])   
+        spring_to_balls = Spring(robot_settings['spring_to_balls'])   
 
     except:
         # Stop the loop if we're unable to get server data
@@ -91,7 +96,7 @@ while True:
         ###### Process Neighbor info
         #################################################################
 
-        total_force = np.array([0, 0])
+        total_force = no_force
         for neighbor in neighbors:
             neighbor_center = neighbor_info[neighbor]['center_location']
             spring_extension = neighbor_center - my_gripper
@@ -123,6 +128,11 @@ while True:
         ###### Process Ball info
         #################################################################            
                 
+        if number_of_balls > 0:
+            nearest_ball = ball_info[0]
+            ball_force = spring_to_balls.get_force_vector(nearest_ball)
+        else:
+            ball_force = no_force
 
         #################################################################
         ###### Actuation based on processed data

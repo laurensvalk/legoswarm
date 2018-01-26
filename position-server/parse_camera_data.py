@@ -37,7 +37,7 @@ def get_ball_info(H_to_bot_from_world, ball_locations, settings):
     H_to_gripper_from_bot = transform_to_gripper_from_bot(settings)
 
     # Empty dictionary to fill during loop below
-    sorted_balls_in_agent_frames = {}
+    sorted_balls_relative_to_gripper = {}
     for (agent, transformation) in H_to_bot_from_world.items():
         # Matrix of balls, transformed to the agent frame
         balls_relative_to_gripper = (H_to_gripper_from_bot@transformation)*balls_world
@@ -56,10 +56,10 @@ def get_ball_info(H_to_bot_from_world, ball_locations, settings):
             sorted_index = sorted_index[0:max_balls_send]
 
         # Rebuild the array in order of distance
-        sorted_balls_in_agent_frames[agent] = [balls_relative_to_gripper[:,index] for index in sorted_index]
+        sorted_balls_relative_to_gripper[agent] = [balls_relative_to_gripper[:,index] for index in sorted_index]
 
     # For each agent, return a sorted list of ball locations
-    return sorted_balls_in_agent_frames
+    return sorted_balls_relative_to_gripper
 
 def get_wall_info(H_to_bot_from_world, field_corners, settings):
     #               world x
@@ -185,8 +185,6 @@ def make_data_for_robots(markers, ball_locations, field_corners, settings, robot
 
     # Get the ball locations in each robot frame, sorted by distance from gripper
     ball_info = get_ball_info(H_to_bot_from_world, ball_locations, settings)
-    if len(ball_info) > 5:
-        ball_info = ball_info[:5]
 
     # Get perpendicular lines to each wall in each robot frame of reference
     wall_info = get_wall_info(H_to_bot_from_world, field_corners, settings)

@@ -53,6 +53,20 @@ settings = {
             #                                     
                 [0,  -20], #a
                 [30,  0 ], #b
+            ],
+            'spring_to_balls' : [
+            #
+            # -------a                        10  (Pull when nearer than 5)          
+            #         \
+            #          \
+            #           \
+            #            b-----------         0   (no force at at 10 cm or beyond)
+            # 
+            #        5   10      
+            # 
+            #                                     
+                [5 ,  10], #a
+                [200,  0 ], #b                
             ]                                      
 }
 
@@ -61,6 +75,7 @@ robot_keys = ['speed_per_unit_force',
               'turnrate_per_unit_force',
               'spring_between_robots',
               'spring_to_walls',
+              'spring_to_balls',
               'p_bot_gripper']
 
 # Create the settings dictionary with the above items
