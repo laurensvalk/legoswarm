@@ -1,4 +1,4 @@
-from .compat_device import CompatInfraredSensor
+from .compat_device import CompatInfraredSensor, CompatPowerSupply
 import time
 from collections import deque
 
@@ -35,6 +35,16 @@ class BallSensor(CompatInfraredSensor):
            return True
         else:
            return False
+
+
+class Battery(CompatPowerSupply):
+    def __init__(self):
+        CompatPowerSupply.__init__(self)
+
+    @property
+    def voltage(self):
+        return self.measured_volts
+
 
 class RemoteControl(CompatInfraredSensor):
     """Configures IR Sensor as IR Receiver and reads IR button status"""

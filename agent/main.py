@@ -5,7 +5,7 @@ import numpy as np
 import time
 import logging
 from hardware.motors import Motor, DriveBase, Picker
-from hardware.sensors import BallSensor
+from hardware.sensors import BallSensor, Battery
 from springs import Spring
 
 #################################################################
@@ -32,6 +32,7 @@ base = DriveBase(left=('outC', Motor.POLARITY_INVERSED),
                  wheel_span=12,
                  counter_clockwise_is_positive=False) 
 picker = Picker('outA')
+battery = Battery()
 
 # States
 FLOCKING = 0
