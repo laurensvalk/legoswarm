@@ -58,7 +58,7 @@ while True:
         # Unpack some useful data from the information we received
         neighbors = neighbor_info.keys()
         spring_between_robots = Spring(robot_settings['spring_between_robots'])
-        my_gripper = settings['p_bot_gripper']
+        my_gripper = robot_settings['p_bot_gripper']
     except:
         # Stop the loop if we're unable to get server data
         logging.warning("No data or the camera didn't see me. Waiting 1s")
