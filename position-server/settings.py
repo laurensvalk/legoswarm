@@ -79,4 +79,4 @@ FILE = '' #"test_images/1516199702.jpg" #"test_images/test.jpg" # 1920 x 1080 af
 import platform
 if 'Ubuntu' in platform.platform():
     print('Laurens Mode')
-    FILE = 'test_images/test_collison_avoidance.png'
+    FILE = 'test_images/test_collison_avoidance_with_close_ball.png'

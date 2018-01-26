@@ -1,5 +1,5 @@
 import numpy as np
-from robot_frames import transform_to_world_from_camera, transform_to_world_from_bot
+from robot_frames import transform_to_world_from_camera, transform_to_world_from_bot, transform_to_gripper_from_bot
 
 def bounding_box(settings, midbase_marker, apex_marker):
     """Convert marker midbase and apex pixel location into bounding box, in pixels"""
@@ -33,14 +33,17 @@ def get_ball_info(H_to_bot_from_world, ball_locations, settings):
     # Matrix of balls, in world frame
     balls_world = H_to_world_from_camera*balls_pixels
 
+    # Transformation from base frame to frame at gripper
+    H_to_gripper_from_bot = transform_to_gripper_from_bot(settings)
+
     # Empty dictionary to fill during loop below
     sorted_balls_in_agent_frames = {}
     for (agent, transformation) in H_to_bot_from_world.items():
         # Matrix of balls, transformed to the agent frame
-        balls_in_agent_frame = transformation*balls_world
+        balls_relative_to_gripper = (H_to_gripper_from_bot@transformation)*balls_world
 
         # Scalar distance to the ball as seen from the current agent
-        distances = np.linalg.norm(balls_in_agent_frame, axis=0)
+        distances = np.linalg.norm(balls_relative_to_gripper, axis=0)
         # Sort by distance
         sorted_index = np.argsort(distances)
         n_balls_found = len(sorted_index)
@@ -53,7 +56,7 @@ def get_ball_info(H_to_bot_from_world, ball_locations, settings):
             sorted_index = sorted_index[0:max_balls_send]
 
         # Rebuild the array in order of distance
-        sorted_balls_in_agent_frames[agent] = [balls_in_agent_frame[:,index] for index in sorted_index]
+        sorted_balls_in_agent_frames[agent] = [balls_relative_to_gripper[:,index] for index in sorted_index]
 
     # For each agent, return a sorted list of ball locations
     return sorted_balls_in_agent_frames
