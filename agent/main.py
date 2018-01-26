@@ -33,6 +33,10 @@ base = DriveBase(left=('outC', Motor.POLARITY_INVERSED),
                  counter_clockwise_is_positive=False) 
 picker = Picker('outA')
 
+# States
+AVOIDANCE = 0
+
+
 #################################################################
 ###### At every time step, read camera data, process it,
 ###### and steer robot accordingly

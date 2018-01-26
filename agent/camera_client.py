@@ -12,6 +12,8 @@ except:
     import pickle
 
 class CameraUDP(Thread):
+    DECAY = 1  # seconds
+
     def __init__(self, port=50008):
         ### Initialize ###
         self.port = port
@@ -21,6 +23,7 @@ class CameraUDP(Thread):
         ### Create a socket ###
         self.s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self.s.bind(('', self.port))
+        self.data_timestamp = 0
         Thread.__init__(self)
         print("Started thread")
 
@@ -29,6 +32,8 @@ class CameraUDP(Thread):
         self.runnning = False
 
     def get_data(self):
+        if time.time() > self.data_timestamp + self.DECAY:
+            self.robot_broadcast_data = {}
         return self.robot_broadcast_data
 
     ### Get robot positions from server ###
@@ -52,6 +57,7 @@ class CameraUDP(Thread):
             try:
                 data, server = self.s.recvfrom(2048)
                 self.robot_broadcast_data = pickle.loads(data)
+                self.data_timestamp = time.time()
             except:
                 e = sys.exc_info()[0]
                 logging.warning(e)
