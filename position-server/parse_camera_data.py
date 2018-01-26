@@ -91,7 +91,7 @@ def get_neighbor_info(markers, settings):
             neighbor_info[me][neighbor]['gripper_location'] = H_to_me_from_neighbor*np.array(settings['p_bot_gripper'])
             # Scalar distance to that gripper
             distance = np.linalg.norm(neighbor_info[me][neighbor]['gripper_location'])
-            neighbor_info[me][neighbor]['gripper_distance'] = distance
+            # neighbor_info[me][neighbor]['gripper_distance'] = distance
 
             # Also calculate center localtion
             neighbor_info[me][neighbor]['center_location'] = H_to_me_from_neighbor * np.array([0, 0])
@@ -113,6 +113,8 @@ def make_data_for_robots(markers, ball_locations, field_corners, settings, robot
 
     # Get the ball locations in each robot frame, sorted by distance from gripper
     ball_info = get_ball_info(H_to_bot_from_world, ball_locations, settings)
+    if len(ball_info) > 5:
+        ball_info = ball_info[:5]
 
     # Get perpendicular lines to each wall in each robot frame of reference
     wall_info = get_wall_info(H_to_bot_from_world, field_corners, settings)

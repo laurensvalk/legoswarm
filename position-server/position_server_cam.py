@@ -141,6 +141,7 @@ if __name__ == '__main__':
 
             found_playing_field = True
             field_corners = offset_convex_polygon(dst, -PLAYING_FIELD_OFFSET)
+            # field_corners = rect
             break
 
         elif keypress == ord('n'):
@@ -152,17 +153,23 @@ if __name__ == '__main__':
     n = 100             # Number of loops to wait for time calculation
     t = time.time()     # Starttime for calculation
     while True:
+        lt = time.time()
+        logging.debug("Loop start: {0}".format(time.time()-lt))
         if not FILE:
             ok, img = cap.read()
             if not ok:
                 continue  # and try again.
         else:
             img = cv2.imread(FILE)
+
+        logging.debug("Got image: {0}".format(time.time() - lt))
         if found_playing_field:
             img = cv2.warpPerspective(img, M, (maxWidth, maxHeight))
+            logging.debug("Image warped: {0}".format(time.time() - lt))
 
         robot_markers = {}
         img_grey, triangles = find_nested_triangles(img)
+        logging.debug("Got triangles: {0}".format(time.time() - lt))
 
         # img = cv2.cvtColor(img_grey, cv2.COLOR_GRAY2BGR)
 
@@ -256,6 +263,10 @@ if __name__ == '__main__':
                           True,
                           255,
                           thickness=abs(PLAYING_FIELD_OFFSET)*2+4)
+            # mask = np.zeros((img_height, img_width), dtype=np.uint8)
+            # cv2.fillConvexPoly(mask, field_corners.astype(int), 255)
+            # cv2.bitwise_not(mask, dst=mask)
+            # cv2.bitwise_or(img_grey, mask, dst=img_grey)
 
         # Now all robots & border are blacked out let's look for contours again.
         img_grey, contours, tree = cv2.findContours(img_grey, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
