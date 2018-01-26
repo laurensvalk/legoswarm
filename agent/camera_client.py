@@ -55,9 +55,10 @@ class CameraUDP(Thread):
 
         while self.running:
             try:
-                data, server = self.s.recvfrom(4069)
-                self.robot_broadcast_data = pickle.loads(data)
-                self.data_timestamp = time.time()
+                data, server = self.s.recvfrom(2048)
+                if data:
+                    self.robot_broadcast_data = pickle.loads(data)
+                    self.data_timestamp = time.time()
             except:
                 e = sys.exc_info()[0]
                 logging.warning(e)
