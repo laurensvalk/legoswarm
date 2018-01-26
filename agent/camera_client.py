@@ -62,7 +62,7 @@ class CameraUDP(Thread):
             except:
                 e = sys.exc_info()[0]
                 logging.warning(e)
-                raise
+                # raise
 
         self.s.close()
 
