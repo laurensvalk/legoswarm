@@ -70,13 +70,10 @@ class MotorThread(threading.Thread):
             if self.picker.is_at_store:
                 self.picker.go_to_target(self.picker.OPEN)
 
-            # Gamepad
-            fwd_speed = gamepad.left_stick_y
-            turn_rate = gamepad.left_stick_x
-            if gamepad.cross_btn:
-                self.picker.go_to_target(picker.STORE)
-            if gamepad.square_btn:
-                break
+            # if cross_btn:
+            #     self.picker.go_to_target(picker.STORE)
+            # if square_btn:
+            #     break
             self.base.drive_and_turn(fwd_speed, turn_rate)
             #
             # # Autopicker
@@ -123,13 +120,15 @@ if __name__ == "__main__":
             elif event.code == 302:
                 if event.value == 1:
                     print("X button is pressed. Eating.")
-                    picker.target = picker.STORE
+                    # picker.target = picker.STORE
                 if event.value == 0:
-                    picker.target = picker.OPEN
+                    pass
+                    # picker.target = picker.OPEN
             elif event.code == 301:
                 if event.value == 1:
                     print("O button is pressed. Purging.")
-                    picker.target = picker.PURGE
+                    # picker.target = picker.PURGE
                 if event.value == 0:
-                    picker.target = picker.OPEN
+                    pass
+                    # picker.target = picker.OPEN
 
