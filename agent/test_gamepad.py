@@ -5,6 +5,8 @@ __author__ = 'anton'
 
 import evdev
 import hardware.old_anton_version as hardware
+from hardware.motors import DriveBase, Picker
+from hardware.sensors import BallSensor
 import threading
 import time
 
@@ -47,8 +49,13 @@ picker = hardware.Picker()
 
 class MotorThread(threading.Thread):
     def __init__(self):
-        self.base = hardware.DriveBase()
-        self.ballsensor = hardware.BallSensor()
+        self.base = DriveBase(left=('outC', 'inversed'),
+                 right=('outB', 'inversed'),
+                 wheel_diameter=4.3,
+                 wheel_span=12,
+                 counter_clockwise_is_positive=False)
+        self.ballsensor = BallSensor('in4')
+        self.picker = Picker('outA')
         threading.Thread.__init__(self)
 
     def run(self):
@@ -56,14 +63,31 @@ class MotorThread(threading.Thread):
         print("Engines running!")
         while running:
             # Autopicker
-            if picker.target == picker.OPEN and picker.is_at_target:
-                if self.ballsensor.check_ball():
-                    gripper.target = picker.CLOSED
-            elif picker.target == picker.STORE and picker.is_at_target:
-                picker.target = picker.OPEN
+            if self.ballsensor.ball_detected() and not self.picker.is_running:
+                self.picker.go_to_target(self.picker.STORE)
 
-            picker.run()
-            self.base.drive_and_turn(fwd_speed, -turn_rate)
+            # Close after storing
+            if self.picker.is_at_store:
+                self.picker.go_to_target(self.picker.OPEN)
+
+            # Gamepad
+            fwd_speed = gamepad.left_stick_y
+            turn_rate = gamepad.left_stick_x
+            if gamepad.cross_btn:
+                self.picker.go_to_target(picker.STORE)
+            if gamepad.square_btn:
+                break
+            self.base.drive_and_turn(fwd_speed, turn_rate)
+            #
+            # # Autopicker
+            # if picker.target == picker.OPEN and picker.is_at_target:
+            #     if self.ballsensor.check_ball():
+            #         gripper.target = picker.CLOSED
+            # elif picker.target == picker.STORE and picker.is_at_target:
+            #     picker.target = picker.OPEN
+            #
+            # picker.run()
+            # self.base.drive_and_turn(fwd_speed, -turn_rate)
 
             # Give the Ev3 some time to handle other threads.
             time.sleep(0.04)

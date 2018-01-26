@@ -34,7 +34,6 @@ while True:
 
     # Gamepad
     fwd_speed = gamepad.left_stick_y
-    print(fwd_speed)
     turn_rate = gamepad.left_stick_x
     if gamepad.cross_btn:
         picker.go_to_target(picker.STORE)
