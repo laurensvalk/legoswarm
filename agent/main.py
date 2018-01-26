@@ -35,7 +35,7 @@ picker = Picker('outA')
 battery = Battery()
 
 # States
-FLOCKING = 0
+FLOCKING = 0  # For now, just behavior that makes robots avoid one another
 SEEK_BALL = 1
 PRE_STORE = 2
 STORE = 3
@@ -72,17 +72,16 @@ while True:
         continue
     logging.debug(str(time.time()-loopstart) + " Got data")
 
-    #################################################################
-    ###### Process received data
-    #################################################################
-
     if state == EXIT:
-        # Stop multithreading
         camera_thread.stop()
+        base.stop()
         break
 
     if state == FLOCKING:
-        # For now, just behavior that makes robots avoid one another
+        #################################################################
+        ###### Process received data
+        #################################################################
+
         total_force = np.array([0, 0])
         for neighbor in neighbors:
             spring_attachment = neighbor_info[neighbor]['center_location']
