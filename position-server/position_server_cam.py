@@ -164,7 +164,12 @@ if __name__ == '__main__':
         else:
             img = cv2.imread(FILE)
 
-        logging.debug("Got image: {0}".format(time.time() - lt))
+        elapsed = time.time() - lt
+        if elapsed > 0.07:
+            logging.warning("{0}s for image. Slow camera! Bad cable?".format(elapsed))
+        else:
+            logging.debug("Got image: {0}".format(elapsed))
+
         if found_playing_field:
             img = cv2.warpPerspective(img, M, (maxWidth, maxHeight))
             logging.debug("Image warped: {0}".format(time.time() - lt))
