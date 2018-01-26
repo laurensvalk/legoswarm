@@ -68,7 +68,7 @@ class SocketThread(Thread):
             data = gzip.compress(pickle.dumps(data_to_transmit))
 
             if len(data) > 4096:
-                logging.warning("Too much data to transmit.")
+                logging.warning("{0} bytes is too much data to transmit.".format(len(data)))
                 print(data)
             try:
                 sent = self.server_socket.sendto(data, SERVER_ADDR)

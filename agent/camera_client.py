@@ -52,7 +52,7 @@ class CameraUDP(Thread):
 
         while self.running:
             try:
-                data, server = self.s.recvfrom(2048)
+                data, server = self.s.recvfrom(4096)
                 if data:
                     self.robot_broadcast_data = pickle.loads(gzip.decompress(data))
                     self.data_timestamp = time.time()
