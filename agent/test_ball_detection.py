@@ -16,7 +16,7 @@ picker = Picker('outA')
 
 # Make a sound when we detect a ball and print readings
 while True:
-    if eyes.check_ball():
+    if eyes.ball_detected():
         ev3.Sound.beep()
     print(eyes.most_recent_value)
     time.sleep(0.1)

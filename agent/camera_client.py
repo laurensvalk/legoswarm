@@ -29,7 +29,7 @@ class CameraUDP(Thread):
 
     def stop(self):
         print("Stopping thread")
-        self.runnning = False
+        self.running = False
 
     def get_data(self):
         if time.time() > self.data_timestamp + self.DECAY:

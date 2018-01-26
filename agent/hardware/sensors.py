@@ -21,7 +21,7 @@ class BallSensor(CompatInfraredSensor):
     def most_recent_value(self):
         return self.readings[-1]
 
-    def check_ball(self):
+    def ball_detected(self):
         now = time.time() 
         if now > self.next_reading_time:
             distance = self.proximity

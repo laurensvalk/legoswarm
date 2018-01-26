@@ -34,7 +34,16 @@ base = DriveBase(left=('outC', Motor.POLARITY_INVERSED),
 picker = Picker('outA')
 
 # States
-AVOIDANCE = 0
+FLOCKING = 0
+SEEK_BALL = 1
+PRE_STORE = 2
+STORE = 3
+TO_DEPOT = 4
+PURGE = 5
+LOW_VOLTAGE = 10
+EXIT = 11
+
+state = FLOCKING
 
 
 #################################################################
@@ -66,31 +75,38 @@ while True:
     ###### Process received data
     #################################################################
 
-    # For now, just behavior that makes robots avoid one another
-    total_force = np.array([0, 0])
-    for neighbor in neighbors:
-        gripper_location = neighbor_info[neighbor]['gripper_location']
-        total_force = total_force + spring_between_robots.get_force_vector(gripper_location)    
+    if state == EXIT:
+        # Stop multithreading
+        camera_thread.stop()
+        break
 
-    #################################################################
-    ###### Actuation based on processed data
-    #################################################################
+    if state == FLOCKING:
+        # For now, just behavior that makes robots avoid one another
+        total_force = np.array([0, 0])
+        for neighbor in neighbors:
+            gripper_location = neighbor_info[neighbor]['gripper_location']
+            total_force = total_force + spring_between_robots.get_force_vector(gripper_location)
 
-    # Decompose stretch into forward and sideways force
-    sideways_force, forward_force  = total_force
+        #################################################################
+        ###### Actuation based on processed data
+        #################################################################
 
-    logging.debug(str(time.time() - loopstart) + "Done spring calculations")
+        # Decompose stretch into forward and sideways force
+        sideways_force, forward_force = total_force
 
-    # Obtain speed and turnrate
-    speed = forward_force * robot_settings['speed_per_unit_force']
-    turnrate = sideways_force * robot_settings['turnrate_per_unit_force']
+        logging.debug(str(time.time() - loopstart) + "Done spring calculations")
 
-    # Check for balls
-    if ballsensor.check_ball():
-        logging.debug('ball detected')
-        base.stop()
-        picker.go_to_target(picker.STORE, blocking=True)
-        picker.go_to_target(picker.OPEN, blocking=True)
+        # Obtain speed and turnrate
+        speed = forward_force * robot_settings['speed_per_unit_force']
+        turnrate = sideways_force * robot_settings['turnrate_per_unit_force']
+
+    if state in (FLOCKING, SEEK_BALL):
+        # Check for balls
+        if ballsensor.ball_detected():
+            logging.debug('ball detected')
+            base.stop()
+            picker.go_to_target(picker.STORE, blocking=True)
+            picker.go_to_target(picker.OPEN, blocking=True)
 
     # Drive!
     base.drive_and_turn(speed, turnrate)
@@ -102,8 +118,3 @@ while True:
     ###### Pause and repeat
     #################################################################
     time.sleep(0.1)
-
-#################################################################
-###### Closing down and cleaning up
-#################################################################
-camera_thread.stop()
