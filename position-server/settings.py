@@ -6,8 +6,8 @@ settings = {
             'field_height': 1080,
             'field_width': 1920,
             'cm_per_px': 0.1,
-            'speed_per_unit_force': 6,
-            'turnrate_per_unit_force': 10,
+            'speed_per_unit_force': 3,
+            'turnrate_per_unit_force': 6,
             'ball_info_max_size' : 3, # Number of nearest balls each robot should get details of
             'bounding_box_cm' : [
                 # List of points in centimeters, encircling the robot
@@ -67,7 +67,7 @@ robot_settings = {key: settings[key] for key in robot_keys}
 
 # Server settings
 SERVER_ADDR = ("255.255.255.255", 50008)
-THRESHOLD = 220         # Threshold for b/w version of camera image. Was 230 most of the time
+THRESHOLD = 150         # Threshold for b/w version of camera image. Was 230 most of the time
 WIDTH = 1920            # Camera image
 HEIGHT = 1080
 PLAYING_FIELD_OFFSET = -50

@@ -112,7 +112,7 @@ def find_nested_triangles(img, threshold=150, threshold_type="simple"):
 
     if threshold_type == "simple":
         # convert to grayscale and adjust gamma curve
-        img_grey = adjust_curve(img_grey)
+        img_grey = adjust_curve(img_grey, factor=1.8)
         # Simple adaptive mean thresholding
         values, img_grey = cv2.threshold(img_grey, threshold, 255, cv2.THRESH_BINARY)
 

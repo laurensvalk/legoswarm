@@ -166,7 +166,7 @@ if __name__ == '__main__':
 
         elapsed = time.time() - lt
         if elapsed > 0.07:
-            logging.warning("{0}s for image. Slow camera! Bad cable?".format(elapsed))
+            logging.warning("{0}s for image. Slow camera! Bad cable? No OpenGL?".format(elapsed))
         else:
             logging.debug("Got image: {0}".format(elapsed))
 
@@ -178,7 +178,7 @@ if __name__ == '__main__':
         img_grey, triangles = find_nested_triangles(img)
         logging.debug("Got triangles: {0}".format(time.time() - lt))
 
-        # img = cv2.cvtColor(img_grey, cv2.COLOR_GRAY2BGR)
+        img = cv2.cvtColor(img_grey, cv2.COLOR_GRAY2BGR)
 
         for triangle in triangles:
             # Let it's corners be these vectors.
@@ -269,7 +269,7 @@ if __name__ == '__main__':
                           np.array([rect_from_image_size(img_width, img_height)], dtype=int),
                           True,
                           255,
-                          thickness=abs(PLAYING_FIELD_OFFSET)*2+4)
+                          thickness=abs(PLAYING_FIELD_OFFSET)*2+8)
             # mask = np.zeros((img_height, img_width), dtype=np.uint8)
             # cv2.fillConvexPoly(mask, field_corners.astype(int), 255)
             # cv2.bitwise_not(mask, dst=mask)
@@ -297,7 +297,7 @@ if __name__ == '__main__':
         if keypress == ord('q'):
             break
         if n == 0:
-            logging.info("Looptime: {0}\ndata size: {2}\ndata transmitted: {1}".format((time.time()-t)/100, data_to_transmit, len(data_to_transmit)))
+            logging.info("Looptime: {0}\ndata transmitted: \n{1}".format((time.time()-t)/100, data_to_transmit, len(data_to_transmit)))
             # Optionally save an image to disk.
             # cv2.imwrite("test_images/{0}.jpg".format(int(time.time())), img_cam)
             n = 100
