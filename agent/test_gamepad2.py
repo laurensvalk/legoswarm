@@ -25,18 +25,19 @@ ballsensor = BallSensor('in4')
 print("Engines running!")
 while True:
     # Autopicker
-    if picker.target == picker.OPEN and picker.is_at_target:
-        if ballsensor.check_ball():
-            picker.target = picker.CLOSED
-    elif picker.target == picker.STORE and picker.is_at_target:
-        picker.target = picker.OPEN
+    if ballsensor.check_ball() and not picker.is_running:
+        picker.go_to_target(picker.STORE)
+
+    # Close after storing
+    if picker.is_at_store:
+        picker.go_to_target(picker.OPEN)
 
     # Gamepad
     fwd_speed = gamepad.left_stick_y
     print(fwd_speed)
     turn_rate = gamepad.left_stick_x
     if gamepad.cross_btn:
-        picker.target = picker.STORE
+        picker.go_to_target(picker.STORE)
     if gamepad.square_btn:
         break
     picker.run()

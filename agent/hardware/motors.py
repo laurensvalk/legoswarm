@@ -47,6 +47,18 @@ class Picker(Motor):
         self.reset()
 
     @property
+    def beak_position(self):
+        return self.position*self.motor_deg_per_picker_deg
+
+    @property
+    def is_open(self):
+        return self.OPEN - self.tolerance < self.beak_position < self.OPEN + self.tolerance
+
+    @property
+    def is_at_store(self):
+        return self.STORE - self.tolerance < self.beak_position < self.STORE + self.tolerance
+
+    @property
     def pick_rate(self):
         """Get the current picker speed"""
         return self.speed/self.motor_deg_per_picker_deg
