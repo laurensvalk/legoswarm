@@ -85,8 +85,8 @@ while True:
         # For now, just behavior that makes robots avoid one another
         total_force = np.array([0, 0])
         for neighbor in neighbors:
-            gripper_location = neighbor_info[neighbor]['gripper_location']
-            total_force = total_force + spring_between_robots.get_force_vector(gripper_location)
+            spring_attachment = neighbor_info[neighbor]['center_location']
+            total_force = total_force + spring_between_robots.get_force_vector(spring_attachment)
 
         #################################################################
         ###### Actuation based on processed data

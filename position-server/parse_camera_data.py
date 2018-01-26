@@ -92,6 +92,13 @@ def get_neighbor_info(markers, settings):
             # Scalar distance to that gripper
             distance = np.linalg.norm(neighbor_info[me][neighbor]['gripper_location'])
             neighbor_info[me][neighbor]['gripper_distance'] = distance
+
+            # Also calculate center localtion
+            neighbor_info[me][neighbor]['center_location'] = H_to_me_from_neighbor * np.array([0, 0])
+            # Can we do without this?
+            # distance = np.linalg.norm(neighbor_info[me][neighbor]['center_location'])
+            # neighbor_info[me][neighbor]['center_distance'] = distance
+
             # Check if that other gripper is in our "virtual" field of view
             neighbor_info[me][neighbor]['is_visible'] = True if distance < settings['sight_range'] else False
 
