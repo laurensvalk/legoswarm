@@ -43,6 +43,14 @@ def get_ball_info(H_to_bot_from_world, ball_locations, settings):
         distances = np.linalg.norm(balls_in_agent_frame, axis=0)
         # Sort by distance
         sorted_index = np.argsort(distances)
+        n_balls_found = len(sorted_index)
+
+        # Get only the closed balls to reduce data transmission:
+        max_balls_send = settings['ball_info_max_size']
+
+        if n_balls_found > max_balls_send:
+            # If we see more balls than we can send, reduce data set
+            sorted_index = sorted_index[0:max_balls_send]
 
         # Rebuild the array in order of distance
         sorted_balls_in_agent_frames[agent] = [balls_in_agent_frame[:,index] for index in sorted_index]

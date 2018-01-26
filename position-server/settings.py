@@ -8,6 +8,7 @@ settings = {
             'cm_per_px': 0.1,
             'speed_per_unit_force': 1,
             'turnrate_per_unit_force': 2,
+            'ball_info_max_size' : 3, # Number of nearest balls each robot should get details of
             'bounding_box_cm' : [
                 # List of points in centimeters, encircling the robot
                 # Starting at left wheel, then go counterclockwise
@@ -56,7 +57,10 @@ settings = {
 }
 
 # The robots don't need all the settings. They need just these (add more if needed):
-robot_keys = ['speed_per_unit_force', 'turnrate_per_unit_force', 'spring_between_robots', 'p_bot_gripper']
+robot_keys = ['speed_per_unit_force',
+              'turnrate_per_unit_force',
+              'spring_between_robots',
+              'p_bot_gripper']
 
 # Create the settings dictionary with the above items
 robot_settings = {key: settings[key] for key in robot_keys}
@@ -70,3 +74,9 @@ PLAYING_FIELD_OFFSET = -50
 MIN_BALL_RADIUS_PX = 5
 MAX_BALL_RADIUS_PX = 16
 FILE = '' #"test_images/1516199702.jpg" #"test_images/test.jpg" # 1920 x 1080 afbeelding. png mag ook.
+
+# Allow Laurens to specify file to debug different scenarios without repeated git conflicts.
+import platform
+if 'Ubuntu' in platform.platform():
+    print('Laurens Mode')
+    FILE = 'test_images/test_collison_avoidance.png'
