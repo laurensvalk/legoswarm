@@ -56,7 +56,7 @@ settings = {
 }
 
 # The robots don't need all the settings. They need just these (add more if needed):
-robot_keys = ['speed_per_unit_force', 'turnrate_per_unit_force', 'spring_between_robots']
+robot_keys = ['speed_per_unit_force', 'turnrate_per_unit_force', 'spring_between_robots', 'p_bot_gripper']
 
 # Create the settings dictionary with the above items
 robot_settings = {key: settings[key] for key in robot_keys}
