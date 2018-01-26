@@ -18,7 +18,7 @@
             "stopOnEntry": false,
             "pythonPath": "${config:python.pythonPath}",
             // "program": "${file}",
-            "program": "${workspaceFolder}/position-server/position_server_cam_old.py",
+            "program": "${workspaceFolder}/position-server/position_server_cam.py",
             "cwd": "${workspaceFolder}/position-server/",
             "env": {},
             "envFile": "${workspaceFolder}/.env",

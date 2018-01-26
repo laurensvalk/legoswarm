@@ -267,7 +267,7 @@ if __name__ == '__main__':
                 balls += [c]
 
         # Calculations to save time on client side
-        data_to_transmit = make_data_for_robots(robot_markers, balls, settings, robot_settings)
+        data_to_transmit = make_data_for_robots(robot_markers, balls, field_corners, settings, robot_settings)
 
         # Show all calculations in the preview window
         # img = cv2.cvtColor(img_grey, cv2.COLOR_GRAY2BGR)
