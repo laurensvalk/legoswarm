@@ -15,8 +15,12 @@ picker = Picker('outA')
 gamepad_settings = {'left_stick_x': {'min_value': 3, 'scale': (40, -40) },
                     'left_stick_y': {'min_value': 4, 'scale': (-60, 60) }}
 gamepad = PS3GamePad(gamepad_settings)
-base = DriveBase()
-ballsensor = BallSensor()
+base = DriveBase(left=('outC', 'inversed'),
+                 right=('outB', 'inversed'),
+                 wheel_diameter=4.3,
+                 wheel_span=12,
+                 counter_clockwise_is_positive=False)
+ballsensor = BallSensor('in4')
 
 print("Engines running!")
 while True:
