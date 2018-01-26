@@ -69,4 +69,4 @@ HEIGHT = 1080
 PLAYING_FIELD_OFFSET = -50
 MIN_BALL_RADIUS_PX = 5
 MAX_BALL_RADIUS_PX = 16
-FILE = "test_images/1516199702.jpg" #"test_images/test.jpg" # 1920 x 1080 afbeelding. png mag ook.
+FILE = '' #"test_images/1516199702.jpg" #"test_images/test.jpg" # 1920 x 1080 afbeelding. png mag ook.

@@ -97,7 +97,7 @@ if __name__ == '__main__':
         img_grey, largest_rect = find_largest_n_side(img, sides=4)
 
         # Optionally review edge-finding image
-        # img = cv2.cvtColor(img_grey, cv2.COLOR_GRAY2BGR)
+        img = cv2.cvtColor(img_grey, cv2.COLOR_GRAY2BGR)
 
         # Now that we have our playing field contour, we need to determine
         # the top-left, top-right, bottom-right, and bottom-left
@@ -106,7 +106,7 @@ if __name__ == '__main__':
         offset_rect = offset_convex_polygon(rect, PLAYING_FIELD_OFFSET)
 
         # Present the found rectangles to the user
-        cv2.drawContours(img, [largest_rect], -1, (0, 255, 0), thickness=8)
+        cv2.drawContours(img, [largest_rect.astype(int)], -1, (0, 255, 0), thickness=8)
         cv2.drawContours(img, [offset_rect.astype(int)], -1, (255, 0, 255), thickness=8)
         cv2.putText(img, "Press y if the playing field is detected, press n if not", (100, 500),
                     cv2.FONT_HERSHEY_SIMPLEX, 2, (0, 255, 0), 4)
@@ -255,7 +255,7 @@ if __name__ == '__main__':
                           np.array([rect_from_image_size(img_width, img_height)], dtype=int),
                           True,
                           255,
-                          thickness=abs(PLAYING_FIELD_OFFSET)*2)
+                          thickness=abs(PLAYING_FIELD_OFFSET)*2+4)
 
         # Now all robots & border are blacked out let's look for contours again.
         img_grey, contours, tree = cv2.findContours(img_grey, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
