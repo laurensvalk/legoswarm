@@ -17,6 +17,18 @@ from antoncv import find_largest_n_side, sorted_rect, offset_convex_polygon, rec
 from linalg import atan2_vec, vec_length
 from settings import settings, robot_settings, WIDTH, HEIGHT, FILE, SERVER_ADDR, PLAYING_FIELD_OFFSET
 from parse_camera_data import make_data_for_robots, bounding_box
+
+YELLOW = (0, 255, 255)
+
+RED = (0, 0, 255)
+
+PURPLE = (255, 0, 255)
+
+GREEN = (0, 255, 0)
+
+ORANGE = (100, 100, 255)
+
+
 try:
     import cPickle as pickle
 except:
@@ -108,10 +120,10 @@ if __name__ == '__main__':
         offset_rect = offset_convex_polygon(rect, PLAYING_FIELD_OFFSET)
 
         # Present the found rectangles to the user
-        cv2.drawContours(img, [largest_rect.astype(int)], -1, (0, 255, 0), thickness=8)
-        cv2.drawContours(img, [offset_rect.astype(int)], -1, (255, 0, 255), thickness=8)
+        cv2.drawContours(img, [largest_rect.astype(int)], -1, GREEN, thickness=8)
+        cv2.drawContours(img, [offset_rect.astype(int)], -1, PURPLE, thickness=8)
         cv2.putText(img, "Press y if the playing field is detected, press n if not", (100, 500),
-                    cv2.FONT_HERSHEY_SIMPLEX, 2, (0, 255, 0), 4)
+                    cv2.FONT_HERSHEY_SIMPLEX, 2, GREEN, 4)
 
         cv2.imshow("cam", img)
         # Wait for the 'k' key. Dont use ctrl-c !!!
@@ -243,14 +255,14 @@ if __name__ == '__main__':
                                                                        midbase_marker[1]
                                                                        ),
                         tuple(midbase_marker),
-                        cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 255), 4)
+                        cv2.FONT_HERSHEY_SIMPLEX, 1, PURPLE, 4)
 
             # Draw the contour of our triangle
-            cv2.drawContours(img, [triangle], -1, (0, 255, 0))
+            cv2.drawContours(img, [triangle], -1, GREEN)
 
             # Black out the shape of the robot in our source image
             bb = bounding_box(settings, midbase_marker, apex_marker)
-            cv2.drawContours(img, [bb], 0, (0, 0, 255), 2)
+            cv2.drawContours(img, [bb], 0, RED, 2)
             cv2.fillConvexPoly(img_grey, bb, 255)
 
             # Save the data in our dictionary
@@ -281,7 +293,7 @@ if __name__ == '__main__':
             c, r = cv2.minEnclosingCircle(c)
             c = tuple(map(int, c))
             if 5 < r < 15:
-                cv2.circle(img, c, int(r), (0, 255, 255), 2)
+                cv2.circle(img, c, int(r), YELLOW, 2)
                 balls += [c]
 
         # Calculations to save time on client side
@@ -289,6 +301,7 @@ if __name__ == '__main__':
 
         # Show all calculations in the preview window
         # img = cv2.cvtColor(img_grey, cv2.COLOR_GRAY2BGR)
+        cv2.drawContours(img, np.array([field_corners], dtype=int), -1, color=ORANGE, thickness=3)
         cv2.imshow("cam", img)
 
         # Wait for the 'q' key. Dont use ctrl-c !!!
@@ -297,7 +310,7 @@ if __name__ == '__main__':
         if keypress == ord('q'):
             break
         if n == 0:
-            logging.info("Looptime: {0}\ndata transmitted: \n{1}".format((time.time()-t)/100, data_to_transmit, len(data_to_transmit)))
+            logging.info("Looptime: {0}\ndata transmitted: \n{1}".format((time.time()-t)/100, data_to_transmit))
             # Optionally save an image to disk.
             # cv2.imwrite("test_images/{0}.jpg".format(int(time.time())), img_cam)
             n = 100
