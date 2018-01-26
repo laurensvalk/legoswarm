@@ -69,17 +69,15 @@ class SocketThread(Thread):
 
             if len(data) > 4096:
                 logging.warning("{0} bytes is too much data to transmit.".format(len(data)))
-                print(data)
-            try:
-                sent = self.server_socket.sendto(data, SERVER_ADDR)
-                # print(sent)
-                time.sleep(0.025)
-            except OSError as exc:
-                if exc.errno == 55:
-                    time.sleep(0.1)
-                else:
-                    raise
-            # time.sleep(0.3)
+            else:
+                try:
+                    sent = self.server_socket.sendto(data, SERVER_ADDR)
+                    time.sleep(0.05)
+                except OSError as exc:
+                    if exc.errno == 55:
+                        time.sleep(0.1)
+                    else:
+                        raise
         self.server_socket.close()
         logging.info("Socket server stopped")
 
