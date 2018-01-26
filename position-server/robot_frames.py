@@ -4,6 +4,9 @@ from referenceframes.transformations import Transformation, ROW, COL
 from numpy import array, identity, append
 from numpy.linalg import norm
 
+def transform_to_gripper_from_bot(settings):
+    return Transformation(translation=-1*array(settings['p_bot_gripper']))
+
 def transform_to_world_from_camera(settings):
     """Transform camera pixels into centimeters relative to camera midpoint"""
     # Transform to make positive y-axis point upwards
