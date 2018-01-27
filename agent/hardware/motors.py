@@ -1,20 +1,16 @@
 import time
 from .compat_device import CompatMotor
 
-def limit(speed, max_speed):
-    # Ensure we bind the speed to the known maximum for this motor
-    return max(min(max_speed, speed), max_speed)
 
 class Motor(CompatMotor):
     """Add a few convenience functions to standard ev3dev motor class"""
     def run_forever_at_speed(self, speed):
-        self.speed_sp = self.limit(speed, self.max_speed)
+        self.speed_sp = self.limit(speed)
         self.run_forever() 
 
-    @staticmethod
-    def limit(speed, max_speed):
+    def limit(self, speed):
         # Ensure we bind the speed to the known maximum for this motor
-        return max(min(max_speed, speed), max_speed)
+        return max(min(self.max_speed, speed), -self.max_speed)
 
     def go_to(self, reference, speed, tolerance):
         if not self.is_running and not (reference - tolerance <= self.position <= reference + tolerance):
@@ -105,12 +101,6 @@ class DriveBase:
         self.wheel_cm_sec_per_deg_s = wheel_radius / deg_per_rad 
         # wheel speed for a given rotation of the base
         self.wheel_cm_sec_per_base_deg_sec =  wheel_base_radius / deg_per_rad
-        if self.counter_clockwise_is_positive:
-            direction = 1
-        else:
-            direction = -1
-        self.turnrate_to_motorspeed = self.wheel_cm_sec_per_base_deg_sec / self.wheel_cm_sec_per_deg_s * direction
-
 
         # Initialize left motor
         left_name, left_polarity = left      
@@ -128,24 +118,20 @@ class DriveBase:
         nett_speed = speed_cm_sec / self.wheel_cm_sec_per_deg_s
 
         # Wheel speed for given turnrate
-        difference = turnrate_deg_sec * self.turnrate_to_motorspeed
+        difference = turnrate_deg_sec * self.wheel_cm_sec_per_base_deg_sec / self.wheel_cm_sec_per_deg_s
 
         # Depending on sign of turnrate, go left or right
-        # if self.counter_clockwise_is_positive:
-        #     leftspeed = nett_speed - difference
-        #     rightspeed = nett_speed + difference
-        # else:
-        #     leftspeed = nett_speed + difference
-        #     rightspeed = nett_speed - difference
-        leftspeed = nett_speed - difference
-        rightspeed = nett_speed + difference
+        if self.counter_clockwise_is_positive:
+            leftspeed = nett_speed - difference
+            rightspeed = nett_speed + difference
+        else:
+            leftspeed = nett_speed + difference
+            rightspeed = nett_speed - difference            
 
         # Apply the calculated speeds to the motor
-        # self.leftmotor.run_forever_at_speed(leftspeed)
-        # self.rightmotor.run_forever_at_speed(rightspeed)
-        self.leftmotor.run_forever(speed_sp=limit(leftspeed, 600))
-        self.rightmotor.run_forever(speed_sp=limit(rightspeed, 600))
-
+        self.leftmotor.run_forever_at_speed(leftspeed)
+        self.rightmotor.run_forever_at_speed(rightspeed)
+        
     def stop(self):
         """Stop the robot"""
         # Stop robot by stopping motors
