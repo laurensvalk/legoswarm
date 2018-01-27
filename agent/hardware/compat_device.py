@@ -24,7 +24,7 @@ class CompatMotor(ev3.Motor):
     @property
     def is_running(self):
         if self.running_on_ev3:
-            return ev3.Motor.is_running(self)
+            return ev3.Motor.is_running
         else:
             return False
 
