@@ -7,6 +7,7 @@ class BallSensorReader(Thread):
     def __init__(self):
         self.ball_sensor = BallSensor('in4')
         self.detected = False
+        self.running = True
         Thread.__init__(self)
 
     def ball_detected(self):
