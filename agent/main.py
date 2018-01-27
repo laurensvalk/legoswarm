@@ -22,7 +22,7 @@ logging.basicConfig(format='%(asctime)s, %(levelname)s, %(message)s',datefmt='%H
 
 # Start data thread
 camera_thread = CameraUDP(port=50000+MY_ID)
-camera_thread.start()
+# camera_thread.start()
 
 # Configure the devices
 ballsensor = BallSensor('in4')
@@ -61,7 +61,8 @@ while True:
     loopstart = time.time()
     try:
         # Get robot positions and settings from server
-        data = camera_thread.get_data()
+        data = camera_thread.read_from_socket()
+
         # Get the data. Automatic exception if no data is available for MY_ID
         neighbor_info, robot_settings = data['neighbors'], data['settings']
         wall_info, ball_info = data['walls'], data['balls']
@@ -147,11 +148,13 @@ while True:
     if state in (FLOCKING, SEEK_BALL):
         if ballsensor.ball_detected() and not picker.is_running:
             picker.go_to_target(picker.STORE, blocking=False)
+        logging.debug("Checked ball sensor after {0}ms".format(int((time.time() - loopstart) * 1000)))
 
     # Return picker to starting position after store, but only in these states
     if state in (FLOCKING, SEEK_BALL):
         if picker.is_at_store:
             picker.go_to_target(picker.OPEN)
+        logging.debug("Checked picker open after {0}ms".format(int((time.time() - loopstart) * 1000)))
 
     # Ball seeking regimen
     if state == SEEK_BALL:
@@ -171,6 +174,7 @@ while True:
             picker.go_to_target(picker.STORE, blocking=False)
             # On to the next one
             state = SEEK_BALL
+        logging.debug("Checked ball sensor after {0}ms".format(int((time.time() - loopstart) * 1000)))
 
     logging.debug("State is "+str(state))
     #################################################################
