@@ -7,7 +7,6 @@ import logging
 from hardware.motors import Motor, DriveBase, Picker
 from hardware.sensors import BallSensor, Battery
 from springs import Spring
-from enum import Enum, auto
 from ball_sensor_reader import BallSensorReader
 
 #################################################################
@@ -40,16 +39,6 @@ battery = Battery()
 
 
 # States
-class States(Enum):
-    FLOCKING = auto() # For now, just behavior that makes robots avoid one another
-    SEEK_BALL = auto()
-    PRE_STORE = auto()
-    STORE = auto()
-    TO_DEPOT = auto()
-    PURGE = auto()
-    LOW_VOLTAGE = auto()
-    EXIT = auto()
-
 FLOCKING = 'flocking'  # For now, just behavior that makes robots avoid one another
 SEEK_BALL = 'seek ball'
 PRE_STORE = 'pre store'
