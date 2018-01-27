@@ -35,14 +35,14 @@ picker = Picker('outA')
 battery = Battery()
 
 # States
-FLOCKING = 0  # For now, just behavior that makes robots avoid one another
-SEEK_BALL = 1
-PRE_STORE = 2
-STORE = 3
-TO_DEPOT = 4
-PURGE = 5
-LOW_VOLTAGE = 10
-EXIT = 11
+FLOCKING = 'flocking'  # For now, just behavior that makes robots avoid one another
+SEEK_BALL = 'seek ball'
+PRE_STORE = 'pre store'
+STORE = 'store'
+TO_DEPOT = 'to depot'
+PURGE = 'purge'
+LOW_VOLTAGE = 'low'
+EXIT = 'exit'
 
 state = SEEK_BALL
 
@@ -168,6 +168,7 @@ while True:
             # On to the next one
             state = SEEK_BALL
 
+    logging.debug("State is "+str(state))
     #################################################################
     ###### Actuation based on processed data, state & strategy
     #################################################################
