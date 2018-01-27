@@ -7,6 +7,8 @@ import logging
 from hardware.motors import Motor, DriveBase, Picker
 from hardware.sensors import BallSensor, Battery
 from springs import Spring
+from enum import Enum, auto
+from ball_sensor_reader import BallSensorReader
 
 #################################################################
 ###### Init
@@ -25,7 +27,9 @@ camera_thread = CameraUDP(port=50000+MY_ID)
 # camera_thread.start()
 
 # Configure the devices
-ballsensor = BallSensor('in4')
+# ballsensor = BallSensor('in4')
+ballsensor = BallSensorReader()
+ballsensor.start()
 base = DriveBase(left=('outC', Motor.POLARITY_INVERSED),
                  right=('outB', Motor.POLARITY_INVERSED),
                  wheel_diameter=4.3,
@@ -34,7 +38,18 @@ base = DriveBase(left=('outC', Motor.POLARITY_INVERSED),
 picker = Picker('outA')
 battery = Battery()
 
+
 # States
+class States(Enum):
+    FLOCKING = auto() # For now, just behavior that makes robots avoid one another
+    SEEK_BALL = auto()
+    PRE_STORE = auto()
+    STORE = auto()
+    TO_DEPOT = auto()
+    PURGE = auto()
+    LOW_VOLTAGE = auto()
+    EXIT = auto()
+
 FLOCKING = 'flocking'  # For now, just behavior that makes robots avoid one another
 SEEK_BALL = 'seek ball'
 PRE_STORE = 'pre store'
@@ -185,10 +200,12 @@ while True:
     sideways_force, forward_force = total_force
     speed = forward_force * robot_settings['speed_per_unit_force']
     turnrate = sideways_force * robot_settings['turnrate_per_unit_force']
-    base.drive_and_turn(speed, turnrate)
+    # base.drive_and_turn(speed, turnrate)
+    base.leftmotor.run_forever(speed_sp=0)
+    base.rightmotor.run_forever(speed_sp=0)
     # Time for pause is here
     # time.sleep(0.1)
-    logging.debug("Speed:{0:.2}, Turnrate:{1:.2}, Looptime: {2}ms".format(speed,
+    logging.debug("Loop done. Speed:{0:.2}, Turnrate:{1:.2}, Looptime: {2}ms".format(speed,
                                                                     turnrate,
                                                                     int( (time.time()-loopstart)*1000 )
                                                                     ))
