@@ -44,7 +44,7 @@ PURGE = 5
 LOW_VOLTAGE = 10
 EXIT = 11
 
-state = FLOCKING
+state = SEEK_BALL
 
 no_force = np.array([0, 0])
 
@@ -83,84 +83,103 @@ while True:
         base.stop()
         time.sleep(1)
         continue
-    logging.debug(str(time.time()-loopstart) + " Got data")
+    logging.debug("Got data after {0}ms".format(int( (time.time()-loopstart)*1000 )))
+
+    #################################################################
+    ###### All calculations
+    #################################################################
+
+    # 1. Neighbors
+
+    nett_neighbor_force = no_force
+    for neighbor in neighbors:
+        neighbor_center = neighbor_info[neighbor]['center_location']
+        spring_extension = neighbor_center - my_gripper
+        nett_neighbor_force = nett_neighbor_force + spring_between_robots.get_force_vector(spring_extension)
+
+    # 2. Walls
+
+    # Unpack wall x and y directions, from my point of view
+    world_x_in_my_frame, world_y_in_my_frame = wall_info['world_x'], wall_info['world_y']
+
+    # Unpack the distance to each wall, seen from my gripper
+    (distance_to_top, distance_to_bottom, distance_to_left, distance_to_right) = wall_info['distances']
+
+    # Make one spring to each wall
+    force_to_top = spring_to_walls.get_force_vector(distance_to_top * world_y_in_my_frame)
+    force_to_bottom = spring_to_walls.get_force_vector(-distance_to_bottom * world_y_in_my_frame)
+    force_to_left = spring_to_walls.get_force_vector(-distance_to_left * world_x_in_my_frame)
+    force_to_right = spring_to_walls.get_force_vector(distance_to_right * world_x_in_my_frame)
+
+    # Make sum of total wall force
+    nett_wall_force = force_to_top + force_to_bottom + force_to_left + force_to_right
+
+    # 3. Nearest ball
+    if number_of_balls > 0:
+        nearest_ball = ball_info[0]
+        nett_ball_force = spring_to_balls.get_force_vector(nearest_ball)
+    else:
+        nett_ball_force = no_force
+
+    logging.debug("Done spring calculations after {0}ms".format(int( (time.time()-loopstart)*1000 )))
+
+    #################################################################
+    ###### Strategy & state machine
+    #################################################################
+
+    # Do stuff with nett_ball_force, nett_neighbor_force and nett_wall_force, depending on where we want to go.
+    total_force = no_force
 
     if state == EXIT:
         camera_thread.stop()
         base.stop()
         break
 
-    if state == FLOCKING:
-        #################################################################
-        ###### Process Neighbor info
-        #################################################################
+    # Neighbor avoidance, but only in these states
+    if state in (FLOCKING, SEEK_BALL):
+        total_force = nett_neighbor_force
 
-        total_force = no_force
-        for neighbor in neighbors:
-            neighbor_center = neighbor_info[neighbor]['center_location']
-            spring_extension = neighbor_center - my_gripper
-            total_force = total_force + spring_between_robots.get_force_vector(spring_extension)
-
-        #################################################################
-        ###### Process Wall info
-        #################################################################            
-        
-        # Unpack wall x and y directions, from my point of view
-        world_x_in_my_frame, world_y_in_my_frame = wall_info['world_x'], wall_info['world_y']
-
-        # Unpack the distance to each wall, seen from my gripper
-        (distance_to_top, distance_to_bottom, distance_to_left, distance_to_right) = wall_info['distances']
-        
-        # Make one spring to each wall
-        force_to_top = spring_to_walls.get_force_vector(distance_to_top*world_y_in_my_frame)
-        force_to_bottom = spring_to_walls.get_force_vector(-distance_to_bottom*world_y_in_my_frame)
-        force_to_left = spring_to_walls.get_force_vector(-distance_to_left*world_x_in_my_frame)
-        force_to_right = spring_to_walls.get_force_vector(distance_to_right*world_x_in_my_frame)
-
-        # Make sum of total wall force
-        nett_wall_force = force_to_top + force_to_bottom + force_to_left + force_to_right
-
-        # TODO Decide what to do with it later, given the state machine. For now just add it.
-        total_force = total_force + nett_wall_force
-
-        #################################################################
-        ###### Process Ball info
-        #################################################################            
-                
-        if number_of_balls > 0:
-            nearest_ball = ball_info[0]
-            ball_force = spring_to_balls.get_force_vector(nearest_ball)
-        else:
-            ball_force = no_force
-
-        #################################################################
-        ###### Actuation based on processed data
-        #################################################################
-
-        # Decompose stretch into forward and sideways force
-        sideways_force, forward_force = total_force
-
-        logging.debug(str(time.time() - loopstart) + "Done spring calculations")
-
-        # Obtain speed and turnrate
-        speed = forward_force * robot_settings['speed_per_unit_force']
-        turnrate = sideways_force * robot_settings['turnrate_per_unit_force']
-
-    if state in (SEEK_BALL,):
-        # Check for balls
+    # Return picker to starting position after store, but only in these states
+    if state in (FLOCKING, SEEK_BALL):
         if ballsensor.ball_detected():
-            logging.debug('ball detected')
-            base.stop()
-            picker.go_to_target(picker.STORE, blocking=True)
-            picker.go_to_target(picker.OPEN, blocking=True)
+            picker.go_to_target(picker.STORE, blocking=False)
 
-    # Drive!
+    # Eat any ball we might accidentally see
+    if state in (FLOCKING, SEEK_BALL):
+        if picker.is_at_store:
+            picker.go_to_target(picker.OPEN)
+
+    # Ball seeking regimen
+    if state == SEEK_BALL:
+        # Check for balls
+        total_force = total_force + nett_ball_force
+        if np.linalg.norm(nett_ball_force) < 8:  # TODO Make this a setting
+            prestore_nett_ball_force = nett_ball_force
+            prestore_start_time = time.time()
+            state = PRE_STORE
+
+    # When the ball is close, drive towards it blindly
+    # Until timeout or ball detection
+    if state == PRE_STORE:
+        # Check for balls
+        total_force = total_force + prestore_nett_ball_force
+        if ballsensor.ball_detected() or time.time() > prestore_start_time + 1: # TODO also make this a setting
+            picker.go_to_target(picker.STORE, blocking=False)
+            # On to the next one
+            state = SEEK_BALL
+
+    #################################################################
+    ###### Actuation based on processed data, state & strategy
+    #################################################################
+
+    # Decompose total force into forward and sideways force
+    sideways_force, forward_force = total_force
+    speed = forward_force * robot_settings['speed_per_unit_force']
+    turnrate = sideways_force * robot_settings['turnrate_per_unit_force']
     base.drive_and_turn(speed, turnrate)
-
-    # Debug print of where we're going        
-    logging.debug('speed: ' + str(speed) + ' turnrate: ' + str(turnrate))
-
-    #################################################################
-    ###### Pause and repeat
-    #################################################################
-    time.sleep(0.1)
+    # Time for pause is here
+    # time.sleep(0.1)
+    logging.debug("Speed:{0:.2}, Turnrate:{1:.2}, Looptime: {2}ms".format(speed,
+                                                                    turnrate,
+                                                                    int( (time.time()-loopstart)*1000 )
+                                                                    ))
