@@ -46,6 +46,7 @@ EXIT = 11
 
 state = FLOCKING
 
+no_force = np.array([0, 0])
 
 #################################################################
 ###### At every time step, read camera data, process it,
@@ -64,14 +65,22 @@ while True:
 
         # Get the data. Automatic exception if no data is available for MY_ID
         neighbor_info, robot_settings = data['neighbor_info'][MY_ID], data['robot_settings']
+        wall_info, ball_info = data['wall_info'][MY_ID], data['ball_info'][MY_ID]
         # Unpack some useful data from the information we received
         neighbors = neighbor_info.keys()
-        spring_between_robots = Spring(robot_settings['spring_between_robots'])
         my_gripper = np.array(robot_settings['p_bot_gripper'])
+
+        # Check how many balls are near me
+        number_of_balls = len(ball_info)
+        
+        # Unpack spring characteristics
+        spring_between_robots = Spring(robot_settings['spring_between_robots'])
+        spring_to_walls = Spring(robot_settings['spring_to_walls'])   
+        spring_to_balls = Spring(robot_settings['spring_to_balls'])   
 
     except:
         # Stop the loop if we're unable to get server data
-        logging.warning("No data or the camera didn't see me. Waiting 1s")
+        logging.warning("Unable to load data or the camera didn't see me or I didn't get all settings. Waiting 1s")
         base.stop()
         time.sleep(1)
         continue
@@ -84,14 +93,46 @@ while True:
 
     if state == FLOCKING:
         #################################################################
-        ###### Process received data
+        ###### Process Neighbor info
         #################################################################
 
-        total_force = np.array([0, 0])
+        total_force = no_force
         for neighbor in neighbors:
             neighbor_center = neighbor_info[neighbor]['center_location']
             spring_extension = neighbor_center - my_gripper
             total_force = total_force + spring_between_robots.get_force_vector(spring_extension)
+
+        #################################################################
+        ###### Process Wall info
+        #################################################################            
+        
+        # Unpack wall x and y directions, from my point of view
+        world_x_in_my_frame, world_y_in_my_frame = wall_info['world_x'], wall_info['world_y']
+
+        # Unpack the distance to each wall, seen from my gripper
+        (distance_to_top, distance_to_bottom, distance_to_left, distance_to_right) = wall_info['distances']
+        
+        # Make one spring to each wall
+        force_to_top = spring_to_walls.get_force_vector(distance_to_top*world_y_in_my_frame)
+        force_to_bottom = spring_to_walls.get_force_vector(-distance_to_bottom*world_y_in_my_frame)
+        force_to_left = spring_to_walls.get_force_vector(-distance_to_left*world_x_in_my_frame)
+        force_to_right = spring_to_walls.get_force_vector(distance_to_right*world_x_in_my_frame)
+
+        # Make sum of total wall force
+        nett_wall_force = force_to_top + force_to_bottom + force_to_left + force_to_right
+
+        # TODO Decide what to do with it later, given the state machine. For now just add it.
+        total_force = total_force + nett_wall_force
+
+        #################################################################
+        ###### Process Ball info
+        #################################################################            
+                
+        if number_of_balls > 0:
+            nearest_ball = ball_info[0]
+            ball_force = spring_to_balls.get_force_vector(nearest_ball)
+        else:
+            ball_force = no_force
 
         #################################################################
         ###### Actuation based on processed data
