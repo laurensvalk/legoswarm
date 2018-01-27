@@ -31,6 +31,7 @@ class CameraUDP(Thread):
     def get_data(self):
         if self.robot_broadcast_data and time.time() > self.data_timestamp + self.DECAY:
             self.robot_broadcast_data = {}
+            self.data_timestamp = time.time()
         return self.robot_broadcast_data
 
     ### Get robot positions from server ###
@@ -52,7 +53,7 @@ class CameraUDP(Thread):
 
         while self.running:
             try:
-                data, server = self.s.recvfrom(4096)
+                data, server = self.s.recvfrom(2048)
                 if data:
                     self.robot_broadcast_data = pickle.loads(gzip.decompress(data))
                     self.data_timestamp = time.time()
