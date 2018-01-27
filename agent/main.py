@@ -23,7 +23,7 @@ logging.basicConfig(format='%(asctime)s, %(levelname)s, %(message)s',datefmt='%H
 
 # Start data thread
 camera_thread = CameraUDP(port=50000+MY_ID)
-# camera_thread.start()
+camera_thread.start()
 
 # Configure the devices
 # ballsensor = BallSensor('in4')
@@ -65,7 +65,7 @@ while True:
     loopstart = time.time()
     try:
         # Get robot positions and settings from server
-        data = camera_thread.read_from_socket()
+        data = camera_thread.get_data()
 
         # Get the data. Automatic exception if no data is available for MY_ID
         neighbor_info, robot_settings = data['neighbors'], data['settings']
@@ -189,9 +189,7 @@ while True:
     sideways_force, forward_force = total_force
     speed = forward_force * robot_settings['speed_per_unit_force']
     turnrate = sideways_force * robot_settings['turnrate_per_unit_force']
-    # base.drive_and_turn(speed, turnrate)
-    base.leftmotor.run_forever(speed_sp=0)
-    base.rightmotor.run_forever(speed_sp=0)
+    base.drive_and_turn(speed, turnrate)
     # Time for pause is here
     # time.sleep(0.1)
     logging.debug("Loop done. Speed:{0:.2}, Turnrate:{1:.2}, Looptime: {2}ms".format(speed,
