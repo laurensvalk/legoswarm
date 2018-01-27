@@ -68,8 +68,6 @@ class CameraUDP(Thread):
 
         self.s.close()
 
-    
-
 
 if __name__ == '__main__':
     camera_thread = CameraUDP()

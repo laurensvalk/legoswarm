@@ -145,7 +145,7 @@ while True:
 
     # Eat any ball we might accidentally see
     if state in (FLOCKING, SEEK_BALL):
-        if ballsensor.ball_detected():
+        if ballsensor.ball_detected() and picker.is_open:
             picker.go_to_target(picker.STORE, blocking=False)
 
     # Return picker to starting position after store, but only in these states
