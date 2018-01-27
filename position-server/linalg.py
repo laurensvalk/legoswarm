@@ -16,4 +16,4 @@ def vec_length(vector):
 
 
 def unit_vector(vector):
-    return vector / vec_length(vector)
+    return vector / vec_length(vector) + 0.000001
