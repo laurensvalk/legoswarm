@@ -5,6 +5,7 @@ import logging
 import sys
 import time
 from threading import Thread
+import gzip
 
 try:
     import cPickle as pickle
@@ -14,7 +15,7 @@ except:
 class CameraUDP(Thread):
     DECAY = 1  # seconds
 
-    def __init__(self, port=50008):
+    def __init__(self, port=50003):
         ### Initialize ###
         self.port = port
         self.robot_broadcast_data = {}
@@ -34,7 +35,7 @@ class CameraUDP(Thread):
     def get_data(self):
         if self.robot_broadcast_data and time.time() > self.data_timestamp + self.DECAY:
             self.robot_broadcast_data = {}
-            self.data_timestamp = time.time()
+            # self.data_timestamp = time.time()
         return self.robot_broadcast_data
 
     ### Get robot positions from server ###
@@ -56,10 +57,10 @@ class CameraUDP(Thread):
 
         while self.running:
             try:
-                data, server = self.s.recvfrom(2048)
-                if data:
-                    self.robot_broadcast_data = pickle.loads(data)
-                    self.data_timestamp = time.time()
+                data, server = self.s.recvfrom(1500)
+                # if data:
+                self.robot_broadcast_data = pickle.loads(gzip.decompress(data))
+                self.data_timestamp = time.time()
             except:
                 e = sys.exc_info()[0]
                 logging.warning(e)
@@ -73,8 +74,8 @@ class CameraUDP(Thread):
 if __name__ == '__main__':
     camera_thread = CameraUDP()
     camera_thread.start()
-    for t in range(100):
-        time.sleep(0.5)
+    while True:
+        time.sleep(0.1)
         try:
             # Get robot positions from server
             print(camera_thread.get_data())
@@ -82,3 +83,4 @@ if __name__ == '__main__':
             # Time to panic, log some errors and kill others threads.
             camera_thread.stop()
             raise
+    camera_thread.stop()

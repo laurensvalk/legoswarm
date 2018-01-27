@@ -21,7 +21,7 @@ except:
 logging.basicConfig(format='%(asctime)s, %(levelname)s, %(message)s',datefmt='%H:%M:%S', level=logging.DEBUG)
 
 # Start data thread
-camera_thread = CameraUDP()
+camera_thread = CameraUDP(port=50000+MY_ID)
 camera_thread.start()
 
 # Configure the devices
@@ -62,10 +62,9 @@ while True:
     try:
         # Get robot positions and settings from server
         data = camera_thread.get_data()
-
         # Get the data. Automatic exception if no data is available for MY_ID
-        neighbor_info, robot_settings = data['neighbor_info'][MY_ID], data['robot_settings']
-        wall_info, ball_info = data['wall_info'][MY_ID], data['ball_info'][MY_ID]
+        neighbor_info, robot_settings = data['neighbors'], data['settings']
+        wall_info, ball_info = data['walls'], data['balls']
         # Unpack some useful data from the information we received
         neighbors = neighbor_info.keys()
         my_gripper = np.array(robot_settings['p_bot_gripper'])
@@ -80,7 +79,7 @@ while True:
 
     except:
         # Stop the loop if we're unable to get server data
-        logging.warning("Unable to load data or the camera didn't see me or I didn't get all settings. Waiting 1s")
+        logging.warning("No data on my UDP port. Waiting 1s")
         base.stop()
         time.sleep(1)
         continue

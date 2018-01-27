@@ -190,7 +190,14 @@ def make_data_for_robots(markers, ball_locations, field_corners, settings, robot
     wall_info = get_wall_info(H_to_bot_from_world, field_corners, settings)
 
     # Create data for returning
-    return {'neighbor_info': neighbor_info,
-            'ball_info': ball_info,
-            'wall_info': wall_info,
-            'robot_settings' : robot_settings}
+    # return {'neighbor_info': neighbor_info,
+    #         'ball_info': ball_info,
+    #         'wall_info': wall_info,
+    #         'robot_settings': robot_settings}
+    result = {}
+    for robot_id in markers:
+        result[robot_id] = {'neighbors': neighbor_info[robot_id],
+                            'balls': ball_info[robot_id],
+                            'walls': wall_info[robot_id],
+                            'settings': robot_settings}
+    return result

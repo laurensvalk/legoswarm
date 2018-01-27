@@ -10,11 +10,12 @@ import socket
 import logging
 from threading import Thread
 from platform import platform
+import gzip
 
 from antoncv import find_largest_n_side, sorted_rect, offset_convex_polygon, rect_from_image_size, \
     find_nested_triangles
 from linalg import atan2_vec, vec_length
-from settings import settings, robot_settings, WIDTH, HEIGHT, FILE, SERVER_ADDR, PLAYING_FIELD_OFFSET
+from settings import settings, robot_settings, WIDTH, HEIGHT, FILE, SERVER_ADDR, PLAYING_FIELD_OFFSET, MAX_AGENTS
 from parse_camera_data import make_data_for_robots, bounding_box
 
 YELLOW = (0, 255, 255)
@@ -69,27 +70,33 @@ class SocketThread(Thread):
         self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self.server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         self.server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
-        logging.info("Position broadcast started on UDP {0}".format(SERVER_ADDR))
+        logging.info("Position broadcast started on UDP")
         Thread.__init__(self)
 
     def run(self):
         global data_to_transmit, running
-
         while running:
-            data = pickle.dumps(data_to_transmit)
-            #print(data_to_transmit)
+            for robot_id_key in data_to_transmit:
+                sent_bytes = self.udp_send_dict_key(data_to_transmit, robot_id_key, 50000+robot_id_key)
+                # print(sent_bytes)
+            time.sleep(0.05)
+        self.server_socket.close()
+        logging.info("Socket server stopped")
+
+    def udp_send_dict_key(self, dictionary, key, port):
+        if key in dictionary:
+            data = gzip.compress(pickle.dumps(dictionary[key]))
             try:
-                sent = self.server_socket.sendto(data, SERVER_ADDR)
-                # print(sent)
-                time.sleep(0.025)
+                if data:
+                    return self.server_socket.sendto(data, ('255.255.255.255', port))
             except OSError as exc:
                 if exc.errno == 55:
                     time.sleep(0.1)
+                if exc.errno == 40:
+                    print("Message for {1} too long: {0} bytes".format(len(data), key))
                 else:
+                    # pass
                     raise
-            time.sleep(0.3)
-        self.server_socket.close()
-        logging.info("Socket server stopped")
 
 
 ### Start it all up ###
@@ -175,7 +182,7 @@ if __name__ == '__main__':
             img = cv2.imread(FILE)
 
         elapsed = time.time() - lt
-        if elapsed > 0.07:
+        if elapsed > 0.1:
             logging.warning("{0}s for image. Slow camera! Bad cable? No OpenGL?".format(elapsed))
         else:
             logging.debug("Got image: {0}".format(elapsed))
