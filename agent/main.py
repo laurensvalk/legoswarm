@@ -23,7 +23,7 @@ logging.basicConfig(format='%(asctime)s, %(levelname)s, %(message)s',datefmt='%H
 
 # Start data thread
 camera_thread = CameraUDP(port=50000+MY_ID)
-camera_thread.start()
+# camera_thread.start()
 
 # Configure the devices
 # ballsensor = BallSensor('in4')
@@ -65,7 +65,7 @@ while True:
     loopstart = time.time()
     try:
         # Get robot positions and settings from server
-        data = camera_thread.get_data()
+        data = camera_thread.read_from_socket()
 
         # Get the data. Automatic exception if no data is available for MY_ID
         neighbor_info, robot_settings = data['neighbors'], data['settings']
