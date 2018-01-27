@@ -4,9 +4,12 @@ import socket
 import logging
 import sys
 import time
-import gzip
 from threading import Thread
-import pickle
+
+try:
+    import cPickle as pickle
+except:
+    import pickle
 
 class CameraUDP(Thread):
     DECAY = 1  # seconds
@@ -55,7 +58,7 @@ class CameraUDP(Thread):
             try:
                 data, server = self.s.recvfrom(2048)
                 if data:
-                    self.robot_broadcast_data = pickle.loads(gzip.decompress(data))
+                    self.robot_broadcast_data = pickle.loads(data)
                     self.data_timestamp = time.time()
             except:
                 e = sys.exc_info()[0]

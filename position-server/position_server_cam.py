@@ -8,7 +8,6 @@ import numpy as np
 import time
 import socket
 import logging
-import gzip
 from threading import Thread
 from platform import platform
 
@@ -77,19 +76,18 @@ class SocketThread(Thread):
         global data_to_transmit, running
 
         while running:
-            data = gzip.compress(pickle.dumps(data_to_transmit))
-
-            if len(data) > 2048:
-                logging.warning("{0} bytes is too much data to transmit.".format(len(data)))
-            else:
-                try:
-                    sent = self.server_socket.sendto(data, SERVER_ADDR)
+            data = pickle.dumps(data_to_transmit)
+            #print(data_to_transmit)
+            try:
+                sent = self.server_socket.sendto(data, SERVER_ADDR)
+                # print(sent)
+                time.sleep(0.025)
+            except OSError as exc:
+                if exc.errno == 55:
                     time.sleep(0.1)
-                except OSError as exc:
-                    if exc.errno == 55:
-                        time.sleep(0.1)
-                    else:
-                        raise
+                else:
+                    raise
+            time.sleep(0.3)
         self.server_socket.close()
         logging.info("Socket server stopped")
 
@@ -310,7 +308,7 @@ if __name__ == '__main__':
         if keypress == ord('q'):
             break
         if n == 0:
-            logging.info("Looptime: {0}\ndata transmitted: \n{1}".format((time.time()-t)/100, data_to_transmit))
+            logging.info("Looptime: {0} \n data transmitted: {1}".format((time.time()-t)/100, data_to_transmit))
             # Optionally save an image to disk.
             # cv2.imwrite("test_images/{0}.jpg".format(int(time.time())), img_cam)
             n = 100
