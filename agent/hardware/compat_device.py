@@ -23,7 +23,10 @@ class CompatMotor(ev3.Motor):
 
     @property
     def is_running(self):
-        return 'running' in self.state
+        if self.running_on_ev3:
+            return ev3.Motor.is_running(self)
+        else:
+            return False
 
 class CompatInfraredSensor(ev3.InfraredSensor):
     """Identical to ev3.InfraredSensor, but returns dummy values when running on PC"""    
