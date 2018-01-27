@@ -13,7 +13,7 @@ except:
     import pickle
 
 class CameraUDP(Thread):
-    DECAY = 1  # seconds
+    DECAY = 0.5  # seconds
 
     def __init__(self, port=50003):
         ### Initialize ###
@@ -25,11 +25,13 @@ class CameraUDP(Thread):
         self.s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self.s.bind(('', self.port))
         self.data_timestamp = 0
+        self.s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        self.s.bind(('', self.port))
         Thread.__init__(self)
-        print("Started thread")
+        logging.debug("Inited thread")
 
     def stop(self):
-        print("Stopping thread")
+        logging.debug("Stopping thread")
         self.running = False
 
     def get_data(self):
@@ -51,25 +53,25 @@ class CameraUDP(Thread):
         running=False
         :return:
         """
-
-        self.s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        self.s.bind(('', self.port))
-
+        logging.debug("Started thread")
         while self.running:
-            try:
-                data, server = self.s.recvfrom(1500)
-                # if data:
-                self.robot_broadcast_data = pickle.loads(gzip.decompress(data))
+            data = self.read_from_socket()
+            if data:
+                self.robot_broadcast_data = data
                 self.data_timestamp = time.time()
-            except:
-                e = sys.exc_info()[0]
-                logging.warning(e)
-                # raise
-
+            time.sleep(0.07)
         self.s.close()
 
-    
-
+    def read_from_socket(self):
+        try:
+            data, server = self.s.recvfrom(1500)
+            # if data:
+            return pickle.loads(gzip.decompress(data))
+        except:
+            e = sys.exc_info()[0]
+            logging.warning(e)
+            return False
+            # raise
 
 if __name__ == '__main__':
     camera_thread = CameraUDP()
