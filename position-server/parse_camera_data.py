@@ -23,40 +23,41 @@ def bounding_box(settings, midbase_marker, apex_marker):
     return (bounding_box_in_camera.T).astype(int)
 
 def get_ball_info(H_to_bot_from_world, ball_locations, settings):
-
-    # Get transformation matrix from pixels to world frame
-    H_to_world_from_camera = transform_to_world_from_camera(settings)    
-
-    # Matrix of balls, in pixels
-    balls_pixels = np.array(ball_locations).T
-
-    # Matrix of balls, in world frame
-    balls_world = H_to_world_from_camera*balls_pixels
-
-    # Transformation from base frame to frame at gripper
-    H_to_gripper_from_bot = transform_to_gripper_from_bot(settings)
-
-    # Empty dictionary to fill during loop below
     sorted_balls_relative_to_gripper = {}
-    for (agent, transformation) in H_to_bot_from_world.items():
-        # Matrix of balls, transformed to the agent frame
-        balls_relative_to_gripper = (H_to_gripper_from_bot@transformation)*balls_world
+    if len(ball_locations) > 0:
+        # Get transformation matrix from pixels to world frame
+        H_to_world_from_camera = transform_to_world_from_camera(settings)
 
-        # Scalar distance to the ball as seen from the current agent
-        distances = np.linalg.norm(balls_relative_to_gripper, axis=0)
-        # Sort by distance
-        sorted_index = np.argsort(distances)
-        n_balls_found = len(sorted_index)
+        # Matrix of balls, in pixels
+        balls_pixels = np.array(ball_locations).T
 
-        # Get only the closed balls to reduce data transmission:
-        max_balls_send = settings['ball_info_max_size']
+        # Matrix of balls, in world frame
+        balls_world = H_to_world_from_camera*balls_pixels
 
-        if n_balls_found > max_balls_send:
-            # If we see more balls than we can send, reduce data set
-            sorted_index = sorted_index[0:max_balls_send]
+        # Transformation from base frame to frame at gripper
+        H_to_gripper_from_bot = transform_to_gripper_from_bot(settings)
 
-        # Rebuild the array in order of distance
-        sorted_balls_relative_to_gripper[agent] = [balls_relative_to_gripper[:,index] for index in sorted_index]
+        # Empty dictionary to fill during loop below
+
+        for (agent, transformation) in H_to_bot_from_world.items():
+            # Matrix of balls, transformed to the agent frame
+            balls_relative_to_gripper = (H_to_gripper_from_bot@transformation)*balls_world
+
+            # Scalar distance to the ball as seen from the current agent
+            distances = np.linalg.norm(balls_relative_to_gripper, axis=0)
+            # Sort by distance
+            sorted_index = np.argsort(distances)
+            n_balls_found = len(sorted_index)
+
+            # Get only the closed balls to reduce data transmission:
+            max_balls_send = settings['ball_info_max_size']
+
+            if n_balls_found > max_balls_send:
+                # If we see more balls than we can send, reduce data set
+                sorted_index = sorted_index[0:max_balls_send]
+
+            # Rebuild the array in order of distance
+            sorted_balls_relative_to_gripper[agent] = [balls_relative_to_gripper[:,index] for index in sorted_index]
 
     # For each agent, return a sorted list of ball locations
     return sorted_balls_relative_to_gripper
