@@ -132,7 +132,7 @@ if __name__ == '__main__':
 
         cv2.imshow("cam", img)
         # Wait for the 'k' key. Dont use ctrl-c !!!
-        keypress = cv2.waitKey(10) & 0xFF
+        keypress = cv2.waitKey(1000) & 0xFF
 
         if keypress == ord('y'):
             # now that we have our rectangle of points, let's compute
