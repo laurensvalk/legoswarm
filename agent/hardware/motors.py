@@ -21,7 +21,7 @@ class Motor(CompatMotor):
 class Picker(Motor):
     """Steer the picker mechanism to the desired target"""
     # Target positions for the gripper (degrees). 0 corresponds to the gripper all the way open
-    OPEN = 40
+    OPEN = 100
     CLOSED = 130
     STORE = 270
     PURGE = 287
