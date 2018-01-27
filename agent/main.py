@@ -63,8 +63,10 @@ while True:
         # Get robot positions and settings from server
         data = camera_thread.get_data()
         # Get the data. Automatic exception if no data is available for MY_ID
-        neighbor_info, robot_settings = data['neighbors'], data['settings']
-        wall_info, ball_info = data['walls'], data['balls']
+        neighbor_info = data['neighbors']
+        robot_settings = data['settings']
+        wall_info = data['walls'] 
+        ball_info = data['balls']
         # Unpack some useful data from the information we received
         neighbors = neighbor_info.keys()
         my_gripper = np.array(robot_settings['p_bot_gripper'])
@@ -97,7 +99,7 @@ while True:
 
         total_force = no_force
         for neighbor in neighbors:
-            neighbor_center = neighbor_info[neighbor]['center_location']
+            neighbor_center = np.array(neighbor_info[neighbor]['center_location'])
             spring_extension = neighbor_center - my_gripper
             total_force = total_force + spring_between_robots.get_force_vector(spring_extension)
 
@@ -106,7 +108,7 @@ while True:
         #################################################################            
         
         # Unpack wall x and y directions, from my point of view
-        world_x_in_my_frame, world_y_in_my_frame = wall_info['world_x'], wall_info['world_y']
+        world_x_in_my_frame, world_y_in_my_frame = np.array(wall_info['world_x']), np.array(wall_info['world_y'])
 
         # Unpack the distance to each wall, seen from my gripper
         (distance_to_top, distance_to_bottom, distance_to_left, distance_to_right) = wall_info['distances']
@@ -128,7 +130,7 @@ while True:
         #################################################################            
                 
         if number_of_balls > 0:
-            nearest_ball = ball_info[0]
+            nearest_ball = np.array(ball_info[0])
             ball_force = spring_to_balls.get_force_vector(nearest_ball)
         else:
             ball_force = no_force
