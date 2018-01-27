@@ -42,7 +42,7 @@ class Spring():
         micron = 0.0001 
 
         # Obtain length and direction of spring 
-        length = (spring_vector[0]**2+spring_vector[1]**2)**0.5+micron
+        length = spring_vector.norm+micron
         direction = spring_vector/length
         
         # Force magnitude

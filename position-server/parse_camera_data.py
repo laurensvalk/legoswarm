@@ -57,7 +57,7 @@ def get_ball_info(H_to_bot_from_world, ball_locations, settings):
                 sorted_index = sorted_index[0:max_balls_send]
 
             # Rebuild the array in order of distance
-            sorted_balls_relative_to_gripper[agent] = [balls_relative_to_gripper[:,index] for index in sorted_index]
+            sorted_balls_relative_to_gripper[agent] = [balls_relative_to_gripper[:,index].tolist() for index in sorted_index]
 
     # For each agent, return a sorted list of ball locations
     return sorted_balls_relative_to_gripper
@@ -121,7 +121,7 @@ def get_wall_info(H_to_bot_from_world, field_corners, settings):
         world_y = (B_agent - C_agent)/np.linalg.norm(B_agent-C_agent) 
 
         # Store information as dictionary for this agent
-        wall_info[agent] = {'distances': distances, 'world_x' : world_x, 'world_y': world_y}
+        wall_info[agent] = {'distances': distances, 'world_x' : world_x.tolist(), 'world_y': world_y.tolist()}
 
     # For each agent, return a sorted list of ball locations
     return wall_info
@@ -164,13 +164,13 @@ def get_neighbor_info(markers, settings):
             # Transformation from another robot, to my reference frame
             H_to_me_from_neighbor = H_to_bot_from_world[me]@H_to_world_from_bot[neighbor]
             # Gripper location of other robot, in my reference frame:
-            neighbor_info[me][neighbor]['gripper_location'] = H_to_me_from_neighbor*my_gripper
+            neighbor_gripper = H_to_me_from_neighbor*my_gripper
+            neighbor_info[me][neighbor]['gripper_location'] = neighbor_gripper.tolist()
             # Scalar distance to that gripper
-            distance = np.linalg.norm(neighbor_info[me][neighbor]['gripper_location'])
-            # neighbor_info[me][neighbor]['gripper_distance'] = distance
+            distance = np.linalg.norm(neighbor_gripper)
 
             # Also calculate center localtion
-            neighbor_info[me][neighbor]['center_location'] = H_to_me_from_neighbor * my_origin
+            neighbor_info[me][neighbor]['center_location'] = (H_to_me_from_neighbor*my_origin).tolist()
             
             # Check if that other gripper is in our "virtual" field of view
             neighbor_info[me][neighbor]['is_visible'] = True if distance < settings['sight_range'] else False
@@ -190,11 +190,6 @@ def make_data_for_robots(markers, ball_locations, field_corners, settings, robot
     # Get perpendicular lines to each wall in each robot frame of reference
     wall_info = get_wall_info(H_to_bot_from_world, field_corners, settings)
 
-    # Create data for returning
-    # return {'neighbor_info': neighbor_info,
-    #         'ball_info': ball_info,
-    #         'wall_info': wall_info,
-    #         'robot_settings': robot_settings}
     result = {}
     for robot_id in markers:
         result[robot_id] = {'neighbors': neighbor_info[robot_id],

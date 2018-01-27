@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 from camera_client import CameraUDP
-import numpy as np
+from lightvectors.lightvectors import vector
 import time
 import logging
 from hardware.motors import Motor, DriveBase, Picker
@@ -50,7 +50,7 @@ EXIT = 'exit'
 
 state = FLOCKING
 
-no_force = np.array([0, 0])
+no_force = vector([0, 0])
 
 #################################################################
 ###### At every time step, read camera data, process it,
@@ -72,7 +72,7 @@ while True:
         wall_info, ball_info = data['walls'], data['balls']
         # Unpack some useful data from the information we received
         neighbors = neighbor_info.keys()
-        my_gripper = np.array(robot_settings['p_bot_gripper'])
+        my_gripper = vector(robot_settings['p_bot_gripper'])
 
         # Check how many balls are near me
         number_of_balls = len(ball_info)
@@ -98,14 +98,14 @@ while True:
 
     nett_neighbor_force = no_force
     for neighbor in neighbors:
-        neighbor_center = neighbor_info[neighbor]['center_location']
+        neighbor_center = vector(neighbor_info[neighbor]['center_location'])
         spring_extension = neighbor_center - my_gripper
         nett_neighbor_force = nett_neighbor_force + spring_between_robots.get_force_vector(spring_extension)
 
     # 2. Walls
 
     # Unpack wall x and y directions, from my point of view
-    world_x_in_my_frame, world_y_in_my_frame = wall_info['world_x'], wall_info['world_y']
+    world_x_in_my_frame, world_y_in_my_frame = vector(wall_info['world_x']), vector(wall_info['world_y'])
 
     # Unpack the distance to each wall, seen from my gripper
     (distance_to_top, distance_to_bottom, distance_to_left, distance_to_right) = wall_info['distances']
@@ -121,7 +121,7 @@ while True:
 
     # 3. Nearest ball
     if number_of_balls > 0:
-        nearest_ball = ball_info[0]
+        nearest_ball = vector(ball_info[0])
         nett_ball_force = spring_to_balls.get_force_vector(nearest_ball)
     else:
         nett_ball_force = no_force
