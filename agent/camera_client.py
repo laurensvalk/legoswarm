@@ -13,7 +13,7 @@ except:
     import pickle
 
 class CameraUDP(Thread):
-    DECAY = 1  # seconds
+    DECAY = 0.5  # seconds
 
     def __init__(self, port=50003):
         ### Initialize ###

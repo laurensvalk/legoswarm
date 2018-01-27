@@ -44,7 +44,7 @@ PURGE = 'purge'
 LOW_VOLTAGE = 'low'
 EXIT = 'exit'
 
-state = SEEK_BALL
+state = FLOCKING
 
 no_force = np.array([0, 0])
 
@@ -137,14 +137,18 @@ while True:
 
     # Neighbor avoidance, but only in these states
     if state in (FLOCKING, SEEK_BALL):
-        total_force = nett_neighbor_force
+        total_force = total_force + nett_neighbor_force
 
-    # Return picker to starting position after store, but only in these states
+    # Wall avoidance, but only in these states
+    if state in (FLOCKING, SEEK_BALL):
+        total_force = total_force + nett_wall_force
+
+    # Eat any ball we might accidentally see
     if state in (FLOCKING, SEEK_BALL):
         if ballsensor.ball_detected():
             picker.go_to_target(picker.STORE, blocking=False)
 
-    # Eat any ball we might accidentally see
+    # Return picker to starting position after store, but only in these states
     if state in (FLOCKING, SEEK_BALL):
         if picker.is_at_store:
             picker.go_to_target(picker.OPEN)
@@ -153,7 +157,7 @@ while True:
     if state == SEEK_BALL:
         # Check for balls
         total_force = total_force + nett_ball_force
-        if np.linalg.norm(nett_ball_force) < 8:  # TODO Make this a setting
+        if np.linalg.norm(nett_ball_force) < 5:  # TODO Make this a setting
             prestore_nett_ball_force = nett_ball_force
             prestore_start_time = time.time()
             state = PRE_STORE
