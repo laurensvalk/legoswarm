@@ -136,9 +136,11 @@ while True:
 
     # 3. Nearest ball
     if number_of_balls > 0:
+        ball_visible = True
         nearest_ball = vector(ball_info[0])
         nett_ball_force = spring_to_balls.get_force_vector(nearest_ball)
     else:
+        ball_visible = False
         nett_ball_force = no_force
 
     logging.debug("Done spring calculations after {0}ms".format(int( (time.time()-loopstart)*1000 )))
@@ -179,11 +181,12 @@ while True:
     if state == SEEK_BALL:
         # Check for balls
         total_force = total_force + nett_ball_force
-        logging.debug("nett ball force is {0}N".format(nett_ball_force.norm))
-        if nett_ball_force.norm < 10:  # TODO Make this a setting
-            prestore_nett_ball_force = nett_ball_force
-            prestore_start_time = time.time()
-            state = PRE_STORE
+        if ball_visible:
+            logging.debug("nearest ball at is {0}cm".format(nearest_ball.norm))
+            if nearest_ball.norm < 5:  # TODO Make this a setting
+                prestore_nett_ball_force = nett_ball_force
+                prestore_start_time = time.time()
+                state = PRE_STORE
 
     # When the ball is close, drive towards it blindly
     # Until timeout or ball detection
