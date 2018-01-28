@@ -133,8 +133,8 @@ while True:
     # 3. Nearest ball
     if number_of_balls > 0:
         ball_visible = True
-        nearest_ball = vector(ball_info[0])
-        nett_ball_force = spring_to_balls.get_force_vector(nearest_ball - my_gripper) #?
+        nearest_ball = vector(ball_info[0]-my_gripper) #?
+        nett_ball_force = spring_to_balls.get_force_vector(nearest_ball) #?
     else:
         ball_visible = False
         nett_ball_force = no_force
