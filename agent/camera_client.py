@@ -29,7 +29,7 @@ class CameraUDP(Thread):
         self.s.bind(('', self.port))
         self.s.settimeout(0.2)
         Thread.__init__(self)
-        logging.debug("Inited thread")
+        logging.debug("Inited udp socket on port {0}".format(port))
 
     def stop(self):
         logging.debug("Stopping thread")
@@ -65,7 +65,7 @@ class CameraUDP(Thread):
 
     def read_from_socket(self):
         try:
-            data, server = self.s.recvfrom(1500)
+            data, server = self.s.recvfrom(2048)
             # if data:
             return pickle.loads(gzip.decompress(data))
         except:

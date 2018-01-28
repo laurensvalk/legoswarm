@@ -70,6 +70,7 @@ while True:
         # Get the data. Automatic exception if no data is available for MY_ID
         neighbor_info, robot_settings = data['neighbors'], data['settings']
         wall_info, ball_info = data['walls'], data['balls']
+        data={}
         # Unpack some useful data from the information we received
         neighbors = neighbor_info.keys()
         my_gripper = vector(robot_settings['p_bot_gripper'])
