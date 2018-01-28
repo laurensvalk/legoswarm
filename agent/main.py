@@ -33,6 +33,8 @@ logging.debug("Listening on port {0}".format(port))
 # ballsensor = BallSensor('in4')
 ballsensor = BallSensorReader()
 ballsensor.start()
+ball_count = 0
+
 base = DriveBase(left=('outC', DriveBase.POLARITY_INVERSED),
                  right=('outB', DriveBase.POLARITY_INVERSED),
                  wheel_diameter=4.3,
@@ -160,7 +162,7 @@ while True:
         total_force = total_force + nett_wall_force
 
     # Eat any ball we might accidentally see
-    if state in (FLOCKING, SEEK_BALL,):
+    if state in ('',):
         if ballsensor.ball_detected() and not picker.is_running:
             picker.go_to_target(picker.STORE, blocking=False)
         logging.debug("Checked ball sensor after {0}ms".format(int((time.time() - loopstart) * 1000)))
@@ -178,21 +180,31 @@ while True:
         if ball_visible:
             logging.debug("nearest ball at is {0}cm".format(nearest_ball.norm))
             if nearest_ball.norm < robot_settings['ball_close_enough']:
-                prestore_ball_loc = nearest_ball
-                prestore_start_time = time.time()
                 state = PRE_STORE
 
     # When the ball is close, drive towards it blindly
     # Until timeout or ball detection
     if state == PRE_STORE:
-        # Check for balls
-        nett_ball_force = spring_to_balls.get_force_vector(prestore_ball_loc)
-        total_force = nett_ball_force
-        if time.time() > prestore_start_time + robot_settings['ball_grab_time']: #or ballsensor.ball_detected() ?
+        prestore_start_time = time.time()
+        # First Point the robot straight towards the ball by zeroing the forward component
+        if not (-1 < nett_ball_force[0] < 1):
+            total_force = [nett_ball_force[0], 0]
+        else:
+            while not (time.time() > prestore_start_time + robot_settings['ball_grab_time'] or ballsensor.ball_detected()): #or ballsensor.ball_detected() ?
+                base.drive_and_turn(2, 0)
             picker.go_to_target(picker.STORE, blocking=False)
             # On to the next one
-            state = SEEK_BALL
-        logging.debug("Checked ball sensor after {0}ms".format(int((time.time() - loopstart) * 1000)))
+            ball_count += 1
+            if ball_count > 5:
+                state = PURGE
+            else:
+                state = SEEK_BALL
+
+    if state == PURGE:
+        # Drive to a corner and purge
+        picker.go_to_target(picker.PURGE, blocking=True)
+        time.sleep(1)
+        state = SEEK_BALL
 
     logging.debug("State is "+str(state))
     #################################################################

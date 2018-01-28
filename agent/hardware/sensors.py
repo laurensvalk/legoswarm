@@ -5,13 +5,13 @@ from collections import deque
 
 class BallSensor(InfraredSensor):
     def __init__(self, port):
-        self.threshold = 7
+        self.threshold = 6
 
         frequency = 5  # Hz
         self.interval = 1/frequency
         self.next_reading_time = time.time()+self.interval
 
-        self.num_readings = 4  # For averaging over
+        self.num_readings = 3  # For averaging over
         self.readings = deque([100] * self.num_readings, maxlen=self.num_readings)
 
         InfraredSensor.__init__(self, port)
@@ -31,7 +31,7 @@ class BallSensor(InfraredSensor):
         avg_distance = sum(self.readings) / self.num_readings
 
         if avg_distance < self.threshold:  # True if a ball is close enough to the sensor.
-           self.readings.extend([10]*4)
+           self.readings.extend([10]*self.num_readings)
            return True
         else:
            return False

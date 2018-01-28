@@ -2,7 +2,7 @@ all_settings = {
             'sight_range': 300,
             'dump_location': (20, 20),
             'p_bot_midbase': (-2, -8),
-            'p_bot_gripper': (0, 5),
+            'p_bot_gripper': (0, 11),
             'field_height': 1080,
             'field_width': 1920,
             'cm_per_px': 0.1,
