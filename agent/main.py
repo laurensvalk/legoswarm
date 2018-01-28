@@ -191,7 +191,7 @@ while True:
     sideways_force, forward_force = total_force
     speed = forward_force * robot_settings['speed_per_unit_force']
     turnrate = sideways_force * robot_settings['turnrate_per_unit_force']
-    base.drive_and_turn(speed, turnrate)
+    #base.drive_and_turn(speed, turnrate)
     # Time for pause is here
     time.sleep(1)
     logging.debug("Loop done. Speed:{0}, Turnrate:{1} ({3}), Looptime: {2}ms".format(speed,
