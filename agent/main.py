@@ -5,7 +5,8 @@ from lightvectors.lightvectors import vector
 import time
 import logging
 from hardware.motors import DriveBase, Picker
-from hardware.sensors import BallSensor, Battery
+from hardware.sensors import BallSensor
+from hardware.simple_device import PowerSupply
 from springs import Spring
 from ball_sensor_reader import BallSensorReader
 
@@ -35,7 +36,7 @@ base = DriveBase(left=('outC', DriveBase.POLARITY_INVERSED),
                  wheel_span=12,
                  counter_clockwise_is_positive=False) 
 picker = Picker('outA')
-battery = Battery()
+battery = PowerSupply()
 
 
 # States
