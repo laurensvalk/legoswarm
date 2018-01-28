@@ -22,7 +22,7 @@
             "name": "EV3 Runner",
             "type": "ev3devBrowser",
             "request": "launch",
-            "program": "/home/robot/agent/test_fast_hardware.py"
+            "program": "/home/robot/agent/test_mechanics_with_ir.py"
         }
     ]
 }

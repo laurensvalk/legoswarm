@@ -28,6 +28,7 @@ class Picker(Motor):
             time.sleep(0.1)
         self.stop()
         self.reset()
+        self.go_to_target(self.OPEN)
 
     @property
     def beak_position(self):
