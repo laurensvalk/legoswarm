@@ -70,6 +70,7 @@ class SocketThread(Thread):
         self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self.server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         self.server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
+        self.server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_SNDBUF, 1500)
         logging.info("Position broadcast started on UDP")
         Thread.__init__(self)
 

@@ -22,10 +22,9 @@ class CameraUDP(Thread):
         self.running = True
 
         ### Create a socket ###
-        self.s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        self.s.bind(('', self.port))
         self.data_timestamp = 0
         self.s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        self.s.setsockopt(socket.SOL_SOCKET, socket.SO_RCVBUF, 1500)
         self.s.bind(('', self.port))
         self.s.settimeout(0.2)
         Thread.__init__(self)
@@ -65,7 +64,7 @@ class CameraUDP(Thread):
 
     def read_from_socket(self):
         try:
-            data, server = self.s.recvfrom(2048)
+            data, server = self.s.recvfrom(1500)
             # if data:
             return pickle.loads(gzip.decompress(data))
         except:
