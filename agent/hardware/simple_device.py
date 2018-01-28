@@ -118,5 +118,17 @@ class Motor():
 class Sensor():
     def __init__(self, port):
         self.path = get_device_path('/sys/class/lego-sensor', port)
-                  
 
+
+class PowerSupply():
+    def __init__(self):
+        try:
+            # Open real voltage file if running on EV3
+            self.voltage_file = open('/sys/class/power_supply/lego-ev3-battery/voltage_now', 'rb')
+        except:
+            # Otherwise, open the dummy file
+            self.voltage_file = open('hardware/pcdevice/voltage_now', 'rb')
+                  
+    @property
+    def voltage(self):
+        return read_int(self.voltage_file) / 1e6

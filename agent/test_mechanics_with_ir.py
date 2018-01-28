@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 from hardware.motors import DriveBase, Picker
 from hardware.sensors import RemoteControl
+from hardware.simple_device import PowerSupply
 from collections import defaultdict
 import time
 
@@ -13,6 +14,8 @@ base = DriveBase(left=('outC', DriveBase.POLARITY_INVERSED),
                  counter_clockwise_is_positive=False)
       
 picker = Picker('outA')
+battery = PowerSupply()
+print(battery.voltage)
 
 # Dictionary of action tuples associated with remote button
 actions = {
