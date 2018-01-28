@@ -9,15 +9,17 @@ settings = {
             'speed_per_unit_force': 1,
             'turnrate_per_unit_force': 3,
             'ball_info_max_size' : 3, # Number of nearest balls each robot should get details of
+            'ball_close_enough': 12,
+            'ball_grab_time': 1,  # s
             'bounding_box_cm' : [
                 # List of points in centimeters, encircling the robot
                 # Starting at left wheel, then go counterclockwise
-                [-8, 2.5], # Front end of left wheel
-                [-8, -2.5], # Back end of left wheel
+                [-9, 2.5], # Front end of left wheel
+                [-9, -2.5], # Back end of left wheel
                 [-5, -12], # Left rear wheel caster
                 [5, -12], # right wheel caster
-                [8, -2.5], # Back end of right wheel
-                [8, 2.5], # Front end of right wheel                                        
+                [9, -2.5], # Back end of right wheel
+                [9, 2.5], # Front end of right wheel
                 [5, 13], # Front-right end of gripper
                 [-5, 13] # Front-left end of gripper
             ],
@@ -76,7 +78,9 @@ robot_keys = ['speed_per_unit_force',
               'spring_between_robots',
               'spring_to_walls',
               'spring_to_balls',
-              'p_bot_gripper']
+              'p_bot_gripper',
+              'ball_close_enough',
+              'ball_grab_time']
 
 # Create the settings dictionary with the above items
 robot_settings = {key: settings[key] for key in robot_keys}

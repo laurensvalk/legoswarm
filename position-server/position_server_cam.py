@@ -15,8 +15,9 @@ import gzip
 from antoncv import find_largest_n_side, sorted_rect, offset_convex_polygon, rect_from_image_size, \
     find_nested_triangles
 from linalg import atan2_vec, vec_length
-from settings import settings, robot_settings, WIDTH, HEIGHT, FILE, SERVER_ADDR, PLAYING_FIELD_OFFSET, MAX_AGENTS
+from settings import settings, robot_settings, WIDTH, HEIGHT, FILE, PLAYING_FIELD_OFFSET
 from parse_camera_data import make_data_for_robots, bounding_box
+from importlib import reload
 
 YELLOW = (0, 255, 255)
 
@@ -318,8 +319,10 @@ if __name__ == '__main__':
         if keypress == ord('q'):
             break
         if n == 0:
-            logging.info("Looptime: {0} \n data transmitted: {1}".format((time.time()-t)/100, data_to_transmit))
-            # Optionally save an image to disk.
+            logging.info("Looptime: {0}. Reloading settings.".format((time.time()-t)/100))
+            reload(settings)
+            from settings import settings, robot_settings, WIDTH, HEIGHT, FILE, PLAYING_FIELD_OFFSET
+            # Uncomment to save an image to disk:
             # cv2.imwrite("test_images/{0}.jpg".format(int(time.time())), img_cam)
             n = 100
             t = time.time()

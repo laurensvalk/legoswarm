@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 
-from camera_client import CameraUDP
 from lightvectors.lightvectors import vector
 import time
 import logging
@@ -23,10 +22,7 @@ except:
 logging.basicConfig(format='%(asctime)s, %(levelname)s, %(message)s',datefmt='%H:%M:%S', level=logging.DEBUG)
 
 # Start data thread
-# camera_thread = CameraUDP(port=50000+MY_ID)
-# camera_thread.start()
 s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-# s.setsockopt(socket.SOL_SOCKET, socket.SO_RCVBUF, 1500)
 port = 50000+MY_ID
 s.bind(('', 50000+MY_ID))
 s.setsockopt(socket.SOL_SOCKET, socket.SO_RCVBUF, 1500)
@@ -76,12 +72,12 @@ while True:
         compressed_data, server = s.recvfrom(1500)
         data = pickle.loads(gzip.decompress(compressed_data))
 
-        # data = camera_thread.read_from_socket()
-
         # Get the data. Automatic exception if no data is available for MY_ID
-        neighbor_info, robot_settings = data['neighbors'], data['settings']
-        wall_info, ball_info = data['walls'], data['balls']
-        data={}
+        neighbor_info = data['neighbors']
+        robot_settings = data['settings']
+        wall_info = data['walls']
+        ball_info = data['balls']
+
         # Unpack some useful data from the information we received
         neighbors = neighbor_info.keys()
         my_gripper = vector(robot_settings['p_bot_gripper'])
@@ -97,11 +93,9 @@ while True:
     except:
         # Stop the loop if we're unable to get server data
         e = sys.exc_info()[0]
-        # logging.warning(e)
         logging.warning("{0}: Reading data from port {1} failed. Waiting 1s".format(e, port))
         base.stop()
         time.sleep(1)
-        # raise
         continue
     logging.debug("Got data after {0}ms".format(int( (time.time()-loopstart)*1000 )))
 
@@ -183,7 +177,7 @@ while True:
         total_force = total_force + nett_ball_force
         if ball_visible:
             logging.debug("nearest ball at is {0}cm".format(nearest_ball.norm))
-            if nearest_ball.norm < 5:  # TODO Make this a setting
+            if nearest_ball.norm < robot_settings['ball_close_enough']:
                 prestore_nett_ball_force = nett_ball_force
                 prestore_start_time = time.time()
                 state = PRE_STORE
@@ -193,7 +187,7 @@ while True:
     if state == PRE_STORE:
         # Check for balls
         total_force = no_force
-        if ballsensor.ball_detected() or time.time() > prestore_start_time + 1: # TODO also make this a setting
+        if ballsensor.ball_detected() or time.time() > prestore_start_time + robot_settings['ball_grab_time']:
             picker.go_to_target(picker.STORE, blocking=False)
             # On to the next one
             # state = SEEK_BALL
