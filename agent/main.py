@@ -4,7 +4,7 @@ from camera_client import CameraUDP
 from lightvectors.lightvectors import vector
 import time
 import logging
-from hardware.motors import Motor, DriveBase, Picker
+from hardware.motors import DriveBase, Picker
 from hardware.sensors import BallSensor, Battery
 from springs import Spring
 from ball_sensor_reader import BallSensorReader
@@ -29,8 +29,8 @@ camera_thread = CameraUDP(port=50000+MY_ID)
 # ballsensor = BallSensor('in4')
 ballsensor = BallSensorReader()
 ballsensor.start()
-base = DriveBase(left=('outC', Motor.POLARITY_INVERSED),
-                 right=('outB', Motor.POLARITY_INVERSED),
+base = DriveBase(left=('outC', DriveBase.POLARITY_INVERSED),
+                 right=('outB', DriveBase.POLARITY_INVERSED),
                  wheel_diameter=4.3,
                  wheel_span=12,
                  counter_clockwise_is_positive=False) 
@@ -164,7 +164,7 @@ while True:
     if state == SEEK_BALL:
         # Check for balls
         total_force = total_force + nett_ball_force
-        if np.linalg.norm(nett_ball_force) < 5:  # TODO Make this a setting
+        if nett_ball_force.norm < 5:  # TODO Make this a setting
             prestore_nett_ball_force = nett_ball_force
             prestore_start_time = time.time()
             state = PRE_STORE

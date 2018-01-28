@@ -67,6 +67,10 @@ class Picker(Motor):
               
 class DriveBase:
     """Easily control two large motors to drive a skid steering robot using specified forward speed and turnrate"""
+
+    POLARITY_INVERSED = Motor.POLARITY_INVERSED
+    POLARITY_NORMAL = Motor.POLARITY_INVERSED
+
     def __init__(self, left, right, wheel_diameter, wheel_span, counter_clockwise_is_positive=True):   
         """Set up two Large motors and predefine conversion constants"""   
         
