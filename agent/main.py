@@ -121,6 +121,7 @@ while True:
     (distance_to_top, distance_to_bottom, distance_to_left, distance_to_right) = wall_info['distances']
 
     # Make one spring to each wall
+    # TODO check if springs are attached to my center or my gripper...
     force_to_top = spring_to_walls.get_force_vector(distance_to_top * world_y_in_my_frame)
     force_to_bottom = spring_to_walls.get_force_vector(-distance_to_bottom * world_y_in_my_frame)
     force_to_left = spring_to_walls.get_force_vector(-distance_to_left * world_x_in_my_frame)
