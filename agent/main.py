@@ -47,7 +47,6 @@ battery = PowerSupply()
 # States
 FLOCKING = 'flocking'  # For now, just behavior that makes robots avoid one another
 SEEK_BALL = 'seek ball'
-PRE_STORE = 'pre store'
 STORE = 'store'
 TO_DEPOT = 'to depot'
 PURGE = 'purge'
@@ -134,7 +133,7 @@ while True:
     if number_of_balls > 0:
         ball_visible = True
         nearest_ball = vector(ball_info[0])
-        nett_ball_force = spring_to_balls.get_force_vector(nearest_ball)
+        nett_ball_force = spring_to_balls.get_force_vector(nearest_ball - my_gripper) #?
     else:
         ball_visible = False
         nett_ball_force = no_force
@@ -180,14 +179,14 @@ while True:
         if ball_visible:
             logging.debug("nearest ball at is {0}cm".format(nearest_ball.norm))
             if nearest_ball.norm < robot_settings['ball_close_enough']:
-                state = PRE_STORE
+                state = STORE
 
     # When the ball is close, drive towards it blindly
     # Until timeout or ball detection
-    if state == PRE_STORE:
+    if state == STORE:
         prestore_start_time = time.time()
         # First Point the robot straight towards the ball by zeroing the forward component
-        if not (-1 < nearest_ball[0] < 1):
+        if not (-2 < nearest_ball[0] < 2):
             total_force = [nett_ball_force[0]*2, 0]
         else:
             while not (time.time() > prestore_start_time + robot_settings['ball_grab_time'] or ballsensor.ball_detected()): #or ballsensor.ball_detected() ?
@@ -205,7 +204,7 @@ while True:
     if state == PURGE:
         # Drive to a corner and purge
         corner_a_direction = vector(wall_info['corners'][0])
-        total_force = spring_to_balls.get_force_vector(corner_a_direction)
+        total_force = spring_to_balls.get_force_vector(corner_a_direction) + nett_wall_force
         if corner_a_direction.norm < 20:
             base.stop()
             picker.go_to_target(picker.PURGE, blocking=True)

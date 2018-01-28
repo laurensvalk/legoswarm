@@ -9,7 +9,7 @@ all_settings = {
             'speed_per_unit_force': 1,
             'turnrate_per_unit_force': 3,
             'ball_info_max_size' : 3, # Number of nearest balls each robot should get details of
-            'ball_close_enough': 4,
+            'ball_close_enough': 10,
             'ball_grab_time': 6,  # s
             'bounding_box_cm' : [
                 # List of points in centimeters, encircling the robot
@@ -20,8 +20,8 @@ all_settings = {
                 [5, -13], # right wheel caster
                 [9, -2.5], # Back end of right wheel
                 [9, 2.5], # Front end of right wheel
-                [5, 14], # Front-right end of gripper
-                [-5, 14] # Front-left end of gripper
+                [5, 15], # Front-right end of gripper
+                [-5, 15] # Front-left end of gripper
             ],
             'spring_between_robots' : [
             #                         c                     15 (pull when far)
