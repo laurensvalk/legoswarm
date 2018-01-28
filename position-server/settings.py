@@ -10,7 +10,7 @@ all_settings = {
             'turnrate_per_unit_force': 3,
             'ball_info_max_size' : 3, # Number of nearest balls each robot should get details of
             'ball_close_enough': 12,
-            'ball_grab_time': 1.5,  # s
+            'ball_grab_time': 2,  # s
             'bounding_box_cm' : [
                 # List of points in centimeters, encircling the robot
                 # Starting at left wheel, then go counterclockwise
