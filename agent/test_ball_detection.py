@@ -1,9 +1,14 @@
 #!/usr/bin/env python3
 from hardware.motors import DriveBase, Picker
 from hardware.sensors import BallSensor
-import ev3dev.ev3 as ev3
-from collections import defaultdict
 import time
+
+from os import devnull
+from subprocess import Popen
+
+def beep():
+    with open('/dev/null', 'w') as file:
+        return Popen('/usr/bin/beep', stdout=file)
 
 # Configure the devices
 eyes = BallSensor('in4')
@@ -17,7 +22,7 @@ picker = Picker('outA')
 # Make a sound when we detect a ball and print readings
 while True:
     if eyes.ball_detected():
-        ev3.Sound.beep()
+        beep()
     print(eyes.most_recent_value)
     time.sleep(0.1)
         
