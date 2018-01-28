@@ -30,7 +30,7 @@ s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 port = 50000+MY_ID
 s.bind(('', 50000+MY_ID))
 s.setsockopt(socket.SOL_SOCKET, socket.SO_RCVBUF, 1500)
-s.settimeout(0.1)
+s.settimeout(0.2)
 logging.debug("Listening on port {0}".format(port))
 
 # Configure the devices
@@ -149,52 +149,51 @@ while True:
 
     # Do stuff with nett_ball_force, nett_neighbor_force and nett_wall_force, depending on where we want to go.
     total_force = no_force
-    total_force = nett_neighbor_force
-    #
-    # if state == EXIT:
-    #     camera_thread.stop()
-    #     base.stop()
-    #     break
-    #
-    # # Neighbor avoidance, but only in these states
-    # if state in (FLOCKING, SEEK_BALL):
-    #     total_force = total_force + nett_neighbor_force
-    #
-    # # Wall avoidance, but only in these states
-    # if state in (FLOCKING, SEEK_BALL):
-    #     total_force = total_force + nett_wall_force
-    #
-    # # Eat any ball we might accidentally see
-    # if state in (FLOCKING, SEEK_BALL):
-    #     if ballsensor.ball_detected() and not picker.is_running:
-    #         picker.go_to_target(picker.STORE, blocking=False)
-    #     logging.debug("Checked ball sensor after {0}ms".format(int((time.time() - loopstart) * 1000)))
-    #
-    # # Return picker to starting position after store, but only in these states
-    # if state in (FLOCKING, SEEK_BALL):
-    #     if picker.is_at_store:
-    #         picker.go_to_target(picker.OPEN)
-    #     logging.debug("Checked picker open after {0}ms".format(int((time.time() - loopstart) * 1000)))
-    #
-    # # Ball seeking regimen
-    # if state == SEEK_BALL:
-    #     # Check for balls
-    #     total_force = total_force + nett_ball_force
-    #     if nett_ball_force.norm < 5:  # TODO Make this a setting
-    #         prestore_nett_ball_force = nett_ball_force
-    #         prestore_start_time = time.time()
-    #         state = PRE_STORE
-    #
-    # # When the ball is close, drive towards it blindly
-    # # Until timeout or ball detection
-    # if state == PRE_STORE:
-    #     # Check for balls
-    #     total_force = total_force + prestore_nett_ball_force
-    #     if ballsensor.ball_detected() or time.time() > prestore_start_time + 1: # TODO also make this a setting
-    #         picker.go_to_target(picker.STORE, blocking=False)
-    #         # On to the next one
-    #         state = SEEK_BALL
-    #     logging.debug("Checked ball sensor after {0}ms".format(int((time.time() - loopstart) * 1000)))
+    # total_force = nett_neighbor_force
+
+    if state == EXIT:
+        base.stop()
+        break
+
+    # Neighbor avoidance, but only in these states
+    if state in (FLOCKING, SEEK_BALL,):
+        total_force = total_force + nett_neighbor_force
+
+    # Wall avoidance, but only in these states
+    if state in (FLOCKING, SEEK_BALL,):
+        total_force = total_force + nett_wall_force
+
+    # Eat any ball we might accidentally see
+    if state in (SEEK_BALL,):
+        if ballsensor.ball_detected() and not picker.is_running:
+            picker.go_to_target(picker.STORE, blocking=False)
+        logging.debug("Checked ball sensor after {0}ms".format(int((time.time() - loopstart) * 1000)))
+
+    # Return picker to starting position after store, but only in these states
+    if state in (FLOCKING, SEEK_BALL):
+        if picker.is_at_store:
+            picker.go_to_target(picker.OPEN)
+        logging.debug("Checked picker open after {0}ms".format(int((time.time() - loopstart) * 1000)))
+
+    # Ball seeking regimen
+    if state == SEEK_BALL:
+        # Check for balls
+        total_force = total_force + nett_ball_force
+        if nett_ball_force.norm < 5:  # TODO Make this a setting
+            prestore_nett_ball_force = nett_ball_force
+            prestore_start_time = time.time()
+            state = PRE_STORE
+
+    # When the ball is close, drive towards it blindly
+    # Until timeout or ball detection
+    if state == PRE_STORE:
+        # Check for balls
+        total_force = total_force + prestore_nett_ball_force
+        if ballsensor.ball_detected() or time.time() > prestore_start_time + 1: # TODO also make this a setting
+            picker.go_to_target(picker.STORE, blocking=False)
+            # On to the next one
+            state = SEEK_BALL
+        logging.debug("Checked ball sensor after {0}ms".format(int((time.time() - loopstart) * 1000)))
 
     logging.debug("State is "+str(state))
     #################################################################
