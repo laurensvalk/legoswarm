@@ -123,8 +123,12 @@ class Sensor():
 class PowerSupply():
     def __init__(self):
         try:
-            # Open real voltage file if running on EV3
-            self.voltage_file = open('/sys/class/power_supply/lego-ev3-battery/voltage_now', 'rb')
+            try:
+                # Open real voltage file if running on EV3 stretch
+                self.voltage_file = open('/sys/class/power_supply/lego-ev3-battery/voltage_now', 'rb')
+            except:
+                # Open real voltage file if running on EV3 jessie
+                self.voltage_file = open('/sys/class/power_supply/legoev3-battery/voltage_now', 'rb')
         except:
             # Otherwise, open the dummy file
             self.voltage_file = open('hardware/pcdevice/voltage_now', 'rb')
