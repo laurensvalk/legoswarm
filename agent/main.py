@@ -205,6 +205,7 @@ while True:
         corner_a_direction = vector(wall_info['corners'][0])
         total_force = spring_to_balls.get_force_vector(corner_a_direction)
         if corner_a_direction.norm < 20:
+            base.stop()
             picker.go_to_target(picker.PURGE, blocking=True)
             ball_count = 0
             time.sleep(1)
