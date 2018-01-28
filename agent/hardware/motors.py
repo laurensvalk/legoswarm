@@ -1,22 +1,5 @@
 import time
-from .compat_device import CompatMotor
-
-
-class Motor(CompatMotor):
-    """Add a few convenience functions to standard ev3dev motor class"""
-    def run_forever_at_speed(self, speed):
-        self.speed_sp = self.limit(speed)
-        self.run_forever() 
-
-    def limit(self, speed):
-        # Ensure we bind the speed to the known maximum for this motor
-        return max(min(self.max_speed, speed), -self.max_speed)
-
-    def go_to(self, reference, speed, tolerance):
-        if not self.is_running and not (reference - tolerance <= self.position <= reference + tolerance):
-            self.position_sp = reference
-            self.speed_sp = abs(self.limit(speed))
-            self.run_to_abs_pos()
+from .simple_device import Motor
 
 class Picker(Motor):
     """Steer the picker mechanism to the desired target"""
