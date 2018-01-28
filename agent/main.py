@@ -98,7 +98,7 @@ while True:
         # Stop the loop if we're unable to get server data
         e = sys.exc_info()[0]
         # logging.warning(e)
-        logging.warning(e + ": No data on my UDP port. Waiting 1s")
+        logging.warning("{0}: Reading data from port {1} failed. Waiting 1s".format(e, port))
         base.stop()
         time.sleep(1)
         # raise
