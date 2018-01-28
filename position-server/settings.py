@@ -6,8 +6,8 @@ settings = {
             'field_height': 1080,
             'field_width': 1920,
             'cm_per_px': 0.1,
-            'speed_per_unit_force': 2,
-            'turnrate_per_unit_force': 5,
+            'speed_per_unit_force': 1,
+            'turnrate_per_unit_force': 3,
             'ball_info_max_size' : 3, # Number of nearest balls each robot should get details of
             'bounding_box_cm' : [
                 # List of points in centimeters, encircling the robot
