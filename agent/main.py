@@ -187,12 +187,14 @@ while True:
     if state == PRE_STORE:
         prestore_start_time = time.time()
         # First Point the robot straight towards the ball by zeroing the forward component
-        if not (-1 < nett_ball_force[0] < 1):
+        if not (-.5 < nett_ball_force[0] < .5):
             total_force = [nett_ball_force[0], 0]
         else:
             while not (time.time() > prestore_start_time + robot_settings['ball_grab_time'] or ballsensor.ball_detected()): #or ballsensor.ball_detected() ?
                 base.drive_and_turn(2, 0)
-            picker.go_to_target(picker.STORE, blocking=False)
+            base.stop()
+            picker.go_to_target(picker.STORE, blocking=True)
+            picker.go_to_target(picker.OPEN, blocking=True)
             # On to the next one
             ball_count += 1
             if ball_count > 5:
