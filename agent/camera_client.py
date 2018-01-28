@@ -26,7 +26,7 @@ class CameraUDP(Thread):
         self.s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self.s.setsockopt(socket.SOL_SOCKET, socket.SO_RCVBUF, 1500)
         self.s.bind(('', self.port))
-        self.s.settimeout(0.2)
+        # self.s.settimeout(0.2)
         Thread.__init__(self)
         logging.debug("Inited udp socket on port {0}".format(port))
 
@@ -59,7 +59,7 @@ class CameraUDP(Thread):
             if data:
                 self.robot_broadcast_data = data
                 self.data_timestamp = time.time()
-            time.sleep(0.07)
+            # time.sleep(0.07)
         self.s.close()
 
     def read_from_socket(self):

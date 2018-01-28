@@ -70,7 +70,7 @@ class SocketThread(Thread):
         self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self.server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         self.server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
-        self.server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_SNDBUF, 1500)
+        # self.server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_SNDBUF, 1500)
         logging.info("Position broadcast started on UDP")
         Thread.__init__(self)
 
@@ -89,7 +89,7 @@ class SocketThread(Thread):
             data = gzip.compress(pickle.dumps(dictionary[key]))
             try:
                 if data:
-                    result =  self.server_socket.sendto(data, ('255.255.255.255', port))
+                    result = self.server_socket.sendto(data, ('255.255.255.255', port))
                     # print("Sent {0}b to port {1}".format(result, port))
                     return result
             except OSError as exc:

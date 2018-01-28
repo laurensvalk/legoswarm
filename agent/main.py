@@ -29,6 +29,8 @@ s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 # s.setsockopt(socket.SOL_SOCKET, socket.SO_RCVBUF, 1500)
 port = 50000+MY_ID
 s.bind(('', 50000+MY_ID))
+s.setsockopt(socket.SOL_SOCKET, socket.SO_RCVBUF, 1500)
+s.settimeout(0.1)
 logging.debug("Listening on port {0}".format(port))
 
 # Configure the devices
@@ -71,8 +73,8 @@ while True:
     loopstart = time.time()
     try:
         # Get robot positions and settings from server
-        compressed_data, server = s.recvfrom(2048)
-        pickle.loads(gzip.decompress(compressed_data))
+        compressed_data, server = s.recvfrom(1500)
+        data = pickle.loads(gzip.decompress(compressed_data))
 
         # data = camera_thread.read_from_socket()
 
@@ -97,7 +99,8 @@ while True:
         logging.warning("No data on my UDP port. Waiting 1s")
         base.stop()
         time.sleep(1)
-        continue
+        raise
+        # continue
     logging.debug("Got data after {0}ms".format(int( (time.time()-loopstart)*1000 )))
 
     #################################################################
