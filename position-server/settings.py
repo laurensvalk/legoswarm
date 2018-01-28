@@ -1,4 +1,4 @@
-settings = {
+all_settings = {
             'sight_range': 300,
             'dump_location': (20, 20),
             'p_bot_midbase': (-2, -8),
@@ -83,7 +83,7 @@ robot_keys = ['speed_per_unit_force',
               'ball_grab_time']
 
 # Create the settings dictionary with the above items
-robot_settings = {key: settings[key] for key in robot_keys}
+robot_settings = {key: all_settings[key] for key in robot_keys}
 
 # Server settings
 SERVER_ADDR = ("255.255.255.255", 50008)

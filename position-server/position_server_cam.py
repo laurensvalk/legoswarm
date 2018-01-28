@@ -15,9 +15,12 @@ import gzip
 from antoncv import find_largest_n_side, sorted_rect, offset_convex_polygon, rect_from_image_size, \
     find_nested_triangles
 from linalg import atan2_vec, vec_length
-from settings import settings, robot_settings, WIDTH, HEIGHT, FILE, PLAYING_FIELD_OFFSET
-from parse_camera_data import make_data_for_robots, bounding_box
+
 from importlib import reload
+import settings # This is to make importlib/reload work.
+from settings import all_settings, robot_settings, WIDTH, HEIGHT, FILE, PLAYING_FIELD_OFFSET
+from parse_camera_data import make_data_for_robots, bounding_box
+
 
 YELLOW = (0, 255, 255)
 
@@ -270,7 +273,7 @@ if __name__ == '__main__':
             cv2.drawContours(img, [triangle], -1, GREEN)
 
             # Black out the shape of the robot in our source image
-            bb = bounding_box(settings, midbase_marker, apex_marker)
+            bb = bounding_box(all_settings, midbase_marker, apex_marker)
             cv2.drawContours(img, [bb], 0, RED, 2)
             cv2.fillConvexPoly(img_grey, bb, 255)
 
@@ -306,7 +309,7 @@ if __name__ == '__main__':
                 balls += [c]
 
         # Calculations to save time on client side
-        data_to_transmit = make_data_for_robots(robot_markers, balls, field_corners, settings, robot_settings)
+        data_to_transmit = make_data_for_robots(robot_markers, balls, field_corners, all_settings, robot_settings)
 
         # Show all calculations in the preview window
         # img = cv2.cvtColor(img_grey, cv2.COLOR_GRAY2BGR)
@@ -321,7 +324,7 @@ if __name__ == '__main__':
         if n == 0:
             logging.info("Looptime: {0}. Reloading settings.".format((time.time()-t)/100))
             reload(settings)
-            from settings import settings, robot_settings, WIDTH, HEIGHT, FILE, PLAYING_FIELD_OFFSET
+            from settings import all_settings, robot_settings, WIDTH, HEIGHT, FILE, PLAYING_FIELD_OFFSET
             # Uncomment to save an image to disk:
             # cv2.imwrite("test_images/{0}.jpg".format(int(time.time())), img_cam)
             n = 100
