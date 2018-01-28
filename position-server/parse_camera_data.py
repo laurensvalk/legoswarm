@@ -121,7 +121,10 @@ def get_wall_info(H_to_bot_from_world, field_corners, settings):
         world_y = (B_agent - C_agent)/np.linalg.norm(B_agent-C_agent) 
 
         # Store information as dictionary for this agent
-        wall_info[agent] = {'distances': distances, 'world_x' : world_x.tolist(), 'world_y': world_y.tolist()}
+        wall_info[agent] = {'distances': distances,
+                            'world_x' : world_x.tolist(),
+                            'world_y': world_y.tolist(),
+                            'corners': [A_agent.tolist(), B_agent.tolist(), C_agent.tolist(), D_agent.tolist()]}
 
     # For each agent, return a sorted list of ball locations
     return wall_info
