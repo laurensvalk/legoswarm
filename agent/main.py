@@ -188,7 +188,7 @@ while True:
         # Check for balls
         nett_ball_force = spring_to_balls.get_force_vector(prestore_ball_loc)
         total_force = nett_ball_force
-        if ballsensor.ball_detected() or time.time() > prestore_start_time + robot_settings['ball_grab_time']:
+        if time.time() > prestore_start_time + robot_settings['ball_grab_time']: #or ballsensor.ball_detected() ?
             picker.go_to_target(picker.STORE, blocking=False)
             # On to the next one
             state = SEEK_BALL
