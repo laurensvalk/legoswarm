@@ -179,7 +179,7 @@ while True:
     if state == SEEK_BALL:
         # Check for balls
         total_force = total_force + nett_ball_force
-        if nett_ball_force.norm < 2:  # TODO Make this a setting
+        if nett_ball_force.norm < 5:  # TODO Make this a setting
             prestore_nett_ball_force = nett_ball_force
             prestore_start_time = time.time()
             state = PRE_STORE
@@ -188,11 +188,11 @@ while True:
     # Until timeout or ball detection
     if state == PRE_STORE:
         # Check for balls
-        total_force = prestore_nett_ball_force
+        total_force = no_force
         if ballsensor.ball_detected() or time.time() > prestore_start_time + 1: # TODO also make this a setting
             picker.go_to_target(picker.STORE, blocking=False)
             # On to the next one
-            state = SEEK_BALL
+            # state = SEEK_BALL
         logging.debug("Checked ball sensor after {0}ms".format(int((time.time() - loopstart) * 1000)))
 
     logging.debug("State is "+str(state))
