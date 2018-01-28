@@ -1,9 +1,9 @@
-from .compat_device import CompatInfraredSensor, CompatPowerSupply
+from .simple_device import InfraredSensor
 import time
 from collections import deque
 
 
-class BallSensor(CompatInfraredSensor):
+class BallSensor(InfraredSensor):
     def __init__(self, port):
         self.threshold = 7
 
@@ -14,7 +14,7 @@ class BallSensor(CompatInfraredSensor):
         self.num_readings = 4  # For averaging over
         self.readings = deque([100] * self.num_readings, maxlen=self.num_readings)
 
-        CompatInfraredSensor.__init__(self, port)
+        InfraredSensor.__init__(self, port)
         self.mode = self.MODE_IR_PROX
 
     @ property
@@ -36,17 +36,7 @@ class BallSensor(CompatInfraredSensor):
         else:
            return False
 
-
-class Battery(CompatPowerSupply):
-    def __init__(self):
-        CompatPowerSupply.__init__(self)
-
-    @property
-    def voltage(self):
-        return self.measured_volts
-
-
-class RemoteControl(CompatInfraredSensor):
+class RemoteControl():
     """Configures IR Sensor as IR Receiver and reads IR button status"""
 
     # Ordered list of possible button presses
@@ -56,14 +46,14 @@ class RemoteControl(CompatInfraredSensor):
 
     def __init__(self, port):
         """Configure IR sensor in remote mode"""
-        CompatInfraredSensor.__init__(self, port)
-        self.mode = self.MODE_IR_REMOTE        
+        self.sensor = InfraredSensor(port)
+        self.mode = self.sensor.MODE_IR_REMOTE        
 
     @property
     def button(self):
         """Return name (string) of button currently pressed"""
-        return self.button_list[self.value()]
+        return self.button_list[self.sensor.value]
 
     def is_pressed(self, button):
         """Check if specified button is currently pressed"""
-        return self.button_list.index(button) == self.value()
+        return self.button_list.index(button) == self.sensor.value

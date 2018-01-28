@@ -10,7 +10,7 @@
             "request": "launch",
             "stopOnEntry": false,
             "pythonPath": "${config:python.pythonPath}",
-            "program": "${workspaceFolder}/test_mechanics_with_ir.py",
+            "program": "${workspaceFolder}/test_ball_detection.py",
             "cwd": "${workspaceFolder}",
             "env": {},
             "envFile": "${workspaceFolder}/.env",
@@ -22,7 +22,7 @@
             "name": "EV3 Runner",
             "type": "ev3devBrowser",
             "request": "launch",
-            "program": "/home/robot/agent/test_mechanics_with_ir.py"
+            "program": "/home/robot/agent/test_ball_detection.py"
         }
     ]
 }

@@ -113,16 +113,39 @@ class Motor():
             absolute_limited_speed = abs(self.limit(speed))
             write_int(self.speed_sp_file, absolute_limited_speed)
             write_str(self.command_file, self.COMMAND_RUN_TO_ABS_POS) 
+          
+class InfraredSensor():
 
-# TODO            
-class Sensor():
+    MODE_IR_REMOTE = 'IR-REMOTE'
+    MODE_IR_PROX = 'IR-PROX'
+
     def __init__(self, port):
-        self.path = get_device_path('/sys/class/lego-sensor', port)
+        self.port = port
+        self.path = get_device_path('/sys/class/lego-sensor', self.port)
+        self.mode_file = open(self.path + '/mode', 'w')
+        self.value_file = open(self.path + '/value0', 'rb')
+
+    @property
+    def mode(self):
+        return read_str(self.mode_file)    
+
+    @mode.setter
+    def mode(self, set_mode):
+        return write_str(self.mode_file, set_mode)    
+
+    @property
+    def value(self):
+        return read_int(self.value_file)    
+
+    @property
+    def proximity(self):
+        return read_int(self.value_file)       
 
 
 class PowerSupply():
     def __init__(self):
         try:
+            # Open real voltage file if running on EV3
             try:
                 # Open real voltage file if running on EV3 stretch
                 self.voltage_file = open('/sys/class/power_supply/lego-ev3-battery/voltage_now', 'rb')

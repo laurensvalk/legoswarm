@@ -28,12 +28,13 @@ actions = {
     'RIGHT_DOWN' : (None, None, Picker.OPEN),
     'BEACON' : (None, None, Picker.PURGE)    
 }
-# Make unused buttons the same as no buttons case
-actions = defaultdict(lambda: actions['NONE'], actions)
 
 # Main Loop: Drive around and control picker based on remote
 while True:
-    speed_now, steering_now, target_now = actions[remote.button]
+    try:
+        speed_now, steering_now, target_now = actions[remote.button]
+    except:
+        speed_now, steering_now, target_now = actions['NONE']
 
     if target_now is not None:
         picker.go_to_target(target_now)
