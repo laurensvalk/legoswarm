@@ -27,6 +27,7 @@ class CameraUDP(Thread):
         self.data_timestamp = 0
         self.s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self.s.bind(('', self.port))
+        self.s.settimeout(0.2)
         Thread.__init__(self)
         logging.debug("Inited thread")
 
