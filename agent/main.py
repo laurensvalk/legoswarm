@@ -179,7 +179,8 @@ while True:
     if state == SEEK_BALL:
         # Check for balls
         total_force = total_force + nett_ball_force
-        if nett_ball_force.norm < 5:  # TODO Make this a setting
+        logging.debug("nett ball force is {0}N".format(nett_ball_force.norm))
+        if nett_ball_force.norm < 10:  # TODO Make this a setting
             prestore_nett_ball_force = nett_ball_force
             prestore_start_time = time.time()
             state = PRE_STORE
