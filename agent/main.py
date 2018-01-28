@@ -8,7 +8,7 @@ from hardware.motors import DriveBase, Picker
 from hardware.simple_device import PowerSupply
 from springs import Spring
 from ball_sensor_reader import BallSensorReader
-import socket, pickle, gzip
+import socket, pickle, gzip, sys
 
 #################################################################
 ###### Init
@@ -96,11 +96,13 @@ while True:
 
     except:
         # Stop the loop if we're unable to get server data
-        logging.warning("No data on my UDP port. Waiting 1s")
+        e = sys.exc_info()[0]
+        # logging.warning(e)
+        logging.warning(e + ": No data on my UDP port. Waiting 1s")
         base.stop()
         time.sleep(1)
-        raise
-        # continue
+        # raise
+        continue
     logging.debug("Got data after {0}ms".format(int( (time.time()-loopstart)*1000 )))
 
     #################################################################
