@@ -188,10 +188,10 @@ while True:
         prestore_start_time = time.time()
         # First Point the robot straight towards the ball by zeroing the forward component
         if not (-.5 < nett_ball_force[0] < .5):
-            total_force = [nett_ball_force[0], 0]
+            total_force = [nett_ball_force[0]*2, 0]
         else:
             while not (time.time() > prestore_start_time + robot_settings['ball_grab_time'] or ballsensor.ball_detected()): #or ballsensor.ball_detected() ?
-                base.drive_and_turn(2, 0)
+                base.drive_and_turn(4, 0)
             base.stop()
             picker.go_to_target(picker.STORE, blocking=True)
             picker.go_to_target(picker.OPEN, blocking=True)
@@ -209,6 +209,7 @@ while True:
         if corner_a_direction.norm < 20:
             base.stop()
             picker.go_to_target(picker.PURGE, blocking=True)
+            picker.go_to_target(picker.OPEN, blocking=True)
             ball_count = 0
             time.sleep(1)
             state = SEEK_BALL
