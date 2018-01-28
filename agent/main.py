@@ -178,7 +178,7 @@ while True:
         if ball_visible:
             logging.debug("nearest ball at is {0}cm".format(nearest_ball.norm))
             if nearest_ball.norm < robot_settings['ball_close_enough']:
-                prestore_nett_ball_force = nett_ball_force
+                prestore_ball_loc = nearest_ball
                 prestore_start_time = time.time()
                 state = PRE_STORE
 
@@ -186,11 +186,12 @@ while True:
     # Until timeout or ball detection
     if state == PRE_STORE:
         # Check for balls
-        total_force = no_force
+        nett_ball_force = spring_to_balls.get_force_vector(prestore_ball_loc)
+        total_force = nett_ball_force
         if ballsensor.ball_detected() or time.time() > prestore_start_time + robot_settings['ball_grab_time']:
             picker.go_to_target(picker.STORE, blocking=False)
             # On to the next one
-            # state = SEEK_BALL
+            state = SEEK_BALL
         logging.debug("Checked ball sensor after {0}ms".format(int((time.time() - loopstart) * 1000)))
 
     logging.debug("State is "+str(state))
