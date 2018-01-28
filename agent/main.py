@@ -9,6 +9,7 @@ from hardware.sensors import BallSensor
 from hardware.simple_device import PowerSupply
 from springs import Spring
 from ball_sensor_reader import BallSensorReader
+import socket, pickle, gzip
 
 #################################################################
 ###### Init
@@ -23,8 +24,11 @@ except:
 logging.basicConfig(format='%(asctime)s, %(levelname)s, %(message)s',datefmt='%H:%M:%S', level=logging.DEBUG)
 
 # Start data thread
-camera_thread = CameraUDP(port=50000+MY_ID)
+# camera_thread = CameraUDP(port=50000+MY_ID)
 # camera_thread.start()
+s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+# s.setsockopt(socket.SOL_SOCKET, socket.SO_RCVBUF, 1500)
+s.bind(('', 50000+MY_ID))
 
 # Configure the devices
 # ballsensor = BallSensor('in4')
@@ -66,7 +70,10 @@ while True:
     loopstart = time.time()
     try:
         # Get robot positions and settings from server
-        data = camera_thread.read_from_socket()
+        compressed_data, server = s.recvfrom(1500)
+        pickle.loads(gzip.decompress(compressed_data))
+
+        # data = camera_thread.read_from_socket()
 
         # Get the data. Automatic exception if no data is available for MY_ID
         neighbor_info, robot_settings = data['neighbors'], data['settings']
