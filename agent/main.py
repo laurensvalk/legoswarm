@@ -56,7 +56,7 @@ PURGE = 'purge'
 LOW_VOLTAGE = 'low'
 EXIT = 'exit'
 
-state = FLOCKING
+state = SEEK_BALL
 
 no_force = vector([0, 0])
 
@@ -164,7 +164,7 @@ while True:
         total_force = total_force + nett_wall_force
 
     # Eat any ball we might accidentally see
-    if state in (SEEK_BALL,):
+    if state in (FLOCKING, SEEK_BALL,):
         if ballsensor.ball_detected() and not picker.is_running:
             picker.go_to_target(picker.STORE, blocking=False)
         logging.debug("Checked ball sensor after {0}ms".format(int((time.time() - loopstart) * 1000)))
@@ -188,7 +188,7 @@ while True:
     # Until timeout or ball detection
     if state == PRE_STORE:
         # Check for balls
-        total_force = total_force + prestore_nett_ball_force
+        total_force = prestore_nett_ball_force
         if ballsensor.ball_detected() or time.time() > prestore_start_time + 1: # TODO also make this a setting
             picker.go_to_target(picker.STORE, blocking=False)
             # On to the next one
@@ -207,7 +207,7 @@ while True:
     base.drive_and_turn(speed, turnrate)
     # Time for pause is here
     # time.sleep(1)
-    logging.debug("Loop done. Speed:{0}, Turnrate:{1} ({3}), Looptime: {2}ms".format(speed,
+    logging.debug("Loop done. Speed:{0:.2f}, Turnrate:{1:.2f}, Looptime: {2}ms".format(speed,
                                                                                      turnrate,
                                                                                      int((time.time()-loopstart)*1000),
                                                                                      total_force
