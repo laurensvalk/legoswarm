@@ -202,9 +202,12 @@ while True:
 
     if state == PURGE:
         # Drive to a corner and purge
-        picker.go_to_target(picker.PURGE, blocking=True)
-        time.sleep(1)
-        state = SEEK_BALL
+        corner_a_direction = vector(wall_info['corners'][0])
+        total_force = spring_to_balls.get_force_vector(corner_a_direction)
+        if corner_a_direction.norm < 5:
+            picker.go_to_target(picker.PURGE, blocking=True)
+            time.sleep(1)
+            state = SEEK_BALL
 
     logging.debug("State is "+str(state))
     #################################################################
