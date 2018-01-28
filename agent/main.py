@@ -5,7 +5,6 @@ from lightvectors.lightvectors import vector
 import time
 import logging
 from hardware.motors import DriveBase, Picker
-from hardware.sensors import BallSensor
 from hardware.simple_device import PowerSupply
 from springs import Spring
 from ball_sensor_reader import BallSensorReader
@@ -28,7 +27,9 @@ logging.basicConfig(format='%(asctime)s, %(levelname)s, %(message)s',datefmt='%H
 # camera_thread.start()
 s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 # s.setsockopt(socket.SOL_SOCKET, socket.SO_RCVBUF, 1500)
+port = 50000+MY_ID
 s.bind(('', 50000+MY_ID))
+logging.debug("Listening on port {0}".format(port))
 
 # Configure the devices
 # ballsensor = BallSensor('in4')
@@ -70,7 +71,7 @@ while True:
     loopstart = time.time()
     try:
         # Get robot positions and settings from server
-        compressed_data, server = s.recvfrom(1500)
+        compressed_data, server = s.recvfrom(2048)
         pickle.loads(gzip.decompress(compressed_data))
 
         # data = camera_thread.read_from_socket()

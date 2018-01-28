@@ -80,7 +80,7 @@ class SocketThread(Thread):
             for robot_id_key in data_to_transmit:
                 sent_bytes = self.udp_send_dict_key(data_to_transmit, robot_id_key, 50000+robot_id_key)
                 # print(sent_bytes)
-            time.sleep(0.05)
+            time.sleep(0.07)
         self.server_socket.close()
         logging.info("Socket server stopped")
 
@@ -89,7 +89,9 @@ class SocketThread(Thread):
             data = gzip.compress(pickle.dumps(dictionary[key]))
             try:
                 if data:
-                    return self.server_socket.sendto(data, ('255.255.255.255', port))
+                    result =  self.server_socket.sendto(data, ('255.255.255.255', port))
+                    # print("Sent {0}b to port {1}".format(result, port))
+                    return result
             except OSError as exc:
                 if exc.errno == 55:
                     time.sleep(0.1)
