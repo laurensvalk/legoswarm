@@ -228,7 +228,9 @@ while True:
             time.sleep(1)
             state = SEEK_BALL
 
-    logging.debug("State is "+str(state))
+    logging.debug("State strategy processed for state {0} after {1}ms".format(state,
+                                                                              int((time.time()-loopstart)*1000)))
+
     #################################################################
     ###### Actuation based on processed data, state & strategy
     #################################################################
