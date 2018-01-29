@@ -57,15 +57,9 @@ class Picker(Motor):
         """Steer Picker mechanism to desired target"""
         self.go_to(target*self.motor_deg_per_picker_deg,             # Reference position
                    self.abs_speed*self.motor_deg_per_picker_deg,     # Speed to get there
-                   abs(self.tolerance*self.motor_deg_per_picker_deg))# Allowed tolerance
-        # If blocking is chosen, wait for the action to complete
-        if blocking:
-            # Give some time to get the action started
-            time.sleep(0.1)
-            # Wait for completion
-            while self.is_running:
-                time.sleep(0.01)
-              
+                   abs(self.tolerance*self.motor_deg_per_picker_deg),# Allowed tolerance
+                   blocking)
+
 class DriveBase:
     """Easily control two large motors to drive a skid steering robot using specified forward speed and turnrate"""
 
@@ -131,12 +125,6 @@ class DriveBase:
         else:
             self.leftmotor.go_to(self.leftmotor.position - wheel_degrees, 400, 2)
             self.rightmotor.go_to(self.rightmotor.position + wheel_degrees, 400, 2)
-        if blocking:
-            # Give some time to get the action started
-            time.sleep(0.1)
-            # Wait for completion
-            while self.is_running:
-                time.sleep(0.01)
 
     def drive_cm(self, cm, blocking=True):
         wheel_degrees = int(cm * 360 / (3.1415 * self.wheel_diameter))
