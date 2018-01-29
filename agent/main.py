@@ -48,6 +48,7 @@ battery = PowerSupply()
 FLOCKING = 'flocking'  # For now, just behavior that makes robots avoid one another
 SEEK_BALL = 'seek ball'
 STORE = 'store'
+POST_STORE = 'post store'
 TO_DEPOT = 'to depot'
 PURGE = 'purge'
 LOW_VOLTAGE = 'low'
@@ -187,7 +188,7 @@ while True:
         # Check for balls
         total_force = total_force + nett_ball_force
         if ball_visible:
-            logging.debug("nearest ball at is {0}cm".format(nearest_ball_to_my_gripper.norm))
+            logging.debug("nearest ball at is {0}cm, {1}".format(nearest_ball_to_my_gripper.norm, nearest_ball_to_my_gripper))
             if nearest_ball_to_my_gripper.norm < robot_settings['ball_close_enough']:
                 total_force = no_force
                 state = STORE
@@ -195,15 +196,16 @@ while True:
     # When the ball is close, drive towards it blindly
     # Until timeout or ball detection
     if state == STORE:
-        # prestore_start_time = time.time()
         # First Point the robot straight towards the ball by zeroing the forward component
         # if not (-1 < last_ball_seen[0] < 1):
         #     sideways_force = last_ball_seen[0]
         #     total_force = [sideways_force, 0]
         vector_to_ball = nearest_ball_to_my_gripper + my_gripper
-        angle_to_ball = vector_to_ball.angle_with_y_axis * 180/3.1415
+        angle_to_ball = -vector_to_ball.angle_with_y_axis * 180/3.1415
         base.turn_degrees(angle_to_ball)
         base.drive_cm(robot_settings['ball_close_enough'])
+        logging.debug(
+            "Storing turn: {0}, distance: {1}".format(angle_to_ball, robot_settings['ball_close_enough']))
         # logging.debug("Turning towards ball with force: {0}, turnrate: {1}, error: {2}".format(sideways_force,
         #                                                                                     sideways_force*robot_settings['turnrate_per_unit_force'],
         #                                                                                     last_ball_seen[0]))
@@ -211,7 +213,6 @@ while True:
         #     while not (time.time() > prestore_start_time + robot_settings['ball_grab_time'] or ballsensor.ball_detected()): #or ballsensor.ball_detected() ?
         #         base.drive_and_turn(4, 0)
         base.stop()
-        time.sleep(3)
         #     picker.go_to_target(picker.STORE, blocking=True)
         #     picker.go_to_target(picker.OPEN, blocking=True)
         #     # On to the next one
@@ -219,7 +220,12 @@ while True:
         #     if ball_count > 5:
         #         state = PURGE
         #     else:
-        state = SEEK_BALL
+        state = POST_STORE
+        poststore_start_time = time.time()
+
+    if state == POST_STORE:
+        if time.time() > poststore_start_time + 3:
+            state = SEEK_BALL
 
     if state == PURGE:
         # Drive to a corner and purge
