@@ -203,8 +203,8 @@ while True:
         vector_to_ball = nearest_ball_to_my_gripper + my_gripper
         angle_to_ball = vector_to_ball.angle_with_y_axis * 180/3.1415
         base.turn_degrees(angle_to_ball)
-        picker.go_to_target(picker.STORE)
         base.drive_cm(robot_settings['ball_close_enough'])
+        picker.go_to_target(picker.STORE)
         logging.debug(
             "Storing turn: {0}, distance: {1}".format(angle_to_ball, robot_settings['ball_close_enough']))
         base.stop()
