@@ -189,6 +189,7 @@ while True:
         if ball_visible:
             logging.debug("nearest ball at is {0}cm".format(nearest_ball_to_my_gripper.norm))
             if nearest_ball_to_my_gripper.norm < robot_settings['ball_close_enough']:
+                last_ball_seen = nearest_ball_to_my_gripper
                 state = STORE
 
     # When the ball is close, drive towards it blindly
@@ -196,7 +197,7 @@ while True:
     if state == STORE:
         prestore_start_time = time.time()
         # First Point the robot straight towards the ball by zeroing the forward component
-        if not (-1 < nearest_ball_to_my_gripper[0] < 1):
+        if not (-1 < last_ball_seen[0] < 1):
             sideways_force = nearest_ball_to_my_gripper[0]
             total_force = [sideways_force, 0]
             logging.debug("Turning towards ball with force: {0}, turnrate: {1}, error: {2}".format(sideways_force,
@@ -206,6 +207,7 @@ while True:
             while not (time.time() > prestore_start_time + robot_settings['ball_grab_time'] or ballsensor.ball_detected()): #or ballsensor.ball_detected() ?
                 base.drive_and_turn(4, 0)
             base.stop()
+            time.sleep(3)
         #     picker.go_to_target(picker.STORE, blocking=True)
         #     picker.go_to_target(picker.OPEN, blocking=True)
         #     # On to the next one
