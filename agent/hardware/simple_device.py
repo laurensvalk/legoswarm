@@ -54,6 +54,7 @@ class Motor():
     COMMAND_STOP = 'stop'
     COMMAND_RESET = 'reset'
     COMMAND_RUN_TO_ABS_POS = 'run-to-abs-pos'
+    COMMAND_RUN_TO_REL_POS = 'run-to-rel-pos'
     POLARITY_NORMAL = 'normal'
     POLARITY_INVERSED = 'inversed'
 
@@ -112,8 +113,11 @@ class Motor():
             write_int(self.position_sp_file, reference)
             absolute_limited_speed = abs(self.limit(speed))
             write_int(self.speed_sp_file, absolute_limited_speed)
-            write_str(self.command_file, self.COMMAND_RUN_TO_ABS_POS) 
-          
+            write_str(self.command_file, self.COMMAND_RUN_TO_ABS_POS)
+
+    def turn_degrees(self, degrees, speed, tolerance):
+        self.go_to(self.position+degrees, speed, tolerance)
+
 class InfraredSensor():
 
     MODE_IR_REMOTE = 'IR-REMOTE'
