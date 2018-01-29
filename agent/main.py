@@ -196,16 +196,16 @@ while True:
     if state == STORE:
         prestore_start_time = time.time()
         # First Point the robot straight towards the ball by zeroing the forward component
-        # if not (-2 < nearest_ball_to_my_gripper[0] < 2):
-        sideways_force = nearest_ball_to_my_gripper[0]
-        total_force = [sideways_force, 0]
-        logging.debug("Turning towards ball with force: {0}, turnrate: {1}, error: {2}".format(sideways_force,
+        if not (-1 < nearest_ball_to_my_gripper[0] < 1):
+            sideways_force = nearest_ball_to_my_gripper[0]
+            total_force = [sideways_force, 0]
+            logging.debug("Turning towards ball with force: {0}, turnrate: {1}, error: {2}".format(sideways_force,
                                                                                                sideways_force*robot_settings['turnrate_per_unit_force'],
                                                                                                nearest_ball_to_my_gripper[0]))
-        # else:
-        #     while not (time.time() > prestore_start_time + robot_settings['ball_grab_time'] or ballsensor.ball_detected()): #or ballsensor.ball_detected() ?
-        #         base.drive_and_turn(4, 0)
-        #     base.stop()
+        else:
+            while not (time.time() > prestore_start_time + robot_settings['ball_grab_time'] or ballsensor.ball_detected()): #or ballsensor.ball_detected() ?
+                base.drive_and_turn(4, 0)
+            base.stop()
         #     picker.go_to_target(picker.STORE, blocking=True)
         #     picker.go_to_target(picker.OPEN, blocking=True)
         #     # On to the next one
@@ -213,7 +213,7 @@ while True:
         #     if ball_count > 5:
         #         state = PURGE
         #     else:
-        #         state = SEEK_BALL
+            state = SEEK_BALL
 
     if state == PURGE:
         # Drive to a corner and purge
