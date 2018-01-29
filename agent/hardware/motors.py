@@ -84,7 +84,10 @@ class DriveBase:
         #Compute radii
         wheel_radius = wheel_diameter/2
         wheel_base_radius = wheel_span/2
-        
+
+        self.wheel_span = wheel_span
+        self.wheel_diameter = wheel_diameter
+
         # cm of forward travel for 1 deg/s wheel rotation
         self.wheel_cm_sec_per_deg_s = wheel_radius / deg_per_rad 
         # wheel speed for a given rotation of the base
@@ -119,7 +122,16 @@ class DriveBase:
         # Apply the calculated speeds to the motor
         self.leftmotor.run_forever_at_speed(leftspeed)
         self.rightmotor.run_forever_at_speed(rightspeed)
-        
+
+    def turn(self, degrees):
+        wheel_degrees = int(degrees * self.wheel_span / self.wheel_diameter)
+        if self.counter_clockwise_is_positive:
+            self.leftmotor.run_to_rel_pos(position_sp=-degrees)
+            self.rightmotor.run_to_rel_pos(position_sp=degrees)
+        else:
+            self.leftmotor.run_to_rel_pos(position_sp=degrees)
+            self.rightmotor.run_to_rel_pos(position_sp=-degrees)
+
     def stop(self):
         """Stop the robot"""
         # Stop robot by stopping motors

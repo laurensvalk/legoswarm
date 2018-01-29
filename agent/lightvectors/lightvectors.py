@@ -1,3 +1,5 @@
+from math import atan2
+
 class vector():
 
     def __init__(self, list_or_vector):
@@ -42,3 +44,7 @@ class vector():
     @property
     def unit(self):
         return vector(self/self.norm)
+
+    @property
+    def angle_with_y_axis(self):
+        return -atan2(self.x, self.y) #CCW is positive
