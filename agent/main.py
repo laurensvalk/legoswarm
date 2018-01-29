@@ -197,7 +197,7 @@ while True:
         prestore_start_time = time.time()
         # First Point the robot straight towards the ball by zeroing the forward component
         # if not (-2 < nearest_ball_to_my_gripper[0] < 2):
-        sideways_force = nett_ball_force[0]*2
+        sideways_force = nearest_ball_to_my_gripper[0]
         total_force = [sideways_force, 0]
         logging.debug("Turning towards ball with force: {0}, turnrate: {1}, error: {2}".format(sideways_force,
                                                                                                sideways_force*robot_settings['turnrate_per_unit_force'],
