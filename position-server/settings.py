@@ -9,7 +9,7 @@ all_settings = {
             'speed_per_unit_force': 1,
             'turnrate_per_unit_force': 3,
             'ball_info_max_size': 3, # Number of nearest balls each robot should get details of
-            'ball_close_enough': 15,
+            'ball_close_enough': 12,
             'ball_grab_time': 3,  # s
             'bounding_box_cm': [
                 # List of points in centimeters, encircling the robot

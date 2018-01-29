@@ -202,7 +202,7 @@ while True:
         #     total_force = [sideways_force, 0]
         vector_to_ball = nearest_ball_to_my_gripper + my_gripper
         angle_to_ball = vector_to_ball.angle_with_y_axis * 180/3.1415
-        base.turn_degrees(angle_to_ball)
+        base.turn_degrees(angle_to_ball, blo)
         base.drive_cm(robot_settings['ball_close_enough'])
         # logging.debug("Turning towards ball with force: {0}, turnrate: {1}, error: {2}".format(sideways_force,
         #                                                                                     sideways_force*robot_settings['turnrate_per_unit_force'],

@@ -1,5 +1,6 @@
 from os import listdir
 from sys import stderr
+import time
 
 
 def eprint(*args, **kwargs):
@@ -108,12 +109,18 @@ class Motor():
     def is_running(self):
         return 'running' in self.state
 
-    def go_to(self, reference, speed, tolerance):
+    def go_to(self, reference, speed, tolerance, blocking=False):
         if not self.is_running and not (reference - tolerance <= self.position <= reference + tolerance):
             write_int(self.position_sp_file, reference)
             absolute_limited_speed = abs(self.limit(speed))
             write_int(self.speed_sp_file, absolute_limited_speed)
             write_str(self.command_file, self.COMMAND_RUN_TO_ABS_POS)
+        if blocking:
+            # Give some time to get the action started
+            time.sleep(0.1)
+            # Wait for completion
+            while self.is_running:
+                time.sleep(0.01)
 
     def turn_degrees(self, degrees, speed, tolerance):
         self.go_to(self.position+degrees, speed, tolerance)

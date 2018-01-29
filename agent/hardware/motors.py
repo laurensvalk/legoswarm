@@ -123,7 +123,7 @@ class DriveBase:
         self.leftmotor.run_forever_at_speed(leftspeed)
         self.rightmotor.run_forever_at_speed(rightspeed)
 
-    def turn_degrees(self, degrees):
+    def turn_degrees(self, degrees, blocking=True):
         wheel_degrees = int(degrees * self.wheel_span / self.wheel_diameter)
         if self.counter_clockwise_is_positive:
             self.leftmotor.go_to(self.leftmotor.position + wheel_degrees, 400, 2)
@@ -131,11 +131,17 @@ class DriveBase:
         else:
             self.leftmotor.go_to(self.leftmotor.position - wheel_degrees, 400, 2)
             self.rightmotor.go_to(self.rightmotor.position + wheel_degrees, 400, 2)
+        if blocking:
+            # Give some time to get the action started
+            time.sleep(0.1)
+            # Wait for completion
+            while self.is_running:
+                time.sleep(0.01)
 
-    def drive_cm(self, cm):
+    def drive_cm(self, cm, blocking=True):
         wheel_degrees = int(cm * 360 / (3.1415 * self.wheel_diameter))
-        self.leftmotor.go_to(self.leftmotor.position + wheel_degrees, 400, 2)
-        self.rightmotor.go_to(self.rightmotor.position + wheel_degrees, 400, 2)
+        self.leftmotor.go_to(self.leftmotor.position + wheel_degrees, 400, 2, blocking)
+        self.rightmotor.go_to(self.rightmotor.position + wheel_degrees, 400, 2, blocking)
 
     def stop(self):
         """Stop the robot"""
