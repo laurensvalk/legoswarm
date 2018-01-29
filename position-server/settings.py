@@ -23,7 +23,7 @@ all_settings = {
                 [5, 15], # Front-right end of gripper
                 [-5, 15] # Front-left end of gripper
             ],
-            'spring_between_robots' : [
+            'push_spring_between_robots' : [
             #                         c                     15 (pull when far)
             #                        / \
             #                      /     \
@@ -38,6 +38,25 @@ all_settings = {
             # 
             #                                     
                 [0,  -20], #a
+                [30,  0 ], #b
+                #[160,  15],#c
+                #[200,  0 ]  #d
+            ],
+            'pull_spring_between_robots' : [
+            #                         c                     15 (pull when far)
+            #                        / \
+            #                      /     \
+            #                    /         \
+            #                  b             d------------   0 (no force at at 200 cm or beyond)
+            #                /
+            #              /
+            #            /
+            # ----------a                                    -20 (push when too close)
+            #
+            #          0      30    160     200
+            #
+            #
+                [0,  0], #a
                 [30,  0 ], #b
                 [160,  15],#c
                 [200,  0 ]  #d
