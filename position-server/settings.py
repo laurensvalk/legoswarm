@@ -14,12 +14,12 @@ all_settings = {
             'bounding_box_cm': [
                 # List of points in centimeters, encircling the robot
                 # Starting at left wheel, then go counterclockwise
-                [-9, 2.5], # Front end of left wheel
-                [-9, -2.5], # Back end of left wheel
+                [-10, 2.5], # Front end of left wheel
+                [-10, -2.5], # Back end of left wheel
                 [-5, -13], # Left rear wheel caster
                 [5, -13], # right wheel caster
-                [9, -2.5], # Back end of right wheel
-                [9, 2.5], # Front end of right wheel
+                [10, -2.5], # Back end of right wheel
+                [10, 2.5], # Front end of right wheel
                 [5, 15], # Front-right end of gripper
                 [-5, 15] # Front-left end of gripper
             ],
