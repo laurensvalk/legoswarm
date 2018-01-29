@@ -94,7 +94,8 @@ all_settings = {
 # The robots don't need all the settings. They need just these (add more if needed):
 robot_keys = ['speed_per_unit_force',
               'turnrate_per_unit_force',
-              'spring_between_robots',
+              'push_spring_between_robots',
+              'pull_spring_between_robots',
               'spring_to_walls',
               'spring_to_balls',
               'p_bot_gripper',

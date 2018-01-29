@@ -53,7 +53,7 @@ PURGE = 'purge'
 LOW_VOLTAGE = 'low'
 EXIT = 'exit'
 
-state = FLOCKING
+state = SEEK_BALL
 
 no_force = vector([0, 0])
 
