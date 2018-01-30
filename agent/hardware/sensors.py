@@ -21,6 +21,9 @@ class BallSensor(InfraredSensor):
     def most_recent_value(self):
         return self.readings[-1]
 
+    def avg_distance(self):
+        return sum(self.readings) / self.num_readings
+
     def ball_detected(self):
         now = time.time() 
         if now > self.next_reading_time:
@@ -28,9 +31,8 @@ class BallSensor(InfraredSensor):
             if distance < 100:
                 self.readings.append(distance)
                 self.next_reading_time = now + self.interval
-        avg_distance = sum(self.readings) / self.num_readings
 
-        if avg_distance < self.threshold:  # True if a ball is close enough to the sensor.
+        if self.avg_distance() < self.threshold:  # True if a ball is close enough to the sensor.
            self.readings.extend([10]*self.num_readings)
            return True
         else:

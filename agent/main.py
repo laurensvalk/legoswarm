@@ -177,10 +177,11 @@ while True:
         total_force = total_force + nett_wall_force
 
     # Eat any ball we might accidentally see
-    if state in (BOUNCE, FLOCKING,):
+    if state in (BOUNCE, FLOCKING, DRIVE,):
         if ballsensor.ball_detected() and not picker.is_running:
             picker.go_to_target(picker.STORE, blocking=False)
-        logging.debug("Checked ball sensor after {0}ms".format(int((time.time() - loopstart) * 1000)))
+        logging.debug("Checked ball sensor after {0}ms. Distance: {1}".format(int((time.time() - loopstart) * 1000),
+                                                                              ballsensor.distance))
 
     # Return picker to starting position after store, but only in these states
     if state in (FLOCKING, SEEK_BALL):
@@ -235,7 +236,7 @@ while True:
             state = SEEK_BALL
 
     if state == DRIVE:
-        total_force = vector([0, 4])
+        total_force = vector([0, 5])
         if min(wall_info['distances']) < 8:
             state = BOUNCE
 
