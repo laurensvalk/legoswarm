@@ -56,9 +56,10 @@ PURGE = 'purge'
 LOW_VOLTAGE = 'low'
 EXIT = 'exit'
 BOUNCE = 'bounce'
+DRIVE = 'drive'
 bounce_direction = random.random()*2*3.1415
 
-state = BOUNCE
+state = DRIVE
 
 no_force = vector([0, 0])
 
@@ -233,10 +234,15 @@ while True:
             time.sleep(1)
             state = SEEK_BALL
 
-    if state == BOUNCE:
-        total_force = vector([0, 3])
+    if state == DRIVE:
+        total_force = vector([0, 4])
         if min(wall_info['distances']) < 8:
-            total_force = total_force + nett_wall_force
+            state = BOUNCE
+
+    if state == BOUNCE:
+        total_force = total_force + nett_wall_force
+        if min(wall_info['distances']) > 20:
+            state = DRIVE
             # if distance_to_top < 15 or \
         #     distance_to_bottom < 15 or \
         #     distance_to_left < 15 or \
