@@ -184,7 +184,7 @@ while True:
                                                                               ballsensor.distance))
 
     # Return picker to starting position after store, but only in these states
-    if state in (FLOCKING, SEEK_BALL):
+    if state in (FLOCKING, SEEK_BALL, DRIVE, BOUNCE,):
         if picker.is_at_store:
             picker.go_to_target(picker.OPEN)
         logging.debug("Checked picker open after {0}ms".format(int((time.time() - loopstart) * 1000)))
