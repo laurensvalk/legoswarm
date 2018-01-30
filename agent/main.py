@@ -234,16 +234,16 @@ while True:
             state = SEEK_BALL
 
     if state == BOUNCE:
-        total_force = vector([0, 3])
-        if distance_to_top < 15 or \
-            distance_to_bottom < 15 or \
-            distance_to_left < 15 or \
-            distance_to_right < 15:
-                turn_left = random.randrange(1)
-                if turn_left:
-                    base.turn_degrees(random.randrange(90, 180))
-                else:
-                    base.turn_degrees(random.randrange(90, 180)*-1)
+        total_force = vector([0, 3]) + nett_wall_force
+        # if distance_to_top < 15 or \
+        #     distance_to_bottom < 15 or \
+        #     distance_to_left < 15 or \
+        #     distance_to_right < 15:
+        #         turn_left = random.randrange(1)
+        #         if turn_left:
+        #             base.turn_degrees(random.randrange(90, 180))
+        #         else:
+        #             base.turn_degrees(random.randrange(90, 180)*-1)
 
     logging.debug("State strategy processed for state {0} after {1}ms".format(state,
                                                                               int((time.time()-loopstart)*1000)))
