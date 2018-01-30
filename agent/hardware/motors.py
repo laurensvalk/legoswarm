@@ -121,17 +121,17 @@ class DriveBase:
         self.stop()
         wheel_degrees = int(degrees * self.wheel_span / self.wheel_diameter)
         if self.counter_clockwise_is_positive:
-            self.leftmotor.go_to(self.leftmotor.position + wheel_degrees, 400, 2, blocking=False)
-            self.rightmotor.go_to(self.rightmotor.position - wheel_degrees, 400, 2, blocking)
+            self.leftmotor.go_to(self.leftmotor.position + wheel_degrees, 300, 2, blocking=False)
+            self.rightmotor.go_to(self.rightmotor.position - wheel_degrees, 300, 2, blocking)
         else:
-            self.leftmotor.go_to(self.leftmotor.position - wheel_degrees, 400, 2, blocking=False)
-            self.rightmotor.go_to(self.rightmotor.position + wheel_degrees, 400, 2, blocking)
+            self.leftmotor.go_to(self.leftmotor.position - wheel_degrees, 300, 2, blocking=False)
+            self.rightmotor.go_to(self.rightmotor.position + wheel_degrees, 300, 2, blocking)
 
     def drive_cm(self, cm, blocking=True):
         wheel_degrees = int(cm * 360 / (3.1415 * self.wheel_diameter))
         self.stop()
-        self.leftmotor.go_to(self.leftmotor.position + wheel_degrees, 400, 2, blocking=False)
-        self.rightmotor.go_to(self.rightmotor.position + wheel_degrees, 400, 2, blocking)
+        self.leftmotor.go_to(self.leftmotor.position + wheel_degrees, 300, 2, blocking=False)
+        self.rightmotor.go_to(self.rightmotor.position + wheel_degrees, 300, 2, blocking)
 
     def stop(self):
         """Stop the robot"""
