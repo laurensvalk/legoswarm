@@ -8,6 +8,7 @@ from hardware.simple_device import PowerSupply
 from springs import Spring
 from ball_sensor_reader import BallSensorReader
 import socket, pickle, gzip, sys
+import random
 
 #################################################################
 ###### Init
@@ -54,8 +55,10 @@ TO_DEPOT = 'to depot'
 PURGE = 'purge'
 LOW_VOLTAGE = 'low'
 EXIT = 'exit'
+BOUNCE = 'bounce'
+bounce_direction = random.random()*2*3.1415
 
-state = SEEK_BALL
+state = BOUNCE
 
 no_force = vector([0, 0])
 
@@ -229,6 +232,18 @@ while True:
             ball_count = 0
             time.sleep(1)
             state = SEEK_BALL
+
+    if state == BOUNCE:
+        base.drive_and_turn(2,0)
+        if distance_to_top < 15 or \
+            distance_to_bottom < 15 or \
+            distance_to_left < 15 or \
+            distance_to_right < 15:
+                turn_left = random.randrange(1)
+                if turn_left:
+                    base.turn_degrees(random.randrange(90, 180))
+                else:
+                    base.turn_degrees(random.randrange(-90, -180))
 
     logging.debug("State strategy processed for state {0} after {1}ms".format(state,
                                                                               int((time.time()-loopstart)*1000)))
