@@ -234,7 +234,7 @@ while True:
             state = SEEK_BALL
 
     if state == BOUNCE:
-        total_force = vector([0, 3]) + nett_wall_force
+        total_force = vector([0, 3])
         if distance_to_top < 15 or \
             distance_to_bottom < 15 or \
             distance_to_left < 15 or \
