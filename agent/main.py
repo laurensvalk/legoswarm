@@ -243,7 +243,7 @@ while True:
                 if turn_left:
                     base.turn_degrees(random.randrange(90, 180))
                 else:
-                    base.turn_degrees(random.randrange(-90, -180))
+                    base.turn_degrees(random.randrange(-180, -90))
 
     logging.debug("State strategy processed for state {0} after {1}ms".format(state,
                                                                               int((time.time()-loopstart)*1000)))
