@@ -176,7 +176,7 @@ while True:
         total_force = total_force + nett_wall_force
 
     # Eat any ball we might accidentally see
-    if state in ('',):
+    if state in (BOUNCE, FLOCKING,):
         if ballsensor.ball_detected() and not picker.is_running:
             picker.go_to_target(picker.STORE, blocking=False)
         logging.debug("Checked ball sensor after {0}ms".format(int((time.time() - loopstart) * 1000)))
