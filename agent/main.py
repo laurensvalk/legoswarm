@@ -48,7 +48,8 @@ battery = PowerSupply()
 FLOCKING = 'flocking'  # For now, just behavior that makes robots avoid one another
 SEEK_BALL = 'seek ball'
 STORE = 'store'
-POST_STORE = 'post store'
+PAUSE = 'pause'
+pause_end_time = time.time()
 TO_DEPOT = 'to depot'
 PURGE = 'purge'
 LOW_VOLTAGE = 'low'
@@ -194,25 +195,27 @@ while True:
                 state = STORE
 
     # When the ball is close, drive towards it blindly
-    # Until timeout or ball detection
     if state == STORE:
-        # First Point the robot straight towards the ball by zeroing the forward component
-        # if not (-1 < last_ball_seen[0] < 1):
-        #     sideways_force = last_ball_seen[0]
-        #     total_force = [sideways_force, 0]
         vector_to_ball = nearest_ball_to_my_gripper + my_gripper
         angle_to_ball = vector_to_ball.angle_with_y_axis * 180/3.1415
+        distance_to_ball = vector_to_ball.norm - my_gripper.norm
         base.turn_degrees(angle_to_ball)
-        base.drive_cm(robot_settings['ball_close_enough'])
-        picker.go_to_target(picker.STORE)
+        base.drive_cm(distance_to_ball)
         logging.debug(
             "Storing turn: {0}, distance: {1}".format(angle_to_ball, robot_settings['ball_close_enough']))
-        base.stop()
-        state = POST_STORE
-        poststore_start_time = time.time()
 
-    if state == POST_STORE:
-        if time.time() > poststore_start_time + 3:
+        # The ball should be right in the gripper now.
+        # picker.go_to_target(picker.STORE)
+
+        # Clear the buffer so we have up-to-date data at the next loop
+        compressed_data, server = s.recvfrom(1500)
+
+        # Next state
+        state = PAUSE
+        pause_end_time = time.time() + 5
+
+    if state == PAUSE:
+        if time.time() > pause_end_time:
             state = SEEK_BALL
 
     if state == PURGE:

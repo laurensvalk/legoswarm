@@ -10,7 +10,7 @@ class Picker(Motor):
     PURGE = 287
 
     # Speed and tolerance parameters
-    abs_speed = 300
+    abs_speed = 200
     tolerance = 4
 
     # # Amount of degrees the motor must turn to rotate the gripper by one degree
