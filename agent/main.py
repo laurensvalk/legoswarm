@@ -256,7 +256,7 @@ while True:
     if state == PURGE:
         # Drive to a corner and purge
         corner_a_direction = vector(wall_info['corners'][0])
-        total_force = spring_to_position.get_force_vector(corner_a_direction) + nett_wall_force
+        total_force = spring_to_position.get_force_vector(corner_a_direction) + nett_neighbor_avoidance
         if corner_a_direction.norm < 20:
             base.stop()
             picker.purge()
@@ -268,7 +268,7 @@ while True:
             except:
                 pass
 
-            state = BOUNCE
+            state = SEEK_BALL
 
     if state == DRIVE:
         total_force = nett_neighbor_avoidance + vector([0, robot_settings['bounce_drive_speed']])
