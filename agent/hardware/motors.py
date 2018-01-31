@@ -11,7 +11,7 @@ class Picker(Motor):
 
     # Speed and tolerance parameters
     abs_speed = 200
-    tolerance = 7
+    tolerance = 4
 
     # # Amount of degrees the motor must turn to rotate the gripper by one degree
     motor_deg_per_picker_deg = -3 
@@ -35,13 +35,17 @@ class Picker(Motor):
         return self.position/self.motor_deg_per_picker_deg
 
     @property
+    def is_within_tolerance(self, position):
+        abs_tolerance = self.tolerance*abs(self.motor_deg_per_picker_deg)
+        return position - abs_tolerance < self.beak_position < position + abs_tolerance
+
+    @property
     def is_open(self):
-        return self.OPEN - self.tolerance < self.beak_position < self.OPEN + self.tolerance
+        return self.is_within_tolerance(self.OPEN)
 
     @property
     def is_at_store(self):
-        # print(self.STORE, self.tolerance, self.beak_position)
-        return self.STORE - self.tolerance < self.beak_position < self.STORE + self.tolerance
+        return self.is_within_tolerance(self.STORE)
 
     @property
     def pick_rate(self):
