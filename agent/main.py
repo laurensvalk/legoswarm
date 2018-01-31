@@ -234,7 +234,8 @@ while True:
                                                                        picker.store_count))
 
         # The ball should be right in the gripper now.
-        picker.go_to_target(picker.STORE)
+        picker.store()
+        picker.open()
 
         # Clear the buffer so we have up-to-date data at the next loop
         try:
