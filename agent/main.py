@@ -237,7 +237,10 @@ while True:
         picker.go_to_target(picker.STORE)
 
         # Clear the buffer so we have up-to-date data at the next loop
-        compressed_data, server = s.recvfrom(1500)
+        try:
+            compressed_data, server = s.recvfrom(1500)
+        except:
+            pass
 
         # Next state
         # state = PAUSE
@@ -256,9 +259,14 @@ while True:
         if corner_a_direction.norm < 20:
             base.stop()
             picker.purge()
-            picker.open()
+            picker.open(blocking=True)
+
             # Clear the buffer so we have up-to-date data at the next loop
-            compressed_data, server = s.recvfrom(1500)
+            try:
+                compressed_data, server = s.recvfrom(1500)
+            except:
+                pass
+
             state = BOUNCE
 
     if state == DRIVE:
