@@ -11,7 +11,7 @@ class BallSensor(InfraredSensor):
         self.interval = 1/frequency
         self.next_reading_time = time.time()+self.interval
 
-        self.num_readings = 3  # For averaging over
+        self.num_readings = 1  # For averaging over
         self.readings = deque([100] * self.num_readings, maxlen=self.num_readings)
 
         InfraredSensor.__init__(self, port)
@@ -33,10 +33,11 @@ class BallSensor(InfraredSensor):
                 self.next_reading_time = now + self.interval
 
         if self.avg_distance() < self.threshold:  # True if a ball is close enough to the sensor.
-           self.readings.extend([10]*self.num_readings)
-           return True
+            self.readings.extend([10]*self.num_readings)
+            return True
         else:
-           return False
+            return False
+
 
 class RemoteControl():
     """Configures IR Sensor as IR Receiver and reads IR button status"""
