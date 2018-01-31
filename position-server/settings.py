@@ -23,19 +23,13 @@ robot_settings = {
             #                                     
                 [0,  -20], #a
                 [30,  0 ], #b
-                #[160,  15],#c
-                #[200,  0 ]  #d
             ],
-            'pull_spring_between_robots' : [
+            'robot_attraction_spring' : [
             #                         c                     15 (pull when far)
             #                        / \
             #                      /     \
             #                    /         \
-            #                  b             d------------   0 (no force at at 200 cm or beyond)
-            #                /
-            #              /
-            #            /
-            # ----------a                                    -20 (push when too close)
+            # -------- a -------b             d------------   0 (no force at at 200 cm or beyond)
             #
             #          0      30    160     200
             #
@@ -57,8 +51,7 @@ robot_settings = {
             # 
             #                                     
                 [0,  -20], #a
-                [20, -20 ], #b
-                [21, 0]
+                [20, 0 ], #b
             ],
             'spring_to_balls' : [
             #
@@ -73,7 +66,12 @@ robot_settings = {
             #                                     
                 [5 ,  10], #a
                 [200,  0 ], #b                
-            ]                                      
+            ],
+            'spring_to_position' : [
+                [0, 0],
+                [5, 10]
+            ]
+
 }
 
 # Server settings

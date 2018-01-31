@@ -48,18 +48,19 @@ buttons = Buttons()
 FLOCKING = 'flocking'  # For now, just behavior that makes robots avoid one another
 SEEK_BALL = 'seek ball'
 STORE = 'store'
-PAUSE = 'pause'
-pause_end_time = time.time()
 TO_DEPOT = 'to depot'
 PURGE = 'purge'
 LOW_VOLTAGE = 'low'
 EXIT = 'exit'
 BOUNCE = 'bounce'
 DRIVE = 'drive'
-bounce_direction = random.random()*2*3.1415
+PAUSE = 'pause'
+pause_end_time = time.time()
+pause_next_state = SEEK_BALL
 
 state = DRIVE
-
+CHECK_VOLT_AFTER_LOOPS = 500
+loopcount = 0
 no_force = vector([0, 0])
 
 #################################################################
@@ -73,6 +74,7 @@ while True:
     #################################################################
     logging.debug("Loop start")
     loopstart = time.time()
+    loopcount += 1
     try:
         # Get robot positions and settings from server
         compressed_data, server = s.recvfrom(1500)
@@ -92,10 +94,12 @@ while True:
         number_of_balls = len(ball_info)
         
         # Unpack spring characteristics
-        push_spring_between_robots = Spring(robot_settings['push_spring_between_robots'])
-        pull_spring_between_robots = Spring(robot_settings['pull_spring_between_robots'])
+        push_spring_between_robots = Spring(robot_settings['robot_avoidance_spring'])
+        pull_spring_between_robots = Spring(robot_settings['robot_attraction_spring'])
         spring_to_walls = Spring(robot_settings['spring_to_walls'])
-        spring_to_balls = Spring(robot_settings['spring_to_balls'])   
+        spring_to_balls = Spring(robot_settings['spring_to_balls'])
+        spring_to_position = Spring(robot_settings['spring_to_position'])
+
 
     except:
         # Stop the loop if we're unable to get server data
@@ -162,9 +166,19 @@ while True:
     total_force = no_force
     # total_force = nett_neighbor_force
 
-    if battery.voltage < 7.2:
-        state = LOW_VOLTAGE
+    if loopcount > CHECK_VOLT_AFTER_LOOPS:
+        if battery.voltage < 7.2:
+            state = LOW_VOLTAGE
+            logging.debug("Read voltage after {0}ms".format(int((time.time() - loopstart) * 1000)))
+        else:
+            loopcount = 0
 
+    # Drive to field corner c when voltage is low.
+    if state == LOW_VOLTAGE:
+        corner_c_direction = vector(wall_info['corners'][2])
+        total_force = spring_to_position.get_force_vector(corner_c_direction) + nett_wall_force
+
+    # Not used, so far.
     if state == EXIT:
         base.stop()
         ballsensor.stop()
@@ -197,7 +211,6 @@ while True:
 
     # Ball seeking regimen
     if state == SEEK_BALL:
-        # Check for balls
         total_force = total_force + nett_ball_force
         if ball_visible:
             logging.debug("nearest ball at is {0}cm, {1}".format(nearest_ball_to_my_gripper.norm, nearest_ball_to_my_gripper))
@@ -213,10 +226,10 @@ while True:
         base.turn_degrees(angle_to_ball)
         base.drive_cm(distance_to_ball)
         logging.debug(
-            "Storing turn: {0}, distance: {1}".format(angle_to_ball, robot_settings['ball_close_enough']))
+            "Storing with turn: {0}, distance: {1}".format(angle_to_ball, robot_settings['ball_close_enough']))
 
         # The ball should be right in the gripper now.
-        # picker.go_to_target(picker.STORE)
+        picker.go_to_target(picker.STORE)
 
         # Clear the buffer so we have up-to-date data at the next loop
         compressed_data, server = s.recvfrom(1500)
@@ -224,15 +237,17 @@ while True:
         # Next state
         state = PAUSE
         pause_end_time = time.time() + 5
+        pause_next_state = SEEK_BALL
 
     if state == PAUSE:
+        total_force = no_force
         if time.time() > pause_end_time:
-            state = SEEK_BALL
+            state = pause_next_state
 
     if state == PURGE:
         # Drive to a corner and purge
         corner_a_direction = vector(wall_info['corners'][0])
-        total_force = spring_to_balls.get_force_vector(corner_a_direction) + nett_wall_force
+        total_force = spring_to_position.get_force_vector(corner_a_direction) + nett_wall_force
         if corner_a_direction.norm < 20:
             base.stop()
             picker.go_to_target(picker.PURGE, blocking=True)
@@ -250,15 +265,6 @@ while True:
         total_force = total_force + nett_wall_force
         if min(wall_info['distances']) > 20:
             state = DRIVE
-            # if distance_to_top < 15 or \
-        #     distance_to_bottom < 15 or \
-        #     distance_to_left < 15 or \
-        #     distance_to_right < 15:
-        #         turn_left = random.randrange(1)
-        #         if turn_left:
-        #             base.turn_degrees(random.randrange(90, 180))
-        #         else:
-        #             base.turn_degrees(random.randrange(90, 180)*-1)
 
     logging.debug("State strategy processed for state {0} after {1}ms".format(state,
                                                                               int((time.time()-loopstart)*1000)))
