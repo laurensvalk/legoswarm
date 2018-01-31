@@ -8,8 +8,8 @@ robot_settings = {
             'ball_close_enough': 12,
             'ball_grab_time': 3,  # s
             'max_balls_in_store': 5,
-            'bounce_drive_speed': 4,
-            'min_wall_distance': 4,
+            'bounce_drive_speed': 8,
+            'min_wall_distance': 6,
             'robot_avoidance_spring': [
             #                         c                     15 (pull when far)
             #                        / \
@@ -53,8 +53,9 @@ robot_settings = {
             #          0      30      
             # 
             #                                     
+                [-20, 40],
                 [0,  -20], #a
-                [20, 0 ], #b
+                [30, 0 ], #b
             ],
             'spring_to_balls' : [
             #

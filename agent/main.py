@@ -265,7 +265,7 @@ while True:
             state = BOUNCE
 
     if state == BOUNCE:
-        total_force = total_force + vector([nett_wall_force[0]*random_factor, nett_wall_force[1]])  # yuck
+        total_force = vector([nett_wall_force[0]*random_factor, nett_wall_force[1]])  # yuck
         if min(wall_info['distances']) > 20:
             state = DRIVE
 
