@@ -1,20 +1,20 @@
 import numpy as np
 from robot_frames import transform_to_world_from_camera, transform_to_world_from_bot, transform_to_gripper_from_bot
 
-def bounding_box(settings, midbase_marker, apex_marker):
+def bounding_box(server_settings, midbase_marker, apex_marker):
     """Convert marker midbase and apex pixel location into bounding box, in pixels"""
     
     # Get transformation matrix from pixels to world frame
-    H_to_world_from_camera = transform_to_world_from_camera(settings)    
+    H_to_world_from_camera = transform_to_world_from_camera(server_settings)    
     H_to_camera_from_world = H_to_world_from_camera.inverse()
 
     # Obtain transformation matrix between the robot and the world, for this robot
-    H_to_world_from_bot = transform_to_world_from_bot(settings, 
+    H_to_world_from_bot = transform_to_world_from_bot(server_settings, 
                                                       H_to_world_from_camera*midbase_marker, # Midbase marker in world
                                                       H_to_world_from_camera*apex_marker) # Apex marker in world
 
     # Matrix of bounding box locations, in the robot frame
-    bounding_box_in_robot = np.array(settings['bounding_box_cm']).T
+    bounding_box_in_robot = np.array(server_settings['bounding_box_cm']).T
     # Matrix of bounding box locations, in the world frame
     bounding_box_in_world = H_to_world_from_bot*bounding_box_in_robot
     # Matrix of bounding box locations, in camera pixels
@@ -22,11 +22,11 @@ def bounding_box(settings, midbase_marker, apex_marker):
     # Revert the indexing so this can be seen as a list of coordinates
     return (bounding_box_in_camera.T).astype(int)
 
-def get_ball_info(H_to_bot_from_world, ball_locations, settings):
+def get_ball_info(H_to_bot_from_world, ball_locations, server_settings):
     sorted_balls_relative_to_gripper = {}
     if len(ball_locations) > 0:
         # Get transformation matrix from pixels to world frame
-        H_to_world_from_camera = transform_to_world_from_camera(settings)
+        H_to_world_from_camera = transform_to_world_from_camera(server_settings)
 
         # Matrix of balls, in pixels
         balls_pixels = np.array(ball_locations).T
@@ -35,7 +35,7 @@ def get_ball_info(H_to_bot_from_world, ball_locations, settings):
         balls_world = H_to_world_from_camera*balls_pixels
 
         # Transformation from base frame to frame at gripper
-        H_to_gripper_from_bot = transform_to_gripper_from_bot(settings)
+        H_to_gripper_from_bot = transform_to_gripper_from_bot(server_settings)
 
         # Empty dictionary to fill during loop below
 
@@ -50,7 +50,7 @@ def get_ball_info(H_to_bot_from_world, ball_locations, settings):
             n_balls_found = len(sorted_index)
 
             # Get only the closed balls to reduce data transmission:
-            max_balls_send = settings['ball_info_max_size']
+            max_balls_send = server_settings['ball_info_max_size']
 
             if n_balls_found > max_balls_send:
                 # If we see more balls than we can send, reduce data set
@@ -65,7 +65,7 @@ def get_ball_info(H_to_bot_from_world, ball_locations, settings):
             sorted_balls_relative_to_gripper[agent] = []
     return sorted_balls_relative_to_gripper
 
-def get_wall_info(H_to_bot_from_world, field_corners, settings):
+def get_wall_info(H_to_bot_from_world, field_corners, server_settings):
     #               world x
     # 
     #            --------->
@@ -84,13 +84,13 @@ def get_wall_info(H_to_bot_from_world, field_corners, settings):
     corners_pixels = np.array(field_corners).T
 
     # Get transformation matrix from pixels to world frame
-    H_to_world_from_camera = transform_to_world_from_camera(settings)        
+    H_to_world_from_camera = transform_to_world_from_camera(server_settings)        
 
     # Corner locations, in world
     corners_world = H_to_world_from_camera*corners_pixels
 
     # Gripper in agent frame
-    my_gripper = np.array(settings['p_bot_gripper'])
+    my_gripper = np.array(server_settings['p_bot_gripper'])
     my_origin = np.array([0, 0])    
 
     # Empty dictionary to fill during loop below
@@ -132,15 +132,15 @@ def get_wall_info(H_to_bot_from_world, field_corners, settings):
     # For each agent, return a sorted list of ball locations
     return wall_info
 
-def get_neighbor_info(markers, settings):
+def get_neighbor_info(markers, server_settings):
     # Determine who's who
     agents = markers.keys()
 
     # Get transformation matrix from pixels to world frame
-    H_to_world_from_camera = transform_to_world_from_camera(settings)    
+    H_to_world_from_camera = transform_to_world_from_camera(server_settings)    
 
     # Obtain transformation matrix between the robot and the world, for each robot
-    H_to_world_from_bot = {i: transform_to_world_from_bot(settings, 
+    H_to_world_from_bot = {i: transform_to_world_from_bot(server_settings, 
                                                           H_to_world_from_camera*midbase_marker, # Midbase marker in world
                                                           H_to_world_from_camera*apex_marker) # Apex marker in world
                             for i, [midbase_marker, apex_marker] in markers.items()}
@@ -149,7 +149,7 @@ def get_neighbor_info(markers, settings):
     H_to_bot_from_world = {i: H_to_world_from_bot[i].inverse() for i in agents}                        
 
     # Gripper in agent frame
-    my_gripper = np.array(settings['p_bot_gripper'])
+    my_gripper = np.array(server_settings['p_bot_gripper'])
     my_origin = np.array([0, 0])
 
     # Empty dictionaries that will get an entry for each agent in the loop that follows
@@ -179,27 +179,27 @@ def get_neighbor_info(markers, settings):
             neighbor_info[me][neighbor]['center_location'] = (H_to_me_from_neighbor*my_origin).tolist()
             
             # Check if that other gripper is in our "virtual" field of view
-            neighbor_info[me][neighbor]['is_visible'] = True if distance < settings['sight_range'] else False
+            neighbor_info[me][neighbor]['is_visible'] = True if distance < server_settings['sight_range'] else False
 
     # Return computed results
     return neighbor_info, H_to_bot_from_world
 
 
-def make_data_for_robots(markers, ball_locations, field_corners, settings, robot_settings):
+def make_data_for_robots(markers, ball_locations, field_corners, server_settings, robot_settings):
 
     # Information about the neighbors of each robot, in their own frame of reference
-    neighbor_info, H_to_bot_from_world = get_neighbor_info(markers, settings)
+    neighbor_info, H_to_bot_from_world = get_neighbor_info(markers, server_settings)
 
     # Get the ball locations in each robot frame, sorted by distance from gripper
-    ball_info = get_ball_info(H_to_bot_from_world, ball_locations, settings)
+    ball_info = get_ball_info(H_to_bot_from_world, ball_locations, server_settings)
 
     # Get perpendicular lines to each wall in each robot frame of reference
-    wall_info = get_wall_info(H_to_bot_from_world, field_corners, settings)
+    wall_info = get_wall_info(H_to_bot_from_world, field_corners, server_settings)
 
     result = {}
     for robot_id in markers:
         result[robot_id] = {'neighbors': neighbor_info[robot_id],
                             'balls': ball_info[robot_id],
                             'walls': wall_info[robot_id],
-                            'settings': robot_settings}
+                            'robot_settings': robot_settings}
     return result

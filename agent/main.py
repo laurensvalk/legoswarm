@@ -80,7 +80,7 @@ while True:
 
         # Get the data. Automatic exception if no data is available for MY_ID
         neighbor_info = data['neighbors']
-        robot_settings = data['settings']
+        robot_settings = data['robot_settings']
         wall_info = data['walls']
         ball_info = data['balls']
 

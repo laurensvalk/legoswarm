@@ -1,28 +1,12 @@
-all_settings = {
+robot_settings = {
             'sight_range': 300,
-            'dump_location': (20, 20),
+            'dump_location': (0, 0),
             'p_bot_midbase': (-2, -8),
             'p_bot_gripper': (0, 11),
-            'field_height': 1080,
-            'field_width': 1920,
-            'cm_per_px': 0.1,
             'speed_per_unit_force': 1,
             'turnrate_per_unit_force': 3,
-            'ball_info_max_size': 3, # Number of nearest balls each robot should get details of
             'ball_close_enough': 12,
             'ball_grab_time': 3,  # s
-            'bounding_box_cm': [
-                # List of points in centimeters, encircling the robot
-                # Starting at left wheel, then go counterclockwise
-                [-10, 2.5], # Front end of left wheel
-                [-10, -2.5], # Back end of left wheel
-                [-5, -13], # Left rear wheel caster
-                [5, -13], # right wheel caster
-                [10, -2.5], # Back end of right wheel
-                [10, 2.5], # Front end of right wheel
-                [5, 15], # Front-right end of gripper
-                [-5, 15] # Front-left end of gripper
-            ],
             'push_spring_between_robots': [
             #                         c                     15 (pull when far)
             #                        / \
@@ -92,33 +76,38 @@ all_settings = {
             ]                                      
 }
 
-# The robots don't need all the settings. They need just these (add more if needed):
-robot_keys = ['speed_per_unit_force',
-              'turnrate_per_unit_force',
-              'push_spring_between_robots',
-              'pull_spring_between_robots',
-              'spring_to_walls',
-              'spring_to_balls',
-              'p_bot_gripper',
-              'ball_close_enough',
-              'ball_grab_time']
-
-# Create the settings dictionary with the above items
-robot_settings = {key: all_settings[key] for key in robot_keys}
-
 # Server settings
-SERVER_ADDR = ("255.255.255.255", 50008)
-THRESHOLD = 150         # Threshold for b/w version of camera image. Was 230 most of the time
-WIDTH = 1920            # Camera image
-HEIGHT = 1080
-PLAYING_FIELD_OFFSET = -50
-MIN_BALL_RADIUS_PX = 5
-MAX_BALL_RADIUS_PX = 16
-MAX_AGENTS = 8
-FILE = ''#"test_images/error_scenario_too_many_balls.png"#""test_images/1516199702.jpg" #"test_images/test.jpg" # 1920 x 1080 afbeelding. png mag ook.
+server_settings = {
+    'SERVER_ADDR' : ("255.255.255.255", 50008),
+    'THRESHOLD' : 150,         # Threshold for b/w version of camera image. Was 230 most of the time
+    'WIDTH' : 1920,            # Camera image
+    'HEIGHT' : 1080,
+    'PLAYING_FIELD_OFFSET' : -50,
+    'MIN_BALL_RADIUS_PX' : 5,
+    'MAX_BALL_RADIUS_PX' : 16,
+    'MAX_AGENTS' : 8,
+    'p_bot_midbase' : robot_settings['p_bot_midbase'],
+    'p_bot_gripper' : robot_settings['p_bot_gripper'],
+    'sight_range' : robot_settings['sight_range'],
+    'FILE' : '', #"test_images/error_scenario_too_many_balls.png"#""test_images/1516199702.jpg" #"test_images/test.jpg" # 1920 x 1080 afbeelding. png mag ook.
+    'cm_per_px': 0.1,
+    'ball_info_max_size': 3, # Number of nearest balls each robot should get details of
+    'bounding_box_cm': [
+        # List of points in centimeters, encircling the robot
+        # Starting at left wheel, then go counterclockwise
+        [-10, 2.5], # Front end of left wheel
+        [-10, -2.5], # Back end of left wheel
+        [-5, -13], # Left rear wheel caster
+        [5, -13], # right wheel caster
+        [10, -2.5], # Back end of right wheel
+        [10, 2.5], # Front end of right wheel
+        [5, 15], # Front-right end of gripper
+        [-5, 15] # Front-left end of gripper
+    ]
+}
 
 # Allow Laurens to specify file to debug different scenarios without repeated git conflicts.
 import platform
 if 'Ubuntu' in platform.platform():
     print('Laurens Mode')
-    FILE = 'test_images/test_ball_corners.png'
+    server_settings['FILE'] = 'test_images/test_ball_corners.png'

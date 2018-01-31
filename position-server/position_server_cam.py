@@ -24,7 +24,7 @@ from linalg import atan2_vec, vec_length
 
 from importlib import reload
 import settings # This is to make importlib/reload work.
-from settings import all_settings, robot_settings, WIDTH, HEIGHT, FILE, PLAYING_FIELD_OFFSET
+from settings import server_settings, robot_settings
 from parse_camera_data import make_data_for_robots, bounding_box
 
 try:
@@ -45,10 +45,10 @@ if 'Ubuntu' in platform():
 else:
     # On Mac with OpenGL
     cv2.namedWindow("cam", cv2.WINDOW_OPENGL)        
-if not FILE:
+if not server_settings['FILE']:
     cap = cv2.VideoCapture(0)
-    cap.set(3, WIDTH)
-    cap.set(4, HEIGHT)
+    cap.set(3, server_settings['WIDTH'])
+    cap.set(4, server_settings['HEIGHT'])
 
 # Data & robot settings
 data_to_transmit = {}
@@ -120,12 +120,12 @@ if __name__ == '__main__':
     ############################################################################
 
     while True:
-        if not FILE:
+        if not server_settings['FILE']:
             ok, img = cap.read()
             if not ok:
                 continue    #and try again.
         else:
-            img = cv2.imread(FILE)
+            img = cv2.imread(server_settings['FILE'])
 
         img_grey, largest_rect = find_largest_n_side(img, sides=4)
 
@@ -136,7 +136,7 @@ if __name__ == '__main__':
         # the top-left, top-right, bottom-right, and bottom-left
         # points so that we can later warp the image. So we sort the polygon points in this order
         rect = sorted_rect(largest_rect)
-        offset_rect = offset_convex_polygon(rect, PLAYING_FIELD_OFFSET)
+        offset_rect = offset_convex_polygon(rect, server_settings['PLAYING_FIELD_OFFSET'])
 
         # Present the found rectangles to the user
         cv2.drawContours(img, [largest_rect.astype(int)], -1, GREEN, thickness=8)
@@ -173,13 +173,13 @@ if __name__ == '__main__':
             M = cv2.getPerspectiveTransform(offset_rect, dst)
 
             found_playing_field = True
-            field_corners = offset_convex_polygon(dst, -PLAYING_FIELD_OFFSET)
+            field_corners = offset_convex_polygon(dst, -server_settings['PLAYING_FIELD_OFFSET'])
             # field_corners = rect
             break
 
         elif keypress == ord('n'):
             found_playing_field = False
-            field_corners = rect_from_image_size(WIDTH, HEIGHT)
+            field_corners = rect_from_image_size(server_settings['WIDTH'], server_settings['HEIGHT'])
             break
 
     ############################################################################
@@ -193,12 +193,12 @@ if __name__ == '__main__':
     while True:
         lt = time.time()
         logging.debug("Loop start: {0}".format(time.time()-lt))
-        if not FILE:
+        if not server_settings['FILE']:
             ok, img = cap.read()
             if not ok:
                 continue  # and try again.
         else:
-            img = cv2.imread(FILE)
+            img = cv2.imread(server_settings['FILE'])
 
         elapsed = time.time() - lt
         if elapsed > 0.1:
@@ -285,7 +285,7 @@ if __name__ == '__main__':
             cv2.drawContours(img, [triangle], -1, GREEN)
 
             # Black out the shape of the robot in our source image
-            bb = bounding_box(all_settings, midbase_marker, apex_marker)
+            bb = bounding_box(server_settings, midbase_marker, apex_marker)
             cv2.drawContours(img, [bb], 0, RED, 2)
             cv2.fillConvexPoly(img_grey, bb, 255)
 
@@ -305,7 +305,7 @@ if __name__ == '__main__':
                             np.array([rect_from_image_size(img_width, img_height)], dtype=int),
                             True,
                             255,
-                            thickness=abs(PLAYING_FIELD_OFFSET)*2+8)
+                            thickness=abs(server_settings['PLAYING_FIELD_OFFSET'])*2+8)
             # mask = np.zeros((img_height, img_width), dtype=np.uint8)
             # cv2.fillConvexPoly(mask, field_corners.astype(int), 255)
             # cv2.bitwise_not(mask, dst=mask)
@@ -321,7 +321,7 @@ if __name__ == '__main__':
                 balls += [c]
 
         # Calculations to save time on client side
-        data_to_transmit = make_data_for_robots(robot_markers, balls, field_corners, all_settings, robot_settings)
+        data_to_transmit = make_data_for_robots(robot_markers, balls, field_corners, server_settings, robot_settings)
 
         # Show all calculations in the preview window
         # img = cv2.cvtColor(img_grey, cv2.COLOR_GRAY2BGR)
@@ -336,7 +336,7 @@ if __name__ == '__main__':
         if n == 0:
             logging.info("Looptime: {0}. Reloading settings.".format((time.time()-t)/100))
             reload(settings)
-            from settings import all_settings, robot_settings, WIDTH, HEIGHT, FILE, PLAYING_FIELD_OFFSET
+            from settings import server_settings, robot_settings
             # Uncomment to save an image to disk:
             # cv2.imwrite("test_images/{0}.jpg".format(int(time.time())), img_cam)
             n = 100
@@ -350,7 +350,7 @@ if __name__ == '__main__':
 
     # User has hit q. Time to clean up.
     running = False
-    if not FILE:
+    if not server_settings['FILE']:
         cap.release()
     cv2.destroyAllWindows()
     logging.info("Cleaned up")
