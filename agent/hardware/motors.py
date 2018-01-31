@@ -11,7 +11,7 @@ class Picker(Motor):
 
     # Speed and tolerance parameters
     abs_speed = 200
-    tolerance = 4
+    tolerance = 7
 
     # # Amount of degrees the motor must turn to rotate the gripper by one degree
     motor_deg_per_picker_deg = -3 

@@ -4,7 +4,7 @@ from lightvectors.lightvectors import vector
 import time
 import logging
 from hardware.motors import DriveBase, Picker
-from hardware.simple_device import PowerSupply
+from hardware.simple_device import PowerSupply, Buttons
 from springs import Spring
 from ball_sensor_reader import BallSensorReader
 import socket, pickle, gzip, sys
@@ -35,7 +35,6 @@ logging.debug("Listening on port {0}".format(port))
 ballsensor = BallSensorReader()
 ballsensor.start()
 ball_count = 0
-
 base = DriveBase(left=('outC', DriveBase.POLARITY_INVERSED),
                  right=('outB', DriveBase.POLARITY_INVERSED),
                  wheel_diameter=4.3,
@@ -43,7 +42,7 @@ base = DriveBase(left=('outC', DriveBase.POLARITY_INVERSED),
                  counter_clockwise_is_positive=False) 
 picker = Picker('outA')
 battery = PowerSupply()
-
+buttons = Buttons()
 
 # States
 FLOCKING = 'flocking'  # For now, just behavior that makes robots avoid one another
@@ -101,9 +100,12 @@ while True:
     except:
         # Stop the loop if we're unable to get server data
         e = sys.exc_info()[0]
-        logging.warning("{0}: Reading data from port {1} failed. Waiting 1s".format(e, port))
+        logging.warning("{0}: Reading data from port {1} failed. Waiting...".format(e, port))
         base.stop()
-        time.sleep(1)
+        if 'backspace' in buttons.buttons_pressed:
+            ballsensor.stop()
+            break
+        time.sleep(0.2)
         continue
     logging.debug("Got data after {0}ms".format(int( (time.time()-loopstart)*1000 )))
 
@@ -160,8 +162,12 @@ while True:
     total_force = no_force
     # total_force = nett_neighbor_force
 
+    if battery.voltage < 7.2:
+        state = LOW_VOLTAGE
+
     if state == EXIT:
         base.stop()
+        ballsensor.stop()
         break
 
     # Neighbor avoidance, but only in these states

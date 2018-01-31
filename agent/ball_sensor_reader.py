@@ -24,5 +24,6 @@ class BallSensorReader(Thread):
             time.sleep(0.2)
 
     def stop(self):
-        logging.debug("Stopping thread")
         self.running = False
+        time.sleep(0.2)
+        logging.debug("Stopped thread")
