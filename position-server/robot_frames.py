@@ -7,7 +7,7 @@ from numpy.linalg import norm
 def transform_to_gripper_from_bot(server_settings):
     return Transformation(translation=-1*array(server_settings['p_bot_gripper']))
 
-def transform_to_world_from_camera(server_settings, field_corners):
+def transform_to_world_from_pixels(server_settings, field_corners, cm_per_px):
     """Transform camera pixels into centimeters relative to camera midpoint"""
     # Transform to make positive y-axis point upwards
     rotation = array([[1, 0],[0, -1]]) # Flip y-axis
@@ -30,11 +30,17 @@ def transform_to_world_from_camera(server_settings, field_corners):
     # Scale to centimeters
     rotation = identity(2) # No rotation
     translation = array([0,0]) # No translation 
-    scaling = server_settings['cm_per_px']
+    scaling = cm_per_px
     H_to_world_from_centered = Transformation(rotation, translation, scaling)
 
     # Return the composite transformation
     return H_to_world_from_centered@H_to_centered_from_flipped@H_to_flipped_from_camera
+
+def transform_to_world_from_marker_pixels(server_settings, field_corners):
+    return transform_to_world_from_pixels(server_settings, field_corners, server_settings['cm_per_marker_px'])
+
+def transform_to_world_from_ball_pixels(server_settings, field_corners):
+    return transform_to_world_from_pixels(server_settings, field_corners, server_settings['cm_per_ball_px'])
 
 def transform_to_world_from_bot(server_settings, p_world_midbase_marker, p_world_apex_marker):
     """Convert marker locations into transformation matrices"""

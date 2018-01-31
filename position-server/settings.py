@@ -88,7 +88,8 @@ server_settings = {
     'p_bot_gripper' : robot_settings['p_bot_gripper'],
     'sight_range' : robot_settings['sight_range'],
     'FILE' : '', #"test_images/error_scenario_too_many_balls.png"#""test_images/1516199702.jpg" #"test_images/test.jpg" # 1920 x 1080 afbeelding. png mag ook.
-    'cm_per_px': 0.1,
+    'cm_per_marker_px': 0.1,
+    'cm_per_ball_px': 0.1,    
     'ball_info_max_size': 3, # Number of nearest balls each robot should get details of
     'bounding_box_cm': [
         # List of points in centimeters, encircling the robot

@@ -1,38 +1,38 @@
 import numpy as np
-from robot_frames import transform_to_world_from_camera, transform_to_world_from_bot, transform_to_gripper_from_bot
+from robot_frames import transform_to_world_from_marker_pixels, transform_to_world_from_ball_pixels, transform_to_world_from_bot, transform_to_gripper_from_bot
 
 def bounding_box(server_settings, midbase_marker, apex_marker, field_corners):
     """Convert marker midbase and apex pixel location into bounding box, in pixels"""
     
     # Get transformation matrix from pixels to world frame
-    H_to_world_from_camera = transform_to_world_from_camera(server_settings, field_corners)    
-    H_to_camera_from_world = H_to_world_from_camera.inverse()
+    H_to_world_from_marker_pixels = transform_to_world_from_marker_pixels(server_settings, field_corners)    
+    H_to_marker_pixels_from_world = H_to_world_from_marker_pixels.inverse()
 
     # Obtain transformation matrix between the robot and the world, for this robot
     H_to_world_from_bot = transform_to_world_from_bot(server_settings, 
-                                                      H_to_world_from_camera*midbase_marker, # Midbase marker in world
-                                                      H_to_world_from_camera*apex_marker) # Apex marker in world
+                                                      H_to_world_from_marker_pixels*midbase_marker, # Midbase marker in world
+                                                      H_to_world_from_marker_pixels*apex_marker) # Apex marker in world
 
     # Matrix of bounding box locations, in the robot frame
     bounding_box_in_robot = np.array(server_settings['bounding_box_cm']).T
     # Matrix of bounding box locations, in the world frame
     bounding_box_in_world = H_to_world_from_bot*bounding_box_in_robot
-    # Matrix of bounding box locations, in camera pixels
-    bounding_box_in_camera = H_to_camera_from_world*bounding_box_in_world
+    # Matrix of bounding box locations, in marker_pixels pixels
+    bounding_box_in_marker_pixels = H_to_marker_pixels_from_world*bounding_box_in_world
     # Revert the indexing so this can be seen as a list of coordinates
-    return (bounding_box_in_camera.T).astype(int)
+    return (bounding_box_in_marker_pixels.T).astype(int)
 
 def get_ball_info(H_to_bot_from_world, ball_locations, server_settings, field_corners):
     sorted_balls_relative_to_gripper = {}
     if len(ball_locations) > 0:
         # Get transformation matrix from pixels to world frame
-        H_to_world_from_camera = transform_to_world_from_camera(server_settings, field_corners)
+        H_to_world_from_ball_pixels = transform_to_world_from_ball_pixels(server_settings, field_corners)
 
         # Matrix of balls, in pixels
         balls_pixels = np.array(ball_locations).T
 
         # Matrix of balls, in world frame
-        balls_world = H_to_world_from_camera*balls_pixels
+        balls_world = H_to_world_from_ball_pixels*balls_pixels
 
         # Transformation from base frame to frame at gripper
         H_to_gripper_from_bot = transform_to_gripper_from_bot(server_settings)
@@ -84,10 +84,10 @@ def get_wall_info(H_to_bot_from_world, server_settings, field_corners):
     corners_pixels = np.array(field_corners).T
 
     # Get transformation matrix from pixels to world frame
-    H_to_world_from_camera = transform_to_world_from_camera(server_settings, field_corners)        
+    H_to_world_from_marker_pixels = transform_to_world_from_marker_pixels(server_settings, field_corners)        
 
     # Corner locations, in world
-    corners_world = H_to_world_from_camera*corners_pixels
+    corners_world = H_to_world_from_marker_pixels*corners_pixels
 
     # Gripper in agent frame
     my_gripper = np.array(server_settings['p_bot_gripper'])
@@ -137,12 +137,12 @@ def get_neighbor_info(markers, server_settings, field_corners):
     agents = markers.keys()
 
     # Get transformation matrix from pixels to world frame
-    H_to_world_from_camera = transform_to_world_from_camera(server_settings, field_corners)    
+    H_to_world_from_marker_pixels = transform_to_world_from_marker_pixels(server_settings, field_corners)    
 
     # Obtain transformation matrix between the robot and the world, for each robot
     H_to_world_from_bot = {i: transform_to_world_from_bot(server_settings, 
-                                                          H_to_world_from_camera*midbase_marker, # Midbase marker in world
-                                                          H_to_world_from_camera*apex_marker) # Apex marker in world
+                                                          H_to_world_from_marker_pixels*midbase_marker, # Midbase marker in world
+                                                          H_to_world_from_marker_pixels*apex_marker) # Apex marker in world
                             for i, [midbase_marker, apex_marker] in markers.items()}
 
     # Precompute their inverses for later use
