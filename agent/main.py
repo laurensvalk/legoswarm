@@ -95,8 +95,8 @@ while True:
         number_of_balls = len(ball_info)
         
         # Unpack spring characteristics
-        push_spring_between_robots = Spring(robot_settings['robot_avoidance_spring'])
-        pull_spring_between_robots = Spring(robot_settings['robot_attraction_spring'])
+        robot_avoidance_spring = Spring(robot_settings['robot_avoidance_spring'])
+        robot_attraction_spring = Spring(robot_settings['robot_attraction_spring'])
         spring_to_walls = Spring(robot_settings['spring_to_walls'])
         spring_to_balls = Spring(robot_settings['spring_to_balls'])
         spring_to_position = Spring(robot_settings['spring_to_position'])
@@ -124,8 +124,8 @@ while True:
     for neighbor in neighbors:
         neighbor_center = vector(neighbor_info[neighbor]['center_location'])
         spring_extension = neighbor_center - my_gripper
-        nett_neighbor_avoidance = nett_neighbor_avoidance + pull_spring_between_robots.get_force_vector(spring_extension)
-        nett_neighbor_attraction = nett_neighbor_attraction + push_spring_between_robots.get_force_vector(spring_extension)
+        nett_neighbor_avoidance = nett_neighbor_avoidance + robot_avoidance_spring.get_force_vector(spring_extension)
+        nett_neighbor_attraction = nett_neighbor_attraction + robot_attraction_spring.get_force_vector(spring_extension)
 
     # 2. Walls
 
@@ -259,13 +259,13 @@ while True:
             state = BOUNCE
 
     if state == DRIVE:
-        total_force = vector([0, robot_settings['bounce_drive_speed']])
-        if min(wall_info['distances']) < 1.5:
-            random_turn_force = vector([(random.random()*2-1), 0])
+        total_force = nett_neighbor_avoidance + vector([0, robot_settings['bounce_drive_speed']])
+        if min(wall_info['distances']) < robot_settings['min_wall_distance']:
+            random_factor = 1+(random.random()/10)
             state = BOUNCE
 
     if state == BOUNCE:
-        total_force = total_force + nett_wall_force + random_turn_force
+        total_force = nett_neighbor_avoidance + vector([nett_wall_force[0]*random_factor, nett_wall_force[1]])  # yuck
         if min(wall_info['distances']) > 20:
             state = DRIVE
 
