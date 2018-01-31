@@ -4,13 +4,13 @@ from .simple_device import Motor
 class Picker(Motor):
     """Steer the picker mechanism to the desired target"""
     # Target positions for the gripper (degrees). 0 corresponds to the gripper all the way open
-    OPEN = 80
+    OPEN = 90
     CLOSED = 130
     STORE = 270
     PURGE = 287
 
     # Speed and tolerance parameters
-    abs_speed = 120
+    abs_speed = 200
     tolerance = 4
 
     # # Amount of degrees the motor must turn to rotate the gripper by one degree
@@ -57,15 +57,9 @@ class Picker(Motor):
         """Steer Picker mechanism to desired target"""
         self.go_to(target*self.motor_deg_per_picker_deg,             # Reference position
                    self.abs_speed*self.motor_deg_per_picker_deg,     # Speed to get there
-                   abs(self.tolerance*self.motor_deg_per_picker_deg))# Allowed tolerance
-        # If blocking is chosen, wait for the action to complete
-        if blocking:
-            # Give some time to get the action started
-            time.sleep(0.1)
-            # Wait for completion
-            while self.is_running:
-                time.sleep(0.01)
-              
+                   abs(self.tolerance*self.motor_deg_per_picker_deg),# Allowed tolerance
+                   blocking)
+
 class DriveBase:
     """Easily control two large motors to drive a skid steering robot using specified forward speed and turnrate"""
 
@@ -84,7 +78,10 @@ class DriveBase:
         #Compute radii
         wheel_radius = wheel_diameter/2
         wheel_base_radius = wheel_span/2
-        
+
+        self.wheel_span = wheel_span
+        self.wheel_diameter = wheel_diameter
+
         # cm of forward travel for 1 deg/s wheel rotation
         self.wheel_cm_sec_per_deg_s = wheel_radius / deg_per_rad 
         # wheel speed for a given rotation of the base
@@ -119,7 +116,23 @@ class DriveBase:
         # Apply the calculated speeds to the motor
         self.leftmotor.run_forever_at_speed(leftspeed)
         self.rightmotor.run_forever_at_speed(rightspeed)
-        
+
+    def turn_degrees(self, degrees, blocking=True):
+        self.stop()
+        wheel_degrees = int(degrees * self.wheel_span / self.wheel_diameter)
+        if self.counter_clockwise_is_positive:
+            self.leftmotor.go_to(self.leftmotor.position + wheel_degrees, 300, 2, blocking=False)
+            self.rightmotor.go_to(self.rightmotor.position - wheel_degrees, 300, 2, blocking)
+        else:
+            self.leftmotor.go_to(self.leftmotor.position - wheel_degrees, 300, 2, blocking=False)
+            self.rightmotor.go_to(self.rightmotor.position + wheel_degrees, 300, 2, blocking)
+
+    def drive_cm(self, cm, blocking=True):
+        wheel_degrees = int(cm * 360 / (3.1415 * self.wheel_diameter))
+        self.stop()
+        self.leftmotor.go_to(self.leftmotor.position + wheel_degrees, 300, 2, blocking=False)
+        self.rightmotor.go_to(self.rightmotor.position + wheel_degrees, 300, 2, blocking)
+
     def stop(self):
         """Stop the robot"""
         # Stop robot by stopping motors

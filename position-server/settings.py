@@ -8,22 +8,22 @@ all_settings = {
             'cm_per_px': 0.1,
             'speed_per_unit_force': 1,
             'turnrate_per_unit_force': 3,
-            'ball_info_max_size' : 3, # Number of nearest balls each robot should get details of
-            'ball_close_enough': 10,
-            'ball_grab_time': 6,  # s
-            'bounding_box_cm' : [
+            'ball_info_max_size': 3, # Number of nearest balls each robot should get details of
+            'ball_close_enough': 12,
+            'ball_grab_time': 3,  # s
+            'bounding_box_cm': [
                 # List of points in centimeters, encircling the robot
                 # Starting at left wheel, then go counterclockwise
-                [-9, 2.5], # Front end of left wheel
-                [-9, -2.5], # Back end of left wheel
+                [-10, 2.5], # Front end of left wheel
+                [-10, -2.5], # Back end of left wheel
                 [-5, -13], # Left rear wheel caster
                 [5, -13], # right wheel caster
-                [9, -2.5], # Back end of right wheel
-                [9, 2.5], # Front end of right wheel
+                [10, -2.5], # Back end of right wheel
+                [10, 2.5], # Front end of right wheel
                 [5, 15], # Front-right end of gripper
                 [-5, 15] # Front-left end of gripper
             ],
-            'spring_between_robots' : [
+            'push_spring_between_robots': [
             #                         c                     15 (pull when far)
             #                        / \
             #                      /     \
@@ -39,6 +39,25 @@ all_settings = {
             #                                     
                 [0,  -20], #a
                 [30,  0 ], #b
+                #[160,  15],#c
+                #[200,  0 ]  #d
+            ],
+            'pull_spring_between_robots' : [
+            #                         c                     15 (pull when far)
+            #                        / \
+            #                      /     \
+            #                    /         \
+            #                  b             d------------   0 (no force at at 200 cm or beyond)
+            #                /
+            #              /
+            #            /
+            # ----------a                                    -20 (push when too close)
+            #
+            #          0      30    160     200
+            #
+            #
+                [0,  0], #a
+                [30,  0 ], #b
                 [160,  15],#c
                 [200,  0 ]  #d
             ],
@@ -53,8 +72,9 @@ all_settings = {
             #          0      30      
             # 
             #                                     
-                [0,  -10], #a
-                [15,  0 ], #b
+                [0,  -20], #a
+                [20, -20 ], #b
+                [21, 0]
             ],
             'spring_to_balls' : [
             #
@@ -75,7 +95,8 @@ all_settings = {
 # The robots don't need all the settings. They need just these (add more if needed):
 robot_keys = ['speed_per_unit_force',
               'turnrate_per_unit_force',
-              'spring_between_robots',
+              'push_spring_between_robots',
+              'pull_spring_between_robots',
               'spring_to_walls',
               'spring_to_balls',
               'p_bot_gripper',

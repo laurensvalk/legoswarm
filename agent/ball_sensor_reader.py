@@ -13,11 +13,15 @@ class BallSensorReader(Thread):
     def ball_detected(self):
         return self.detected
 
+    @property
+    def distance(self):
+        return self.ball_sensor.avg_distance()
+
     def run(self):
         logging.debug("Started ballsensor thread")
         while self.running:
             self.detected = self.ball_sensor.ball_detected()
-            time.sleep(0.1)
+            time.sleep(0.2)
 
     def stop(self):
         logging.debug("Stopping thread")

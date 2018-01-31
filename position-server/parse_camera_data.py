@@ -60,6 +60,9 @@ def get_ball_info(H_to_bot_from_world, ball_locations, settings):
             sorted_balls_relative_to_gripper[agent] = [balls_relative_to_gripper[:,index].tolist() for index in sorted_index]
 
     # For each agent, return a sorted list of ball locations
+    else:
+        for (agent, transformation) in H_to_bot_from_world.items():
+            sorted_balls_relative_to_gripper[agent] = []
     return sorted_balls_relative_to_gripper
 
 def get_wall_info(H_to_bot_from_world, field_corners, settings):
