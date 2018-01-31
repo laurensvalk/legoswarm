@@ -5,7 +5,8 @@ def bounding_box(server_settings, midbase_marker, apex_marker, field_corners):
     """Convert marker midbase and apex pixel location into bounding box, in pixels"""
     
     # Get transformation matrix from pixels to world frame
-    H_to_world_from_marker_pixels = transform_to_world_from_marker_pixels(server_settings, field_corners)    
+    # H_to_world_from_marker_pixels = transform_to_world_from_marker_pixels(server_settings, field_corners)
+    H_to_world_from_marker_pixels = transform_to_world_from_ball_pixels(server_settings, field_corners)
     H_to_marker_pixels_from_world = H_to_world_from_marker_pixels.inverse()
 
     # Obtain transformation matrix between the robot and the world, for this robot

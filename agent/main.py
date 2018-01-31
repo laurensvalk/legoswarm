@@ -53,6 +53,8 @@ EXIT = 'exit'
 BOUNCE = 'bounce'
 DRIVE = 'drive'
 PAUSE = 'pause'
+TO_CENTER = 'to_center'
+
 pause_end_time = time.time()
 pause_next_state = SEEK_BALL
 
@@ -268,6 +270,12 @@ while True:
             except:
                 pass
 
+            state = TO_CENTER
+
+    if state == TO_CENTER:
+        center_direction = vector([0,0])
+        total_force = spring_to_position.get_force_vector(center_direction) + nett_neighbor_avoidance
+        if center_direction.norm < 40:
             state = SEEK_BALL
 
     if state == DRIVE:

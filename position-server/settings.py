@@ -3,8 +3,8 @@ robot_settings = {
             'dump_location': (0, 0),
             'p_bot_midbase': (-2, -8),
             'p_bot_gripper': (0, 11),
-            'speed_per_unit_force': 1,
-            'turnrate_per_unit_force': 3,
+            'speed_per_unit_force': .75,
+            'turnrate_per_unit_force': 2,
             'ball_close_enough': 12,
             'ball_grab_time': 3,  # s
             'max_balls_in_store': 5,
