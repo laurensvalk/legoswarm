@@ -50,7 +50,7 @@ class RemoteControl():
     def __init__(self, port):
         """Configure IR sensor in remote mode"""
         self.sensor = InfraredSensor(port)
-        self.mode = self.sensor.MODE_IR_REMOTE        
+        self.sensor.mode = self.sensor.MODE_IR_REMOTE        
 
     @property
     def button(self):

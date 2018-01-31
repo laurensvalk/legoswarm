@@ -161,18 +161,36 @@ class Motor():
     def is_running(self):
         return 'running' in self.state
 
+    def at_target(self, target, tolerance):
+        """Return True when position is near the target with the specified tolerance"""
+        return target - tolerance <= self.position <= target + tolerance
+
     def go_to(self, reference, speed, tolerance, blocking=False):
-        if not self.is_running and not (reference - tolerance <= self.position <= reference + tolerance):
-            write_int(self.position_sp_file, reference)
-            absolute_limited_speed = abs(self.limit(speed))
-            write_int(self.speed_sp_file, absolute_limited_speed)
-            write_str(self.command_file, self.COMMAND_RUN_TO_ABS_POS)
+        # When blocking is false, we do not want to wait for completion, so we use the ev3dev run_to_abs method
+        if not blocking and not self.is_running and not self.at_target(reference, tolerance):
+            write_int(self.position_sp_file, reference) # Write speed setpoint
+            write_int(self.speed_sp_file, abs(self.limit(speed))) # Write target
+            write_str(self.command_file, self.COMMAND_RUN_TO_ABS_POS) # Write command
+
+        # When we allow blocking, we can use normal speed control to ensure we actually get there    
         if blocking:
-            # Give some time to get the action started
-            time.sleep(0.1)
-            # Wait for completion
-            while self.is_running:
-                time.sleep(0.01)
+            # Check if we aren't already at the target
+            if not self.at_target(reference, tolerance):
+                # Otherwise, check if we should go backwards or forwards to reach the target
+                if reference > self.position:
+                    # If the reference is ahead of us, we go forwards
+                    self.run_forever_at_speed(speed)
+                    # Wait until we're there                    
+                    while self.position <= reference - tolerance:
+                        time.sleep(0.01)
+                else:
+                    # If the reference is behind us, we go backwards
+                    self.run_forever_at_speed(-speed)
+                    # Wait until we're there                                    
+                    while self.position >= reference + tolerance:
+                        time.sleep(0.01)
+            # Stop the motor when at target                        
+            self.stop()                        
 
     def turn_degrees(self, degrees, speed, tolerance):
         self.go_to(self.position+degrees, speed, tolerance)

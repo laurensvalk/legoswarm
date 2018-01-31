@@ -37,7 +37,7 @@ while True:
         speed_now, steering_now, target_now = actions['NONE']
 
     if target_now is not None:
-        picker.go_to_target(target_now)
+        picker.go_to_target(target_now, blocking=True)
     if speed_now is not None and steering_now is not None:
         base.drive_and_turn(speed_now, steering_now)
     time.sleep(0.1)

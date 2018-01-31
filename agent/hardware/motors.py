@@ -1,5 +1,5 @@
 import time
-from .simple_device import Motor
+from .simple_device import Motor, eprint
 
 class Picker(Motor):
     """Steer the picker mechanism to the desired target"""
@@ -10,16 +10,17 @@ class Picker(Motor):
     PURGE = 287
 
     # Speed and tolerance parameters
-    abs_speed = 200
+    abs_speed = 150
     tolerance = 4
 
     # # Amount of degrees the motor must turn to rotate the gripper by one degree
-    motor_deg_per_picker_deg = -3
+    motor_deg_per_picker_deg = 3
     store_count = 0
 
     def __init__(self, port):   
         # Initialize motor
         Motor.__init__(self, port)
+        self.polarity = self.POLARITY_INVERSED
 
         # Do a reset routine
         self.pick_rate = -40
@@ -29,15 +30,15 @@ class Picker(Motor):
             time.sleep(0.1)
         self.stop()
         self.reset()
-        self.go_to_target(self.OPEN)
+        self.polarity = self.POLARITY_INVERSED
+        self.go_to_target(self.OPEN, blocking=True)
 
     @property
     def beak_position(self):
         return self.position/self.motor_deg_per_picker_deg
 
-    def is_within_tolerance(self, position):
-        abs_tolerance = self.tolerance*abs(self.motor_deg_per_picker_deg)
-        return position - abs_tolerance < self.beak_position < position + abs_tolerance
+    def is_within_tolerance(self, target):
+        return self.at_target(target*self.motor_deg_per_picker_deg, self.tolerance*self.motor_deg_per_picker_deg)
 
     @property
     def is_open(self):
@@ -69,7 +70,7 @@ class Picker(Motor):
         """Steer Picker mechanism to desired target"""
         self.go_to(target*self.motor_deg_per_picker_deg,             # Reference position
                    self.abs_speed*self.motor_deg_per_picker_deg,     # Speed to get there
-                   abs(self.tolerance*self.motor_deg_per_picker_deg),# Allowed tolerance
+                   self.tolerance*self.motor_deg_per_picker_deg,# Allowed tolerance
                    blocking)
 
 class DriveBase:
