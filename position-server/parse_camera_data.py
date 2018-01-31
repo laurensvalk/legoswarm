@@ -1,11 +1,11 @@
 import numpy as np
 from robot_frames import transform_to_world_from_camera, transform_to_world_from_bot, transform_to_gripper_from_bot
 
-def bounding_box(server_settings, midbase_marker, apex_marker):
+def bounding_box(server_settings, midbase_marker, apex_marker, field_corners):
     """Convert marker midbase and apex pixel location into bounding box, in pixels"""
     
     # Get transformation matrix from pixels to world frame
-    H_to_world_from_camera = transform_to_world_from_camera(server_settings)    
+    H_to_world_from_camera = transform_to_world_from_camera(server_settings, field_corners)    
     H_to_camera_from_world = H_to_world_from_camera.inverse()
 
     # Obtain transformation matrix between the robot and the world, for this robot
@@ -22,11 +22,11 @@ def bounding_box(server_settings, midbase_marker, apex_marker):
     # Revert the indexing so this can be seen as a list of coordinates
     return (bounding_box_in_camera.T).astype(int)
 
-def get_ball_info(H_to_bot_from_world, ball_locations, server_settings):
+def get_ball_info(H_to_bot_from_world, ball_locations, server_settings, field_corners):
     sorted_balls_relative_to_gripper = {}
     if len(ball_locations) > 0:
         # Get transformation matrix from pixels to world frame
-        H_to_world_from_camera = transform_to_world_from_camera(server_settings)
+        H_to_world_from_camera = transform_to_world_from_camera(server_settings, field_corners)
 
         # Matrix of balls, in pixels
         balls_pixels = np.array(ball_locations).T
@@ -65,7 +65,7 @@ def get_ball_info(H_to_bot_from_world, ball_locations, server_settings):
             sorted_balls_relative_to_gripper[agent] = []
     return sorted_balls_relative_to_gripper
 
-def get_wall_info(H_to_bot_from_world, field_corners, server_settings):
+def get_wall_info(H_to_bot_from_world, server_settings, field_corners):
     #               world x
     # 
     #            --------->
@@ -84,7 +84,7 @@ def get_wall_info(H_to_bot_from_world, field_corners, server_settings):
     corners_pixels = np.array(field_corners).T
 
     # Get transformation matrix from pixels to world frame
-    H_to_world_from_camera = transform_to_world_from_camera(server_settings)        
+    H_to_world_from_camera = transform_to_world_from_camera(server_settings, field_corners)        
 
     # Corner locations, in world
     corners_world = H_to_world_from_camera*corners_pixels
@@ -132,12 +132,12 @@ def get_wall_info(H_to_bot_from_world, field_corners, server_settings):
     # For each agent, return a sorted list of ball locations
     return wall_info
 
-def get_neighbor_info(markers, server_settings):
+def get_neighbor_info(markers, server_settings, field_corners):
     # Determine who's who
     agents = markers.keys()
 
     # Get transformation matrix from pixels to world frame
-    H_to_world_from_camera = transform_to_world_from_camera(server_settings)    
+    H_to_world_from_camera = transform_to_world_from_camera(server_settings, field_corners)    
 
     # Obtain transformation matrix between the robot and the world, for each robot
     H_to_world_from_bot = {i: transform_to_world_from_bot(server_settings, 
@@ -188,13 +188,13 @@ def get_neighbor_info(markers, server_settings):
 def make_data_for_robots(markers, ball_locations, field_corners, server_settings, robot_settings):
 
     # Information about the neighbors of each robot, in their own frame of reference
-    neighbor_info, H_to_bot_from_world = get_neighbor_info(markers, server_settings)
+    neighbor_info, H_to_bot_from_world = get_neighbor_info(markers, server_settings, field_corners)
 
     # Get the ball locations in each robot frame, sorted by distance from gripper
-    ball_info = get_ball_info(H_to_bot_from_world, ball_locations, server_settings)
+    ball_info = get_ball_info(H_to_bot_from_world, ball_locations, server_settings, field_corners)
 
     # Get perpendicular lines to each wall in each robot frame of reference
-    wall_info = get_wall_info(H_to_bot_from_world, field_corners, server_settings)
+    wall_info = get_wall_info(H_to_bot_from_world, server_settings, field_corners)
 
     result = {}
     for robot_id in markers:

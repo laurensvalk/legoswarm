@@ -7,20 +7,24 @@ from numpy.linalg import norm
 def transform_to_gripper_from_bot(server_settings):
     return Transformation(translation=-1*array(server_settings['p_bot_gripper']))
 
-def transform_to_world_from_camera(server_settings):
+def transform_to_world_from_camera(server_settings, field_corners):
     """Transform camera pixels into centimeters relative to camera midpoint"""
     # Transform to make positive y-axis point upwards
     rotation = array([[1, 0],[0, -1]]) # Flip y-axis
     translation = array([0, 0]) # No translation
     H_to_flipped_from_camera = Transformation(rotation, translation)
 
-    # TODO: DETERMINE WIDTH AND HEIGHT FROM corners. for now assume full field as before
-    field_width = 1920
-    field_height = 1080
+    # Obtain previously computed field corners
+    A, B, C, D = field_corners
+    abs_offset = abs(server_settings['PLAYING_FIELD_OFFSET'])
+
+    # Use field corners and border size to obtain cropped/warped image size
+    image_width = abs(B[0]-A[0]) + 2*abs_offset
+    image_height = abs(B[1]-C[1]) + 2*abs_offset
 
     # Transform to align axes with center of picture
     rotation = identity(2) # No rotation
-    translation = array([-field_width/2, field_height/2])
+    translation = array([-image_width/2, image_height/2])
     H_to_centered_from_flipped = Transformation(rotation, translation)
 
     # Scale to centimeters

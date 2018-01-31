@@ -108,4 +108,4 @@ server_settings = {
 import platform
 if 'Ubuntu' in platform.platform():
     print('Laurens Mode')
-    server_settings['FILE'] = 'test_images/test_ball_corners.png'
+    server_settings['FILE'] = 'test_images/test_one_ball_at_center.png'

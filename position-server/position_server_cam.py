@@ -285,7 +285,7 @@ if __name__ == '__main__':
             cv2.drawContours(img, [triangle], -1, GREEN)
 
             # Black out the shape of the robot in our source image
-            bb = bounding_box(server_settings, midbase_marker, apex_marker)
+            bb = bounding_box(server_settings, midbase_marker, apex_marker, field_corners)
             cv2.drawContours(img, [bb], 0, RED, 2)
             cv2.fillConvexPoly(img_grey, bb, 255)
 
