@@ -260,12 +260,12 @@ while True:
 
     if state == DRIVE:
         total_force = vector([0, robot_settings['bounce_drive_speed']])
-        if min(wall_info['distances']) < 1.5:
-            random_turn_force = vector([(random.random()*2-1), 0])
+        if min(wall_info['distances']) < robot_settings['min_wall_distance']:
+            random_factor = vector([1+(random.random()/10), 0])
             state = BOUNCE
 
     if state == BOUNCE:
-        total_force = total_force + nett_wall_force + random_turn_force
+        total_force = total_force + nett_wall_force * random_factor
         if min(wall_info['distances']) > 20:
             state = DRIVE
 
