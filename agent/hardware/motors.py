@@ -14,7 +14,8 @@ class Picker(Motor):
     tolerance = 4
 
     # # Amount of degrees the motor must turn to rotate the gripper by one degree
-    motor_deg_per_picker_deg = -3 
+    motor_deg_per_picker_deg = -3
+    store_count = 0
 
     def __init__(self, port):   
         # Initialize motor
@@ -55,6 +56,14 @@ class Picker(Motor):
     def pick_rate(self, rate):
         """Set the picker reference speed"""
         self.run_forever_at_speed(rate * self.motor_deg_per_picker_deg)
+
+    def store(self, blocking=False):
+        self.go_to_target(self.STORE, blocking)
+        self.store_count += 1
+
+    def purge(self, blocking=False):
+        self.go_to_target(self.PURGE, blocking)
+        self.store_count = 0
 
     def go_to_target(self, target, blocking=False):
         """Steer Picker mechanism to desired target"""
