@@ -56,7 +56,7 @@ PAUSE = 'pause'
 pause_end_time = time.time()
 pause_next_state = SEEK_BALL
 
-state = DRIVE
+state = SEEK_BALL
 CHECK_VOLT_AFTER_LOOPS = 500
 loopcount = 0
 no_force = vector([0, 0])
