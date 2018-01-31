@@ -24,7 +24,7 @@ robot_settings = {
             #          0      30    160     200      
             # 
             #                                     
-                [0,  -50], #a
+                [0,  -60], #a
                 [40,  0 ], #b
             ],
             'robot_attraction_spring' : [
