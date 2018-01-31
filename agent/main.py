@@ -33,7 +33,6 @@ logging.debug("Listening on port {0}".format(port))
 # Configure the devices
 ballsensor = BallSensorReader()
 ballsensor.start()
-ball_count = 0
 base = DriveBase(left=('outC', DriveBase.POLARITY_INVERSED),
                  right=('outB', DriveBase.POLARITY_INVERSED),
                  wheel_diameter=4.3,
@@ -174,6 +173,9 @@ while True:
         else:
             loopcount = 0
 
+    if picker.store_count > robot_settings['max_balls_in_store']:
+        state = PURGE
+
     # Drive to field corner c when voltage is low.
     if state == LOW_VOLTAGE:
         corner_c_direction = vector(wall_info['corners'][2])
@@ -253,17 +255,17 @@ while True:
             base.stop()
             picker.go_to_target(picker.PURGE, blocking=True)
             picker.go_to_target(picker.OPEN, blocking=False)
-            ball_count = 0
             time.sleep(1)
-            state = SEEK_BALL
+            state = BOUNCE
 
     if state == DRIVE:
-        total_force = vector([0, 5])
-        if min(wall_info['distances']) < 8:
+        total_force = vector([0, robot_settings['bounce_drive_speed']])
+        if min(wall_info['distances']) < 1.5:
+            random_turn_force = vector([(random.random()*2-1), 0])
             state = BOUNCE
 
     if state == BOUNCE:
-        total_force = total_force + nett_wall_force
+        total_force = total_force + nett_wall_force + random_turn_force
         if min(wall_info['distances']) > 20:
             state = DRIVE
 

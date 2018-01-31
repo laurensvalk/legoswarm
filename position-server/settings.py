@@ -7,6 +7,8 @@ robot_settings = {
             'turnrate_per_unit_force': 3,
             'ball_close_enough': 12,
             'ball_grab_time': 3,  # s
+            'max_balls_in_store': 5,
+            'bounce_drive_speed': 4,
             'robot_avoidance_spring': [
             #                         c                     15 (pull when far)
             #                        / \
