@@ -51,7 +51,7 @@ def get_device_path(parent_folder, port_name):
 
 import fcntl, array
 class Buttons():
-    BUTTONS_FILENAME = '/dev/input/by-path/platform-gpio_keys-event'
+    BUTTONS_FILENAME = '/dev/input/by-path/platform-gpio-keys.0-event'
     _buttons = {
         'up': {'name': BUTTONS_FILENAME, 'value': 103},
         'down': {'name': BUTTONS_FILENAME, 'value': 108},
@@ -237,7 +237,7 @@ if __name__ == '__main__':
         found_ir = False
 
     while True:
-        volts = PowerSupply.voltage
+        volts = p.voltage
         pressed = b.buttons_pressed
         if found_ir:
             prox = ir.proximity
