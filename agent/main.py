@@ -253,19 +253,21 @@ while True:
         total_force = spring_to_position.get_force_vector(corner_a_direction) + nett_wall_force
         if corner_a_direction.norm < 20:
             base.stop()
-            picker.go_to_target(picker.PURGE, blocking=True)
-            picker.go_to_target(picker.OPEN, blocking=False)
-            time.sleep(1)
+            picker.purge()
+            picker.open()
+            # Clear the buffer so we have up-to-date data at the next loop
+            compressed_data, server = s.recvfrom(1500)
             state = BOUNCE
 
     if state == DRIVE:
         total_force = nett_neighbor_avoidance + vector([0, robot_settings['bounce_drive_speed']])
         if min(wall_info['distances']) < robot_settings['min_wall_distance']:
-            random_factor = 1+(random.random()/10)
+            # random_factor = 1+(random.random()/10)
             state = BOUNCE
 
     if state == BOUNCE:
-        total_force = nett_neighbor_avoidance + vector([nett_wall_force[0]*random_factor, nett_wall_force[1]])  # yuck
+        # total_force = nett_neighbor_avoidance + vector([nett_wall_force[0]*random_factor, nett_wall_force[1]])  # yuck
+        total_force = nett_neighbor_avoidance + nett_wall_force
         if min(wall_info['distances']) > 20:
             state = DRIVE
 

@@ -58,13 +58,16 @@ class Picker(Motor):
         """Set the picker reference speed"""
         self.run_forever_at_speed(rate * self.motor_deg_per_picker_deg)
 
-    def store(self, blocking=False):
+    def store(self, blocking=True):
         self.go_to_target(self.STORE, blocking)
         self.store_count += 1
 
-    def purge(self, blocking=False):
+    def purge(self, blocking=True):
         self.go_to_target(self.PURGE, blocking)
         self.store_count = 0
+
+    def open(self, blocking=False):
+        self.go_to_target(self.OPEN, blocking)
 
     def go_to_target(self, target, blocking=False):
         """Steer Picker mechanism to desired target"""
