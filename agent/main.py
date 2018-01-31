@@ -229,7 +229,9 @@ while True:
         base.turn_degrees(angle_to_ball)
         base.drive_cm(distance_to_ball)
         logging.debug(
-            "Storing with turn: {0}, distance: {1}".format(angle_to_ball, robot_settings['ball_close_enough']))
+            "Storing with turn: {0}, distance: {1}, stored:{2}".format(angle_to_ball,
+                                                           robot_settings['ball_close_enough'],
+                                                                       picker.store_count))
 
         # The ball should be right in the gripper now.
         picker.go_to_target(picker.STORE)
@@ -238,8 +240,8 @@ while True:
         compressed_data, server = s.recvfrom(1500)
 
         # Next state
-        state = PAUSE
-        pause_end_time = time.time() + 5
+        # state = PAUSE
+        # pause_end_time = time.time() + 5
         pause_next_state = SEEK_BALL
 
     if state == PAUSE:

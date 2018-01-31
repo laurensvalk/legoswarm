@@ -98,14 +98,14 @@ server_settings = {
     'bounding_box_cm': [
         # List of points in centimeters, encircling the robot
         # Starting at left wheel, then go counterclockwise
-        [-10, 2.5], # Front end of left wheel
-        [-10, -2.5], # Back end of left wheel
-        [-5, -13], # Left rear wheel caster
-        [5, -13], # right wheel caster
-        [10, -2.5], # Back end of right wheel
-        [10, 2.5], # Front end of right wheel
-        [5, 15], # Front-right end of gripper
-        [-5, 15] # Front-left end of gripper
+        [-11, 2.5], # Front end of left wheel
+        [-11, -2.5], # Back end of left wheel
+        [-9, -13], # Left rear wheel caster
+        [9, -13], # right wheel caster
+        [11, -2.5], # Back end of right wheel
+        [11, 2.5], # Front end of right wheel
+        [5, 17.5], # Front-right end of gripper
+        [-5, 17.5] # Front-left end of gripper
     ]
 }
 
