@@ -48,6 +48,58 @@ def get_device_path(parent_folder, port_name):
         # If we don't have the device folders, we are running on a PC. We return a path containing dummy data
         return 'hardware/pcdevice'
 
+
+import fcntl, array
+class Buttons():
+    BUTTONS_FILENAME = '/dev/input/by-path/platform-gpio_keys-event'
+    _buttons = {
+        'up': {'name': BUTTONS_FILENAME, 'value': 103},
+        'down': {'name': BUTTONS_FILENAME, 'value': 108},
+        'left': {'name': BUTTONS_FILENAME, 'value': 105},
+        'right': {'name': BUTTONS_FILENAME, 'value': 106},
+        'enter': {'name': BUTTONS_FILENAME, 'value': 28},
+        'backspace': {'name': BUTTONS_FILENAME, 'value': 14},
+    }
+    KEY_MAX = 0x2FF
+    KEY_BUF_LEN = int((KEY_MAX + 7) / 8)
+    EVIOCGKEY = (2 << (14 + 8 + 8) | KEY_BUF_LEN << (8 + 8) | ord('E') << 8 | 0x18)
+
+    def __init__(self):
+        self._file_cache = {}
+        self._buffer_cache = {}
+
+        for b in self._buttons:
+            name = self._buttons[b]['name']
+
+            if name not in self._file_cache:
+                self._file_cache[name] = open(name, 'rb', 0)
+                self._buffer_cache[name] = array.array('B', [0] * self.KEY_BUF_LEN)
+
+    def _button_file(self, name):
+        return self._file_cache[name]
+
+    def _button_buffer(self, name):
+        return self._buffer_cache[name]
+
+    @property
+    def buttons_pressed(self):
+        """
+        Returns list of names of pressed buttons.
+        """
+        for b in self._buffer_cache:
+            fcntl.ioctl(self._button_file(b), self.EVIOCGKEY, self._buffer_cache[b])
+
+        pressed = []
+        for k, v in self._buttons.items():
+            buf = self._buffer_cache[v['name']]
+            bit = v['value']
+
+            if bool(buf[int(bit / 8)] & 1 << bit % 8):
+                pressed.append(k)
+
+        return pressed
+
+
 class Motor():
 
     MAX_SPEED = 1000
@@ -170,3 +222,27 @@ class PowerSupply():
     @property
     def voltage(self):
         return read_int(self.voltage_file) / 1e6
+
+
+if __name__ == '__main__':
+    """
+    Test all devices in this module
+    """
+    p = PowerSupply()
+    b = Buttons()
+    try:
+        ir = InfraredSensor('in4')
+        found_ir = True
+    except:
+        found_ir = False
+
+    while True:
+        volts = PowerSupply.voltage
+        pressed = b.buttons_pressed
+        if found_ir:
+            prox = ir.proximity
+        else:
+            prox = ""
+        print("Voltage: {0}, Buttons: {1}, Ir: {2}".format(volts, pressed,prox))
+        time.sleep(0.5)
+
