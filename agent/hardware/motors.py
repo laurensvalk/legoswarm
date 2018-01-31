@@ -34,7 +34,6 @@ class Picker(Motor):
     def beak_position(self):
         return self.position/self.motor_deg_per_picker_deg
 
-    @property
     def is_within_tolerance(self, position):
         abs_tolerance = self.tolerance*abs(self.motor_deg_per_picker_deg)
         return position - abs_tolerance < self.beak_position < position + abs_tolerance
