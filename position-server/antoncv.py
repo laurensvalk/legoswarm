@@ -3,6 +3,11 @@ import numpy as np
 
 from linalg import unit_vector
 
+YELLOW = (0, 255, 255)
+RED = (0, 0, 255)
+PURPLE = (255, 0, 255)
+GREEN = (0, 255, 0)
+ORANGE = (100, 100, 255)
 
 def pixel(img_grey, vector):
     if img_grey[vector[1], vector[0]]:
