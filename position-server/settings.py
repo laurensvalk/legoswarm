@@ -7,7 +7,7 @@ robot_settings = {
             'turnrate_per_unit_force': 3,
             'ball_close_enough': 12,
             'ball_grab_time': 3,  # s
-            'push_spring_between_robots': [
+            'robot_avoidance_spring': [
             #                         c                     15 (pull when far)
             #                        / \
             #                      /     \
