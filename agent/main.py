@@ -31,7 +31,6 @@ s.settimeout(0.2)
 logging.debug("Listening on port {0}".format(port))
 
 # Configure the devices
-# ballsensor = BallSensor('in4')
 ballsensor = BallSensorReader()
 ballsensor.start()
 ball_count = 0
@@ -69,12 +68,15 @@ no_force = vector([0, 0])
 #################################################################
 
 while True:
-    #################################################################
-    ###### Receive data
-    #################################################################
+
     logging.debug("Loop start")
     loopstart = time.time()
     loopcount += 1
+
+    #################################################################
+    ###### Receive data
+    #################################################################
+
     try:
         # Get robot positions and settings from server
         compressed_data, server = s.recvfrom(1500)
@@ -100,17 +102,16 @@ while True:
         spring_to_balls = Spring(robot_settings['spring_to_balls'])
         spring_to_position = Spring(robot_settings['spring_to_position'])
 
-
-    except:
+    except Exception as e:
         # Stop the loop if we're unable to get server data
-        e = sys.exc_info()[0]
-        logging.warning("{0}: Reading data from port {1} failed. Waiting...".format(e, port))
+        logging.warning("{0}: Reading data from port {1} failed. Waiting...".format(repr(e), port))
         base.stop()
         if 'backspace' in buttons.buttons_pressed:
             ballsensor.stop()
             break
         time.sleep(0.2)
         continue
+
     logging.debug("Got data after {0}ms".format(int( (time.time()-loopstart)*1000 )))
 
     #################################################################
@@ -126,8 +127,6 @@ while True:
         spring_extension = neighbor_center - my_gripper
         nett_neighbor_avoidance = nett_neighbor_avoidance + pull_spring_between_robots.get_force_vector(spring_extension)
         nett_neighbor_attraction = nett_neighbor_attraction + push_spring_between_robots.get_force_vector(spring_extension)
-
-
 
     # 2. Walls
 
@@ -148,6 +147,7 @@ while True:
     nett_wall_force = force_to_top + force_to_bottom + force_to_left + force_to_right
 
     # 3. Nearest ball
+
     if number_of_balls > 0:
         ball_visible = True
         nearest_ball_to_my_gripper = vector(ball_info[0])
@@ -156,6 +156,9 @@ while True:
         ball_visible = False
         nett_ball_force = no_force
 
+    # 4. Start with a zero total force for processing all state behaviour
+    total_force = no_force
+
     logging.debug("Done spring calculations after {0}ms".format(int( (time.time()-loopstart)*1000 )))
 
     #################################################################
@@ -163,8 +166,6 @@ while True:
     #################################################################
 
     # Do stuff with nett_ball_force, nett_neighbor_force and nett_wall_force, depending on where we want to go.
-    total_force = no_force
-    # total_force = nett_neighbor_force
 
     if loopcount > CHECK_VOLT_AFTER_LOOPS:
         if battery.voltage < 7.2:
@@ -178,7 +179,7 @@ while True:
         corner_c_direction = vector(wall_info['corners'][2])
         total_force = spring_to_position.get_force_vector(corner_c_direction) + nett_wall_force
 
-    # Not used, so far.
+    # Stop this program. Not used, so far.
     if state == EXIT:
         base.stop()
         ballsensor.stop()
@@ -278,6 +279,7 @@ while True:
     speed = forward_force * robot_settings['speed_per_unit_force']
     turnrate = sideways_force * robot_settings['turnrate_per_unit_force']
     base.drive_and_turn(speed, turnrate)
+
     # Time for pause is here
     # time.sleep(1)
     logging.debug("Loop done. Speed:{0:.2f}, Turnrate:{1:.2f}, Looptime: {2}ms".format(speed,
