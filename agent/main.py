@@ -125,9 +125,19 @@ while True:
     nett_neighbor_attraction = no_force
     for neighbor in neighbors:
         neighbor_center = vector(neighbor_info[neighbor]['center_location'])
-        spring_extension = neighbor_center - my_gripper
-        nett_neighbor_avoidance = nett_neighbor_avoidance + robot_avoidance_spring.get_force_vector(spring_extension)
-        nett_neighbor_attraction = nett_neighbor_attraction + robot_attraction_spring.get_force_vector(spring_extension)
+        neighbor_gripper = vector(neighbor_info[neighbor]['gripper_location'])
+        neighbor_tail = neighbor_center + (neighbor_center - neighbor_gripper)
+        # Now add avoidance springs to each of the three points on the other robot:
+        for spring_attachment in (neighbor_gripper, neighbor_center, neighbor_tail):
+            spring = spring_attachment - my_gripper
+            nett_neighbor_avoidance = nett_neighbor_avoidance + robot_avoidance_spring.get_force_vector(spring)
+
+        # ... and add attraction springs only to their centers
+        nett_neighbor_attraction = nett_neighbor_attraction + robot_attraction_spring.get_force_vector(neighbor_center - my_gripper)
+
+        # spring_extension = neighbor_center - my_gripper
+        # nett_neighbor_avoidance = nett_neighbor_avoidance + robot_avoidance_spring.get_force_vector(spring_extension)
+        # nett_neighbor_attraction = nett_neighbor_attraction + robot_attraction_spring.get_force_vector(spring_extension)
 
     # 2. Walls
 
