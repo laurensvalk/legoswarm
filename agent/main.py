@@ -214,7 +214,7 @@ while True:
     # Eat any ball we might accidentally see
     if state in (BOUNCE, FLOCKING, DRIVE,):
         if ballsensor.ball_detected() and not picker.is_running:
-            picker.go_to_target(picker.STORE, blocking=False)
+            picker.store()
         logging.debug("Checked ball sensor after {0}ms. Distance: {1}".format(int((time.time() - loopstart) * 1000),
                                                                               ballsensor.distance))
 
