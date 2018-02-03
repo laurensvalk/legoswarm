@@ -180,17 +180,15 @@ while True:
     # Do stuff with nett_ball_force, nett_neighbor_force and nett_wall_force, depending on where we want to go.
 
     if loopcount > CHECK_VOLT_AFTER_LOOPS:
-        if battery.voltage < 7.2:
+        loopcount = 0
+        voltage = battery.voltage
+        logging.info("Battery is at {0}V".format(voltage))
+        if voltage < 7.2:
             state = LOW_VOLTAGE
-            logging.info("Read voltage after {0}ms".format(int((time.time() - last_volt_check) * 1000)))
-            avg_loop_time = int((time.time() - last_volt_check) * 1000 / CHECK_VOLT_AFTER_LOOPS)
-            logging.info("Average loop time {0}ms".format(avg_loop_time))
-            last_volt_check = time.time()
-        else:
-            loopcount = 0
 
     if picker.store_count > robot_settings['max_balls_in_store']:
         state = PURGE
+        logging.info("Changing to {0} state".format(state))
 
     # Drive to field corner c when voltage is low.
     if state == LOW_VOLTAGE:
@@ -211,14 +209,13 @@ while True:
         if detected and not picker.is_running:
             picker.store()
             time.sleep(0.5)
-            picker.open()
+            picker.open(blocking=True)
+            time.sleep(0.5)
             # Clear the buffer so we have up-to-date data at the next loop
             try:
                 compressed_data, server = s.recvfrom(1500)
             except:
                 pass
-
-
 
     # Flocking regimen
     if state == FLOCKING:
@@ -232,6 +229,7 @@ while True:
             if nearest_ball_to_my_gripper.norm < robot_settings['ball_close_enough']:
                 total_force = no_force
                 state = STORE
+                logging.info("Changing to {0} state".format(state))
 
     # When the ball is close, drive towards it blindly
     if state == STORE:
@@ -256,23 +254,26 @@ while True:
             pass
 
         # Next state
-        # state = PAUSE
-        # pause_end_time = time.time() + 5
+        state = PAUSE
+        logging.info("Changing to {0} state".format(state))
+        pause_end_time = time.time() + 2
         pause_next_state = SEEK_BALL
 
     if state == PAUSE:
         total_force = no_force
         if time.time() > pause_end_time:
             state = pause_next_state
+            logging.info("Changing to {0} state".format(state))
 
     if state == PURGE:
         # Drive to a corner and purge
         mid_of_a_d = vector((vector(wall_info['corners'][0]) + vector(wall_info['corners'][3])) / 2)
         total_force = spring_to_position.get_force_vector(mid_of_a_d) + nett_neighbor_avoidance
         picker.store()
-        if mid_of_a_d.norm < 20:
+        if mid_of_a_d.norm < robot_settings['distance_to_purge_location']:
             base.stop()
             picker.purge()
+            time.sleep(1)
             picker.store()
 
             # Clear the buffer so we have up-to-date data at the next loop
@@ -282,6 +283,7 @@ while True:
                 pass
 
             state = TO_CENTER
+            logging.info("Changing to {0} state".format(state))
 
     if state == TO_CENTER:
         center_direction = vector((vector(wall_info['corners'][0]) + vector(wall_info['corners'][2])) / 2)
@@ -289,18 +291,21 @@ while True:
         if center_direction.norm < 40:
             picker.open()
             state = SEEK_BALL
+            logging.info("Changing to {0} state".format(state))
 
     if state == DRIVE:
         total_force = nett_neighbor_avoidance + vector([0, robot_settings['bounce_drive_speed']])
         if min(wall_info['distances']) < robot_settings['min_wall_distance']:
             # random_factor = 1+(random.random()/10)
             state = BOUNCE
+            logging.info("Changing to {0} state".format(state))
 
     if state == BOUNCE:
         # total_force = nett_neighbor_avoidance + vector([nett_wall_force[0]*random_factor, nett_wall_force[1]])  # yuck
         total_force = nett_neighbor_avoidance + nett_wall_force
         if min(wall_info['distances']) > 20:
             state = DRIVE
+            logging.info("Changing to {0} state".format(state))
 
     logging.debug("State strategy processed for state {0} after {1}ms".format(state,
                                                                               int((time.time()-loopstart)*1000)))
