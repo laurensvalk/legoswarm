@@ -267,12 +267,12 @@ while True:
 
     if state == PURGE:
         # Drive to a corner and purge
-        corner_a_direction = vector(wall_info['corners'][0])
-        total_force = spring_to_position.get_force_vector(corner_a_direction) + nett_neighbor_avoidance
-        if corner_a_direction.norm < 20:
+        mid_of_a_d = vector((wall_info['corners'][0] + wall_info['corners'][3]) / 2)
+        total_force = spring_to_position.get_force_vector(mid_of_a_d) + nett_neighbor_avoidance
+        if mid_of_a_d.norm < 20:
             base.stop()
             picker.purge()
-            picker.open(blocking=True)
+            picker.open()
 
             # Clear the buffer so we have up-to-date data at the next loop
             try:

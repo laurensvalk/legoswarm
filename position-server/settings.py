@@ -24,8 +24,8 @@ robot_settings = {
             #          0      30    160     200      
             # 
             #                                     
-                [0,  -60], #a
-                [40,  0 ], #b
+                [0,  -30], #a
+                [30,  0 ], #b
             ],
             'robot_attraction_spring' : [
             #                         c                     15 (pull when far)
@@ -55,7 +55,22 @@ robot_settings = {
             #                                     
             #     [-30, 30],
                 [0,  -30], #a
-                [30, 0 ], #b
+                [25, 0 ], #b
+            ],
+            'short_spring_to_walls' : [
+            #
+            #                  b ----------   0 (no force at at 10 cm or beyond)
+            #                /
+            #              /
+            #            /
+            # ----------a                    -20 (push when too close)
+            #
+            #          0      30
+            #
+            #
+            #     [-30, 30],
+                [0,  -20], #a
+                [12, 0 ], #b
             ],
             'spring_to_balls' : [
             #
