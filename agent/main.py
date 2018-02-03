@@ -207,6 +207,7 @@ while True:
         logging.debug("Checked ball sensor after {0}ms. Distance: {1}".format(int((time.time() - loopstart) * 1000),
                                                                               ballsensor.distance))
         if detected and not picker.is_running:
+            base.stop()
             picker.store()
             time.sleep(0.5)
             picker.open(blocking=True)
