@@ -20,7 +20,7 @@ except:
     MY_ID = 3
 
 # Log settings
-logging.basicConfig(format='%(asctime)s, %(levelname)s, %(message)s',datefmt='%H:%M:%S', level=logging.DEBUG)
+logging.basicConfig(format='%(asctime)s, %(levelname)s, %(message)s',datefmt='%H:%M:%S', level=logging.INFO)
 
 # Start data thread
 s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -199,30 +199,26 @@ while True:
         ballsensor.stop()
         break
 
-    # Neighbor avoidance, but only in these states
-    # if state in (FLOCKING, SEEK_BALL,):
-    #     total_force = total_force + nett_neighbor_avoidance
-    #
-    # # Neighbor attraction, but only in these states
-    # if state in (FLOCKING,):
-    #     total_force = total_force + nett_neighbor_attraction
-    #
-    # # Wall avoidance, but only in these states
-    # if state in (FLOCKING, SEEK_BALL,):
-    #     total_force = total_force + nett_wall_force
-    #
-    # # Eat any ball we might accidentally see
-    # if state in (BOUNCE, FLOCKING, DRIVE,):
-    #     if ballsensor.ball_detected() and not picker.is_running:
-    #         picker.store()
-    #     logging.debug("Checked ball sensor after {0}ms. Distance: {1}".format(int((time.time() - loopstart) * 1000),
-    #                                                                           ballsensor.distance))
-    #
-    # # Return picker to starting position after store, but only in these states
-    # if state in (FLOCKING, SEEK_BALL, DRIVE, BOUNCE,):
-    #     if picker.is_at_store:
-    #         picker.go_to_target(picker.OPEN)
-    #     logging.debug("Checked picker open after {0}ms".format(int((time.time() - loopstart) * 1000)))
+    # Eat any ball we might see
+    if state in (BOUNCE, FLOCKING, DRIVE,):
+        detected = ballsensor.ball_detected()
+        logging.debug("Checked ball sensor after {0}ms. Distance: {1}".format(int((time.time() - loopstart) * 1000),
+                                                                              ballsensor.distance))
+        if detected:
+            picker.store()
+            time.sleep(0.5)
+            picker.open()
+            # Clear the buffer so we have up-to-date data at the next loop
+            try:
+                compressed_data, server = s.recvfrom(1500)
+            except:
+                pass
+
+
+
+    # Flocking regimen
+    if state == FLOCKING:
+        total_force = nett_wall_force + nett_neighbor_avoidance + nett_neighbor_attraction
 
     # Ball seeking regimen
     if state == SEEK_BALL:
