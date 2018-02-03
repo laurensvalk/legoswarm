@@ -1,11 +1,11 @@
 import cv2, time
-from settings import WIDTH, HEIGHT
+from settings import server_settings
 
 # Initialize output window
 cv2.namedWindow("cam",cv2.WINDOW_OPENGL)
 cap = cv2.VideoCapture(0)
-cap.set(3, WIDTH)
-cap.set(4, HEIGHT)
+cap.set(3, server_settings['WIDTH'])
+cap.set(4, server_settings['HEIGHT'])
 
 while True:
     ok, img = cap.read()

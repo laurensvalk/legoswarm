@@ -130,7 +130,7 @@ if __name__ == '__main__':
         img_grey, largest_rect = find_largest_n_side(img, sides=4)
 
         # Optionally review edge-finding image
-        img = cv2.cvtColor(img_grey, cv2.COLOR_GRAY2BGR)
+        # img = cv2.cvtColor(img_grey, cv2.COLOR_GRAY2BGR)
 
         # Now that we have our playing field contour, we need to determine
         # the top-left, top-right, bottom-right, and bottom-left
@@ -214,7 +214,7 @@ if __name__ == '__main__':
         img_grey, triangles = find_nested_triangles(img)
         logging.debug("Got triangles: {0}".format(time.time() - lt))
 
-        img = cv2.cvtColor(img_grey, cv2.COLOR_GRAY2BGR)
+        # img = cv2.cvtColor(img_grey, cv2.COLOR_GRAY2BGR)
 
         for triangle in triangles:
             # Let it's corners be these vectors.
