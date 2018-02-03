@@ -54,7 +54,7 @@ robot_settings = {
             # 
             #                                     
             #     [-30, 30],
-                [0,  -30], #a
+                [0,  -20], #a
                 [25, 0 ], #b
             ],
             'short_spring_to_walls' : [

@@ -200,29 +200,29 @@ while True:
         break
 
     # Neighbor avoidance, but only in these states
-    if state in (FLOCKING, SEEK_BALL,):
-        total_force = total_force + nett_neighbor_avoidance
-
-    # Neighbor attraction, but only in these states
-    if state in (FLOCKING,):
-        total_force = total_force + nett_neighbor_attraction
-
-    # Wall avoidance, but only in these states
-    if state in (FLOCKING, SEEK_BALL,):
-        total_force = total_force + nett_wall_force
-
-    # Eat any ball we might accidentally see
-    if state in (BOUNCE, FLOCKING, DRIVE,):
-        if ballsensor.ball_detected() and not picker.is_running:
-            picker.store()
-        logging.debug("Checked ball sensor after {0}ms. Distance: {1}".format(int((time.time() - loopstart) * 1000),
-                                                                              ballsensor.distance))
-
-    # Return picker to starting position after store, but only in these states
-    if state in (FLOCKING, SEEK_BALL, DRIVE, BOUNCE,):
-        if picker.is_at_store:
-            picker.go_to_target(picker.OPEN)
-        logging.debug("Checked picker open after {0}ms".format(int((time.time() - loopstart) * 1000)))
+    # if state in (FLOCKING, SEEK_BALL,):
+    #     total_force = total_force + nett_neighbor_avoidance
+    #
+    # # Neighbor attraction, but only in these states
+    # if state in (FLOCKING,):
+    #     total_force = total_force + nett_neighbor_attraction
+    #
+    # # Wall avoidance, but only in these states
+    # if state in (FLOCKING, SEEK_BALL,):
+    #     total_force = total_force + nett_wall_force
+    #
+    # # Eat any ball we might accidentally see
+    # if state in (BOUNCE, FLOCKING, DRIVE,):
+    #     if ballsensor.ball_detected() and not picker.is_running:
+    #         picker.store()
+    #     logging.debug("Checked ball sensor after {0}ms. Distance: {1}".format(int((time.time() - loopstart) * 1000),
+    #                                                                           ballsensor.distance))
+    #
+    # # Return picker to starting position after store, but only in these states
+    # if state in (FLOCKING, SEEK_BALL, DRIVE, BOUNCE,):
+    #     if picker.is_at_store:
+    #         picker.go_to_target(picker.OPEN)
+    #     logging.debug("Checked picker open after {0}ms".format(int((time.time() - loopstart) * 1000)))
 
     # Ball seeking regimen
     if state == SEEK_BALL:
@@ -269,10 +269,11 @@ while True:
         # Drive to a corner and purge
         mid_of_a_d = vector((vector(wall_info['corners'][0]) + vector(wall_info['corners'][3])) / 2)
         total_force = spring_to_position.get_force_vector(mid_of_a_d) + nett_neighbor_avoidance
+        picker.store()
         if mid_of_a_d.norm < 20:
             base.stop()
             picker.purge()
-            picker.open()
+            picker.store()
 
             # Clear the buffer so we have up-to-date data at the next loop
             try:
@@ -283,9 +284,10 @@ while True:
             state = TO_CENTER
 
     if state == TO_CENTER:
-        center_direction = vector([0,0])
+        center_direction = vector((vector(wall_info['corners'][0]) + vector(wall_info['corners'][2])) / 2)
         total_force = spring_to_position.get_force_vector(center_direction) + nett_neighbor_avoidance
         if center_direction.norm < 40:
+            picker.open()
             state = SEEK_BALL
 
     if state == DRIVE:
