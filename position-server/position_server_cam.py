@@ -84,7 +84,7 @@ class SocketThread(Thread):
         global data_to_transmit, running
         while running:
             for robot_id_key in data_to_transmit:
-                sent_bytes = self.udp_send_dict_key(data_to_transmit, robot_id_key, 50000+robot_id_key)
+                sent_bytes = self.udp_send_dict_key(data_to_transmit, robot_id_key, server_settings['SERVER_BASE_PORT']+robot_id_key)
                 # print(sent_bytes)
             time.sleep(0.07)
         self.server_socket.close()

@@ -95,7 +95,7 @@ robot_settings = {
 
 # Server settings
 server_settings = {
-    'SERVER_ADDR' : ("255.255.255.255", 50008),
+    'SERVER_BASE_PORT' : 50000,
     'THRESHOLD' : 150,         # Threshold for b/w version of camera image. Was 230 most of the time
     'WIDTH' : 1920,            # Camera image
     'HEIGHT' : 1080,
@@ -128,4 +128,5 @@ server_settings = {
 import platform
 if 'Ubuntu' in platform.platform():
     print('Laurens Mode')
-    server_settings['FILE'] = 'test_images/test_one_ball_at_center.png'
+    server_settings['FILE'] = 'test_images/parallax_the_four_balls_really_line_up_with_robot_axes.jpg'
+    server_settings['SERVER_BASE_PORT'] = 60000
