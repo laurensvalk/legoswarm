@@ -20,7 +20,7 @@ except:
     MY_ID = 3
 
 # Log settings
-logging.basicConfig(format='%(asctime)s, %(levelname)s, %(message)s',datefmt='%H:%M:%S', level=logging.DEBUG)
+logging.basicConfig(format='%(asctime)s, %(levelname)s, %(message)s',datefmt='%H:%M:%S', level=logging.INFO)
 
 # Start data thread
 s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -61,6 +61,7 @@ pause_next_state = SEEK_BALL
 state = DRIVE
 CHECK_VOLT_AFTER_LOOPS = 500
 loopcount = 0
+last_volt_check = time.time()
 no_force = vector([0, 0])
 
 #################################################################
@@ -179,14 +180,15 @@ while True:
     # Do stuff with nett_ball_force, nett_neighbor_force and nett_wall_force, depending on where we want to go.
 
     if loopcount > CHECK_VOLT_AFTER_LOOPS:
-        if battery.voltage < 7.2:
+        loopcount = 0
+        voltage = battery.voltage
+        logging.info("Battery is at {0}V".format(voltage))
+        if voltage < 7.2:
             state = LOW_VOLTAGE
-            logging.debug("Read voltage after {0}ms".format(int((time.time() - loopstart) * 1000)))
-        else:
-            loopcount = 0
 
-    if picker.store_count > robot_settings['max_balls_in_store']:
+    if picker.store_count > robot_settings['max_balls_in_store'] and state is not PURGE:
         state = PURGE
+        logging.info("Changing to {0} state".format(state))
 
     # Drive to field corner c when voltage is low.
     if state == LOW_VOLTAGE:
@@ -199,30 +201,25 @@ while True:
         ballsensor.stop()
         break
 
-    # Neighbor avoidance, but only in these states
-    # if state in (FLOCKING, SEEK_BALL,):
-    #     total_force = total_force + nett_neighbor_avoidance
-    #
-    # # Neighbor attraction, but only in these states
-    # if state in (FLOCKING,):
-    #     total_force = total_force + nett_neighbor_attraction
-    #
-    # # Wall avoidance, but only in these states
-    # if state in (FLOCKING, SEEK_BALL,):
-    #     total_force = total_force + nett_wall_force
-    #
-    # # Eat any ball we might accidentally see
-    # if state in (BOUNCE, FLOCKING, DRIVE,):
-    #     if ballsensor.ball_detected() and not picker.is_running:
-    #         picker.store()
-    #     logging.debug("Checked ball sensor after {0}ms. Distance: {1}".format(int((time.time() - loopstart) * 1000),
-    #                                                                           ballsensor.distance))
-    #
-    # # Return picker to starting position after store, but only in these states
-    # if state in (FLOCKING, SEEK_BALL, DRIVE, BOUNCE,):
-    #     if picker.is_at_store:
-    #         picker.go_to_target(picker.OPEN)
-    #     logging.debug("Checked picker open after {0}ms".format(int((time.time() - loopstart) * 1000)))
+    # Eat any ball we might see
+    if state in (BOUNCE, FLOCKING, DRIVE,):
+        detected = ballsensor.ball_detected()
+        logging.debug("Checked ball sensor after {0}ms. Distance: {1}".format(int((time.time() - loopstart) * 1000),
+                                                                              ballsensor.distance))
+        if detected and not picker.is_running:
+            picker.store()
+            time.sleep(0.5)
+            picker.open(blocking=True)
+            time.sleep(0.5)
+            # Clear the buffer so we have up-to-date data at the next loop
+            try:
+                compressed_data, server = s.recvfrom(1500)
+            except:
+                pass
+
+    # Flocking regimen
+    if state == FLOCKING:
+        total_force = nett_wall_force + nett_neighbor_avoidance + nett_neighbor_attraction
 
     # Ball seeking regimen
     if state == SEEK_BALL:
@@ -232,6 +229,7 @@ while True:
             if nearest_ball_to_my_gripper.norm < robot_settings['ball_close_enough']:
                 total_force = no_force
                 state = STORE
+                logging.info("Changing to {0} state".format(state))
 
     # When the ball is close, drive towards it blindly
     if state == STORE:
@@ -257,22 +255,25 @@ while True:
 
         # Next state
         # state = PAUSE
-        # pause_end_time = time.time() + 5
-        pause_next_state = SEEK_BALL
+        # logging.info("Changing to {0} state".format(state))
+        # pause_end_time = time.time() + 2
+        # pause_next_state = SEEK_BALL
 
     if state == PAUSE:
         total_force = no_force
         if time.time() > pause_end_time:
             state = pause_next_state
+            logging.info("Changing to {0} state".format(state))
 
     if state == PURGE:
         # Drive to a corner and purge
         mid_of_a_d = vector((vector(wall_info['corners'][0]) + vector(wall_info['corners'][3])) / 2)
         total_force = spring_to_position.get_force_vector(mid_of_a_d) + nett_neighbor_avoidance
         picker.store()
-        if mid_of_a_d.norm < 20:
+        if mid_of_a_d.norm < robot_settings['distance_to_purge_location']:
             base.stop()
             picker.purge()
+            time.sleep(1)
             picker.store()
 
             # Clear the buffer so we have up-to-date data at the next loop
@@ -282,25 +283,29 @@ while True:
                 pass
 
             state = TO_CENTER
+            logging.info("Changing to {0} state".format(state))
 
     if state == TO_CENTER:
         center_direction = vector((vector(wall_info['corners'][0]) + vector(wall_info['corners'][2])) / 2)
         total_force = spring_to_position.get_force_vector(center_direction) + nett_neighbor_avoidance
         if center_direction.norm < 40:
             picker.open()
-            state = SEEK_BALL
+            state = DRIVE
+            logging.info("Changing to {0} state".format(state))
 
     if state == DRIVE:
         total_force = nett_neighbor_avoidance + vector([0, robot_settings['bounce_drive_speed']])
         if min(wall_info['distances']) < robot_settings['min_wall_distance']:
             # random_factor = 1+(random.random()/10)
             state = BOUNCE
+            logging.info("Changing to {0} state".format(state))
 
     if state == BOUNCE:
         # total_force = nett_neighbor_avoidance + vector([nett_wall_force[0]*random_factor, nett_wall_force[1]])  # yuck
         total_force = nett_neighbor_avoidance + nett_wall_force
         if min(wall_info['distances']) > 20:
             state = DRIVE
+            logging.info("Changing to {0} state".format(state))
 
     logging.debug("State strategy processed for state {0} after {1}ms".format(state,
                                                                               int((time.time()-loopstart)*1000)))
