@@ -61,6 +61,7 @@ pause_next_state = SEEK_BALL
 state = DRIVE
 CHECK_VOLT_AFTER_LOOPS = 500
 loopcount = 0
+last_volt_check = time.time()
 no_force = vector([0, 0])
 
 #################################################################
@@ -181,7 +182,10 @@ while True:
     if loopcount > CHECK_VOLT_AFTER_LOOPS:
         if battery.voltage < 7.2:
             state = LOW_VOLTAGE
-            logging.debug("Read voltage after {0}ms".format(int((time.time() - loopstart) * 1000)))
+            logging.info("Read voltage after {0}ms".format(int((time.time() - last_volt_check) * 1000)))
+            avg_loop_time = int((time.time() - last_volt_check) * 1000 / CHECK_VOLT_AFTER_LOOPS)
+            logging.info("Average loop time {0}ms".format(avg_loop_time))
+            last_volt_check = time.time()
         else:
             loopcount = 0
 
