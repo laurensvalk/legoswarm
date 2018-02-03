@@ -211,7 +211,7 @@ while True:
         if detected and not picker.is_running:
             picker.store()
             time.sleep(0.5)
-            picker.open(blocking=True)
+            picker.open()
             # Clear the buffer so we have up-to-date data at the next loop
             try:
                 compressed_data, server = s.recvfrom(1500)
