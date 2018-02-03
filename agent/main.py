@@ -254,10 +254,10 @@ while True:
             pass
 
         # Next state
-        state = PAUSE
-        logging.info("Changing to {0} state".format(state))
-        pause_end_time = time.time() + 2
-        pause_next_state = SEEK_BALL
+        # state = PAUSE
+        # logging.info("Changing to {0} state".format(state))
+        # pause_end_time = time.time() + 2
+        # pause_next_state = SEEK_BALL
 
     if state == PAUSE:
         total_force = no_force
@@ -290,7 +290,7 @@ while True:
         total_force = spring_to_position.get_force_vector(center_direction) + nett_neighbor_avoidance
         if center_direction.norm < 40:
             picker.open()
-            state = SEEK_BALL
+            state = DRIVE
             logging.info("Changing to {0} state".format(state))
 
     if state == DRIVE:
