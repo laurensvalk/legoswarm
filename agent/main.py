@@ -186,7 +186,7 @@ while True:
         if voltage < 7.2:
             state = LOW_VOLTAGE
 
-    if picker.store_count > robot_settings['max_balls_in_store']:
+    if picker.store_count > robot_settings['max_balls_in_store'] and state is not PURGE:
         state = PURGE
         logging.info("Changing to {0} state".format(state))
 
