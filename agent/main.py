@@ -208,10 +208,10 @@ while True:
         detected = ballsensor.ball_detected()
         logging.debug("Checked ball sensor after {0}ms. Distance: {1}".format(int((time.time() - loopstart) * 1000),
                                                                               ballsensor.distance))
-        if detected:
+        if detected and not picker.is_running:
             picker.store()
             time.sleep(0.5)
-            picker.open()
+            picker.open(blocking=True)
             # Clear the buffer so we have up-to-date data at the next loop
             try:
                 compressed_data, server = s.recvfrom(1500)
