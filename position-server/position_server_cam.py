@@ -308,7 +308,7 @@ if __name__ == '__main__':
                             thickness=abs(server_settings['PLAYING_FIELD_OFFSET'])*2+16)
 
             # Erase the ball depot
-            cv2.circle(img_grey, (0, img_height/2), server_settings['depot_radius'], (255,255,255), cv2.FILLED)
+            cv2.circle(img_grey, (0, int(img_height/2)), server_settings['depot_radius'], (255,255,255), cv2.FILLED)
 
             # mask = np.zeros((img_height, img_width), dtype=np.uint8)
             # cv2.fillConvexPoly(mask, field_corners.astype(int), 255)
