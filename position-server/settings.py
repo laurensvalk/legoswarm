@@ -108,8 +108,9 @@ server_settings = {
     'p_bot_gripper' : robot_settings['p_bot_gripper'],
     'sight_range' : robot_settings['sight_range'],
     'FILE' : '', #"test_images/error_scenario_too_many_balls.png"#""test_images/1516199702.jpg" #"test_images/test.jpg" # 1920 x 1080 afbeelding. png mag ook.
-    'cm_per_ball_px': 0.13, # 263 cm diagonal = 1990 px, on the gounr
-    'cm_per_marker_px': 0.13*0.96,#(1936-132)/1936, 
+    'cm_per_ball_px': 0.13, # 263 cm diagonal = 1990 px, on the gound
+    'cm_per_marker_px': 0.13*(1936-132*0.8)/1936, # Markers are at approx 13.2 cm from ground
+    'cm_per_bounding_px': 0.13*(1936-60)/1936, # dimensions relevant for bounding box are at approx 6cm above ground
     'ball_info_max_size': 3, # Number of nearest balls each robot should get details of
     'depot_radius': 100,
     'bounding_box_cm': [
@@ -118,6 +119,7 @@ server_settings = {
         [-12, 2.5], # Front end of left wheel
         [-12, -2.5], # Back end of left wheel
         [-8, -14], # Left rear wheel caster
+        [0, -17], # Motor cable
         [8, -14], # right wheel caster
         [12, -2.5], # Back end of right wheel
         [12, 2.5], # Front end of right wheel

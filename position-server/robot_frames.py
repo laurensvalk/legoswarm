@@ -42,6 +42,9 @@ def transform_to_world_from_marker_pixels(server_settings, field_corners):
 def transform_to_world_from_ball_pixels(server_settings, field_corners):
     return transform_to_world_from_pixels(server_settings, field_corners, server_settings['cm_per_ball_px'])
 
+def transform_to_world_from_bounding_pixels(server_settings, field_corners):
+    return transform_to_world_from_pixels(server_settings, field_corners, server_settings['cm_per_bounding_px'])
+
 def transform_to_world_from_bot(server_settings, p_world_midbase_marker, p_world_apex_marker):
     """Convert marker locations into transformation matrices"""
 

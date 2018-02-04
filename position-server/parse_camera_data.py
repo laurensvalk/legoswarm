@@ -1,12 +1,11 @@
 import numpy as np
-from robot_frames import transform_to_world_from_marker_pixels, transform_to_world_from_ball_pixels, transform_to_world_from_bot, transform_to_gripper_from_bot
+from robot_frames import transform_to_world_from_marker_pixels, transform_to_world_from_ball_pixels, transform_to_world_from_bot, transform_to_gripper_from_bot, transform_to_world_from_bounding_pixels
 
 def bounding_box(server_settings, midbase_marker, apex_marker, field_corners):
     """Convert marker midbase and apex pixel location into bounding box, in pixels"""
     
     # Get transformation matrix from pixels to world frame
     H_to_world_from_marker_pixels = transform_to_world_from_marker_pixels(server_settings, field_corners)
-    H_to_world_from_ball_pixels = transform_to_world_from_ball_pixels(server_settings, field_corners)
     
     # Obtain transformation matrix between the robot and the world, for this robot
     H_to_world_from_bot = transform_to_world_from_bot(server_settings, 
@@ -17,10 +16,11 @@ def bounding_box(server_settings, midbase_marker, apex_marker, field_corners):
     bounding_box_in_robot = np.array(server_settings['bounding_box_cm']).T
     # Matrix of bounding box locations, in the world frame
     bounding_box_in_world = H_to_world_from_bot*bounding_box_in_robot
-    # Matrix of bounding box locations, in marker_pixels pixels
-    bounding_box_in_marker_pixels = H_to_world_from_ball_pixels.inverse()*bounding_box_in_world
+    # Matrix of bounding box locations, in pixels concerning bounding box
+    H_to_world_from_bounding_pixels = transform_to_world_from_bounding_pixels(server_settings, field_corners)
+    bounding_box_in_bounding_pixels = H_to_world_from_bounding_pixels.inverse()*bounding_box_in_world
     # Revert the indexing so this can be seen as a list of coordinates
-    return (bounding_box_in_marker_pixels.T).astype(int)
+    return (bounding_box_in_bounding_pixels.T).astype(int)
 
 def get_ball_info(H_to_bot_from_world, ball_locations, server_settings, field_corners):
     sorted_balls_relative_to_gripper = {}
@@ -59,8 +59,13 @@ def get_ball_info(H_to_bot_from_world, ball_locations, server_settings, field_co
             # Rebuild the array in order of distance
             sorted_balls_relative_to_gripper[agent] = [balls_relative_to_gripper[:,index].tolist() for index in sorted_index]
 
+            # Balls DEBUG. Leave this here for now so I can uncomment if needed during debugging
             # if agent == 3:
-            #     tmp_balls = [balls_relative_to_gripper[:,index] for index in sorted_index]
+            #     abs_balls = [balls_world[:,index] for index in sorted_index]
+            #     gripper_balls = [balls_relative_to_gripper[:,index] for index in sorted_index]
+            #     print("----")
+            #     print(abs_balls)
+            #     print(gripper_balls)
             #     pass
 
     # For each agent, return a sorted list of ball locations
