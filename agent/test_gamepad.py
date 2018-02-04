@@ -44,7 +44,7 @@ turn_speed = 0
 fwd_speed = 0
 triangle_pressed_time = 0
 running = True
-picker = Picker()
+picker = Picker('outA')
 
 
 class MotorThread(threading.Thread):
