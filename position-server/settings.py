@@ -130,5 +130,5 @@ server_settings = {
 import platform
 if 'Ubuntu' in platform.platform():
     print('Laurens Mode')
-    server_settings['FILE'] = 'test_images/parallax_the_four_balls_really_line_up_with_robot_axes.jpg'
+    server_settings['FILE'] = 'test_images/perspective/ball_perspective_case_3_nodump_solid_edge.png'
     server_settings['SERVER_BASE_PORT'] = 60000
