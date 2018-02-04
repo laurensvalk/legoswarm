@@ -100,6 +100,7 @@ def get_wall_info(H_to_bot_from_world, server_settings, field_corners):
 
     # Gripper in agent frame
     my_gripper = np.array(server_settings['p_bot_gripper'])
+    my_rear = np.array(server_settings['p_bot_rear'])
     my_origin = np.array([0, 0])    
 
     # Empty dictionary to fill during loop below
@@ -115,15 +116,22 @@ def get_wall_info(H_to_bot_from_world, server_settings, field_corners):
 
         # Location of my gripper in the world frame
         my_gripper_world = transformation.inverse()*my_gripper
+        my_rear_world = transformation.inverse()*my_rear
 
         # X and Y index
         X, Y = 0, 1
 
+        # Check if gripper or rear is closer to the walls
+        closest_to_top = max(my_gripper_world[Y], my_rear_world[Y])
+        closest_to_bottom = min(my_gripper_world[Y], my_rear_world[Y])
+        closest_to_left = min(my_gripper_world[X], my_rear_world[X])
+        closest_to_right = max(my_gripper_world[X], my_rear_world[X])
+
         # Distances
-        distance_to_top = (A_world[Y]+B_world[Y])/2 - my_gripper_world[Y]
-        distance_to_bottom = my_gripper_world[Y] - (C_world[Y]+D_world[Y])/2
-        distance_to_left = my_gripper_world[X] - (A_world[X]+D_world[X])/2
-        distance_to_right = (B_world[X]+C_world[X])/2 - my_gripper_world[X]
+        distance_to_top = (A_world[Y]+B_world[Y])/2 - closest_to_top
+        distance_to_bottom = closest_to_bottom - (C_world[Y]+D_world[Y])/2
+        distance_to_left = closest_to_left - (A_world[X]+D_world[X])/2
+        distance_to_right = (B_world[X]+C_world[X])/2 - closest_to_right
 
         # Distances as tuple
         micron = 0.001

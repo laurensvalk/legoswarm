@@ -3,6 +3,7 @@ robot_settings = {
             'dump_location': (0, 0),
             'p_bot_midbase': (-2, -8),
             'p_bot_gripper': (0, 11),
+            'p_bot_rear': (0, -15),
             'speed_per_unit_force': .75,
             'turnrate_per_unit_force': 2,
             'ball_close_enough': 12,
@@ -106,6 +107,7 @@ server_settings = {
     'MAX_AGENTS' : 8,
     'p_bot_midbase' : robot_settings['p_bot_midbase'],
     'p_bot_gripper' : robot_settings['p_bot_gripper'],
+    'p_bot_rear' : robot_settings['p_bot_rear'],
     'sight_range' : robot_settings['sight_range'],
     'FILE' : '', #"test_images/error_scenario_too_many_balls.png"#""test_images/1516199702.jpg" #"test_images/test.jpg" # 1920 x 1080 afbeelding. png mag ook.
     'cm_per_ball_px': 0.13, # 263 cm diagonal = 1990 px, on the gound
