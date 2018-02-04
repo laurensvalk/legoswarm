@@ -126,7 +126,8 @@ def get_wall_info(H_to_bot_from_world, server_settings, field_corners):
         distance_to_right = (B_world[X]+C_world[X])/2 - my_gripper_world[X]
 
         # Distances as tuple
-        distances = (distance_to_top, distance_to_bottom, distance_to_left, distance_to_right)
+        micron = 0.001
+        distances = (max(distance_to_top, micron), max(distance_to_bottom, micron), max(distance_to_left, micron), max(distance_to_right, micron))
 
         # Lines e and f in agent frames, as unit vectors
         world_x = (B_agent - A_agent)/np.linalg.norm(B_agent-A_agent) 

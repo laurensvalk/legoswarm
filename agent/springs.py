@@ -7,7 +7,7 @@ class Spring():
         self.min_extension = self.extensions[0]
         self.max_extension = self.extensions[-1]
 
-    def get_force_magnitude(self, length):
+    def get_force_scalar(self, length):
         """Convert a given spring length to a force"""
         # Custom implementation of interpolation
 
@@ -45,8 +45,8 @@ class Spring():
         length = spring_vector.norm+micron
         direction = spring_vector/length
         
-        # Force magnitude
-        force_magitude = self.get_force_magnitude(length)     
+        # Force scalar
+        force_scalar = self.get_force_scalar(length)     
 
         # Return force vector
-        return direction*force_magitude
+        return direction*force_scalar
