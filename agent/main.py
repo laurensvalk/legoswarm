@@ -103,6 +103,8 @@ while True:
         spring_to_walls = Spring(robot_settings['spring_to_walls'])
         spring_to_balls = Spring(robot_settings['spring_to_balls'])
         spring_to_position = Spring(robot_settings['spring_to_position'])
+        if 'state' in robot_settings:
+            state = robot_settings['state']
 
     except Exception as e:
         # Stop the loop if we're unable to get server data

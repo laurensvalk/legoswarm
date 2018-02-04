@@ -122,6 +122,7 @@ if __name__ == '__main__':
     while True:
         if not server_settings['FILE']:
             ok, img = cap.read()
+            img_cam = np.array(img)  # Duplicate for saving a situation to disk.
             if not ok:
                 continue    #and try again.
         else:
@@ -337,13 +338,20 @@ if __name__ == '__main__':
 
         if keypress == ord('q'):
             break
+        elif keypress == ord('f'):
+            robot_settings['state'] = 'flocking'
+        elif keypress == ord('b'):
+            robot_settings['state'] = 'drive'
+        elif keypress == ord(' '):
+            # Save an image to disk:
+            cv2.imwrite("test_images/{0}.jpg".format(int(time.time())), img_cam)
+        else:
+            robot_settings['state'] = ''
         if n == 0:
             logging.info("Looptime: {0}. Reloading settings.".format((time.time()-t)/100))
             reload(settings)
             from settings import server_settings, robot_settings
-            # Uncomment to save an image to disk:
-            # cv2.imwrite("test_images/{0}.jpg".format(int(time.time())), img_cam)
-            n = 100
+            n = 200
             t = time.time()
         else:
             n -= 1
