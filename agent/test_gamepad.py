@@ -4,9 +4,9 @@
 __author__ = 'anton'
 
 import evdev
-import hardware.old_anton_version as hardware
 from hardware.motors import DriveBase, Picker
 from hardware.sensors import BallSensor
+from hardware.gamepad import GamePadStub
 import threading
 import time
 
@@ -37,14 +37,14 @@ for device in devices:
 try:
     gamepad = evdev.InputDevice(ps3dev)
 except:
-    gamepad = hardware.GamePadStub()
+    gamepad = GamePadStub()
 
 turn_rate = 0
 turn_speed = 0
 fwd_speed = 0
 triangle_pressed_time = 0
 running = True
-picker = hardware.Picker()
+picker = Picker()
 
 
 class MotorThread(threading.Thread):
