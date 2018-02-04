@@ -305,7 +305,11 @@ if __name__ == '__main__':
                             np.array([rect_from_image_size(img_width, img_height)], dtype=int),
                             True,
                             255,
-                            thickness=abs(server_settings['PLAYING_FIELD_OFFSET'])*2+8)
+                            thickness=abs(server_settings['PLAYING_FIELD_OFFSET'])*2+16)
+
+            # Erase the ball depot
+            cv2.circle(img_grey, (0, img_height/2), server_settings['depot_radius'], (255,255,255), cv2.FILLED)
+
             # mask = np.zeros((img_height, img_width), dtype=np.uint8)
             # cv2.fillConvexPoly(mask, field_corners.astype(int), 255)
             # cv2.bitwise_not(mask, dst=mask)

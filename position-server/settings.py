@@ -111,6 +111,7 @@ server_settings = {
     'cm_per_ball_px': 0.13, # 263 cm diagonal = 1990 px, on the gounr
     'cm_per_marker_px': 0.13*0.96,#(1936-132)/1936, 
     'ball_info_max_size': 3, # Number of nearest balls each robot should get details of
+    'depot_radius': 100,
     'bounding_box_cm': [
         # List of points in centimeters, encircling the robot
         # Starting at left wheel, then go counterclockwise
