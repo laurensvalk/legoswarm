@@ -211,7 +211,7 @@ while True:
         break
 
     # Eat any ball we might see
-    if state in (BOUNCE, FLOCKING, DRIVE,):
+    if state in (BOUNCE, DRIVE,):
         detected = ballsensor.ball_detected()
         logging.debug("Checked ball sensor after {0}ms. Distance: {1}".format(int((time.time() - loopstart) * 1000),
                                                                               ballsensor.distance))
