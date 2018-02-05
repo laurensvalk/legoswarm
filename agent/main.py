@@ -112,11 +112,12 @@ while True:
     except Exception as e:
         # Stop the loop if we're unable to get server data
         logging.warning("{0}: Reading data from port {1} failed. Waiting...".format(repr(e), port))
-        base.stop()
+
         if 'backspace' in buttons.buttons_pressed:
             ballsensor.stop()
             break
         if failcount > MAX_FAILS_BEFORE_WAIT:
+            base.stop()
             time.sleep(0.5)
         failcount += 1
         continue
