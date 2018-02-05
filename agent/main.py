@@ -60,7 +60,9 @@ pause_next_state = SEEK_BALL
 
 state = DRIVE
 CHECK_VOLT_AFTER_LOOPS = 500
+MAX_FAILS_BEFORE_WAIT = 8
 loopcount = 0
+failcount = 0
 last_volt_check = time.time()
 no_force = vector([0, 0])
 
@@ -113,9 +115,12 @@ while True:
         if 'backspace' in buttons.buttons_pressed:
             ballsensor.stop()
             break
-        time.sleep(0.2)
+        if failcount > MAX_FAILS_BEFORE_WAIT:
+            time.sleep(0.5)
+        failcount += 1
         continue
 
+    failcount = 0
     logging.debug("Got data after {0}ms".format(int( (time.time()-loopstart)*1000 )))
 
     #################################################################
