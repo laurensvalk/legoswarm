@@ -117,7 +117,7 @@ def find_nested_triangles(img, threshold=150, threshold_type="simple"):
 
     if threshold_type == "simple":
         # convert to grayscale and adjust gamma curve
-        img_grey = adjust_curve(img_grey, factor=1.8)
+        # img_grey = adjust_curve(img_grey, factor=1.8)
         # Simple adaptive mean thresholding
         values, img_grey = cv2.threshold(img_grey, threshold, 255, cv2.THRESH_BINARY)
 
@@ -129,7 +129,8 @@ def find_nested_triangles(img, threshold=150, threshold_type="simple"):
 
     elif threshold_type == "canny":
         img_grey = cv2.Canny(img_grey, 50, 150)
-        img_grey = cv2.dilate(img_grey, np.ones((3, 3)))
+        img_grey = cv2.dilate(img_grey, np.ones((2, 2)))
+        # img_grey = cv2.dilate(img_grey, np.array([[0,1,0],[1,1,1],[0,1,0]], dtype=np.uint8))
 
     # Find contours and tree
     img_grey, contours, hierarchy = cv2.findContours(img_grey, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
@@ -152,7 +153,7 @@ def find_nested_triangles(img, threshold=150, threshold_type="simple"):
         if c == 2:
             # To do: also check if it runs *exactly* 2 children deep. and not more.
             # This marker has at least two children. Now let's check if it's a triangle.
-            approx = cv2.approxPolyDP(contours[x], cv2.arcLength(contours[x], True) * 0.05, True)
+            approx = cv2.approxPolyDP(contours[x], cv2.arcLength(contours[x], True) * 0.04, True)
             if len(approx) == 3:
                 triangles += [approx]
 

@@ -214,10 +214,12 @@ if __name__ == '__main__':
             logging.debug("Image warped: {0}".format(time.time() - lt))
 
         robot_markers = {}
-        img_grey, triangles = find_nested_triangles(img)
+        img_triangles, triangles = find_nested_triangles(img, threshold=100)
         logging.debug("Got triangles: {0}".format(time.time() - lt))
 
-        # img = cv2.cvtColor(img_grey, cv2.COLOR_GRAY2BGR)
+        img_grey = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        values, img_grey = cv2.threshold(img_grey, 100, 255, cv2.THRESH_BINARY)
+        img = cv2.cvtColor(img_triangles, cv2.COLOR_GRAY2BGR)
 
         for triangle in triangles:
             # Let it's corners be these vectors.
@@ -259,8 +261,8 @@ if __name__ == '__main__':
             locations = (midbase_marker + np.dot(relative_code_positions * shortest, R)).astype(int)
 
             # Draw binary robot id marker positions
-            # for l in locations:
-            #     cv2.circle(img, tuple(l), 4, (0, 255, 0), -1)
+            for l in locations:
+                cv2.circle(img, tuple(l), 4, (0, 255, 0), -1)
 
             # Now check all code pixels and do a binary addition
             robot_id = 0
