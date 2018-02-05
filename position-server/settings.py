@@ -109,7 +109,7 @@ server_settings = {
     'p_bot_gripper' : robot_settings['p_bot_gripper'],
     'p_bot_rear' : robot_settings['p_bot_rear'],
     'sight_range' : robot_settings['sight_range'],
-    'FILE' : '', #"test_images/error_scenario_too_many_balls.png"#""test_images/1516199702.jpg" #"test_images/test.jpg" # 1920 x 1080 afbeelding. png mag ook.
+    'FILE' : '',#'"test_images/error_scenario_too_many_balls.png",#""test_images/1516199702.jpg" #"test_images/test.jpg" # 1920 x 1080 afbeelding. png mag ook.
     'cm_per_ball_px': 0.13, # 263 cm diagonal = 1990 px, on the gound
     'cm_per_marker_px': 0.13*(1936-132*0.8)/1936, # Markers are at approx 13.2 cm from ground
     'cm_per_bounding_px': 0.13*(1936-60)/1936, # dimensions relevant for bounding box are at approx 6cm above ground

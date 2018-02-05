@@ -1,5 +1,4 @@
-import numpy as np
-
+import math
 
 def atan2_vec(vector):
     """
@@ -8,12 +7,11 @@ def atan2_vec(vector):
     :param vector:
     :return:
     """
-    return -np.arctan2(vector[1], vector[0])
+    return -math.atan2(vector[1], vector[0])
 
 
 def vec_length(vector):
-    return np.dot(vector, vector)**0.5
-
+    return (vector[0]**2+vector[1]**2)**0.5
 
 def unit_vector(vector):
     return vector / vec_length(vector) + 0.000001

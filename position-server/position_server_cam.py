@@ -84,13 +84,15 @@ class SocketThread(Thread):
         global data_to_transmit, running
         while running:
             for robot_id_key in data_to_transmit:
-                sent_bytes = self.udp_send_dict_key(data_to_transmit, robot_id_key, server_settings['SERVER_BASE_PORT']+robot_id_key)
-                # print(sent_bytes)
-            time.sleep(0.07)
+                port = server_settings['SERVER_BASE_PORT']+robot_id_key
+                sent_bytes = self.udp_send_dict_key(data_to_transmit, robot_id_key, port)
+                logging.debug("Sent {0} to port {1}".format(sent_bytes, port))
+            time.sleep(0.025)
         self.server_socket.close()
         logging.info("Socket server stopped")
 
     def udp_send_dict_key(self, dictionary, key, port):
+
         if key in dictionary:
             data = gzip.compress(pickle.dumps(dictionary[key]))
             try:

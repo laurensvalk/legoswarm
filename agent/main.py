@@ -27,7 +27,7 @@ s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 port = 50000+MY_ID
 s.bind(('', 50000+MY_ID))
 s.setsockopt(socket.SOL_SOCKET, socket.SO_RCVBUF, 1500)
-s.settimeout(0.2)
+s.settimeout(0.1)
 logging.debug("Listening on port {0}".format(port))
 
 # Configure the devices
@@ -106,7 +106,8 @@ while True:
         spring_to_balls = Spring(robot_settings['spring_to_balls'])
         spring_to_position = Spring(robot_settings['spring_to_position'])
         if 'state' in robot_settings:
-            state = robot_settings['state']
+            if robot_settings['state']:
+                state = robot_settings['state']
 
     except Exception as e:
         # Stop the loop if we're unable to get server data
