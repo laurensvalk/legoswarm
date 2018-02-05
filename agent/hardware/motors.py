@@ -82,9 +82,10 @@ class DriveBase:
     POLARITY_INVERSED = Motor.POLARITY_INVERSED
     POLARITY_NORMAL = Motor.POLARITY_INVERSED
 
-    def __init__(self, left, right, wheel_diameter, wheel_span, counter_clockwise_is_positive=True):   
+    def __init__(self, left, right, wheel_diameter, wheel_span, counter_clockwise_is_positive=True, max_speed=5):
         """Set up two Large motors and predefine conversion constants"""   
-        
+        self.max_speed = max_speed
+
         # Store which is the positive direction
         self.counter_clockwise_is_positive = counter_clockwise_is_positive
 
@@ -116,7 +117,7 @@ class DriveBase:
     def drive_and_turn(self, speed_cm_sec, turnrate_deg_sec):
         """Set speed of two motors to attain desired forward speed and turnrate"""
         # Wheel speed for given forward rate
-        nett_speed = speed_cm_sec / self.wheel_cm_sec_per_deg_s
+        nett_speed = min(self.max_speed, speed_cm_sec) / self.wheel_cm_sec_per_deg_s
 
         # Wheel speed for given turnrate
         difference = turnrate_deg_sec * self.wheel_cm_sec_per_base_deg_sec / self.wheel_cm_sec_per_deg_s
