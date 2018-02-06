@@ -95,6 +95,8 @@ while True:
         # Unpack some useful data from the information we received
         neighbors = neighbor_info.keys()
         my_gripper = vector(robot_settings['p_bot_gripper'])
+        my_center = vector([0,0])
+        my_tail = -my_gripper
 
         # Check how many balls are near me
         number_of_balls = len(ball_info)
@@ -137,10 +139,24 @@ while True:
         neighbor_center = vector(neighbor_info[neighbor]['center_location'])
         neighbor_gripper = vector(neighbor_info[neighbor]['gripper_location'])
         neighbor_tail = neighbor_center + (neighbor_center - neighbor_gripper)
-        # Now add avoidance springs to each of the three points on the other robot:
-        for spring_attachment in (neighbor_gripper, neighbor_center, neighbor_tail):
-            spring = spring_attachment - my_gripper
-            nett_neighbor_avoidance = nett_neighbor_avoidance + robot_avoidance_spring.get_force_vector(spring)
+
+
+        # Now we compare my gripper, center, and tail to every point on the neighbor
+        # The closest one will pose the most immediate threat for collision.
+
+        # Initialize closest point at infinity
+        shortest_spring_length = 100000
+
+        # Loop over all 9 point combinations to find the most threatening one
+        for neighbor_point in (neighbor_gripper, neighbor_center, neighbor_tail):
+            for my_point in (my_gripper, my_center, my_tail):
+                difference = (neighbor_point-my_point).norm
+                if difference < shortest_spring_length:
+                    shortest_spring_length = difference
+
+        # As the spring direction, we always take the spring to the neighbor center, but use the length from above
+        avoidance_direction = (neighbor_center-my_gripper).unit
+        nett_neighbor_avoidance = robot_avoidance_spring.get_force_vector(avoidance_direction*shortest_spring_length)
 
         # ... and add attraction springs only to their centers
         nett_neighbor_attraction = nett_neighbor_attraction + robot_attraction_spring.get_force_vector(neighbor_center - my_gripper)
