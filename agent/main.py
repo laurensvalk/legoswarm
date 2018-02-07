@@ -159,8 +159,8 @@ while True:
         nett_neighbor_avoidance = nett_neighbor_avoidance + \
                                   robot_avoidance_spring.get_force_vector(neighbor_gripper - my_gripper) + \
                                   robot_avoidance_spring.get_force_vector(neighbor_tail - my_gripper) + \
-                                  robot_avoidance_spring.get_force_vector_from_tail(neighbor_gripper - my_gripper) + \
-                                  robot_avoidance_spring.get_force_vector_from_tail(neighbor_tail - my_gripper)
+                                  robot_avoidance_spring.get_force_vector_from_tail(neighbor_gripper + my_gripper) + \
+                                  robot_avoidance_spring.get_force_vector_from_tail(neighbor_tail + my_gripper)
 
         # ... and add attraction springs only to their centers
         if neighbor == 1:
