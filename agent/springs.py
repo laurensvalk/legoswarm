@@ -1,3 +1,5 @@
+from lightvectors.lightvectors import vector
+
 class Spring():
     def __init__(self, characteristic):
         """Extract data from spring characteristic from settings"""
@@ -50,3 +52,8 @@ class Spring():
 
         # Return force vector
         return direction*force_scalar
+
+    def get_force_vector_from_tail(self, spring_vector):
+        nose_vector = self.get_force_vector(spring_vector)
+        return vector([- nose_vector[0], nose_vector[1]])
+
