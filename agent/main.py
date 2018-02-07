@@ -144,23 +144,24 @@ while True:
         # The closest one will pose the most immediate threat for collision.
 
         # Initialize closest point at infinity
-        # shortest_spring_length = 100000
+        shortest_spring_length = 100000
 
         # Loop over all 9 point combinations to find the most threatening one
-        # for neighbor_point in (neighbor_gripper, neighbor_center, neighbor_tail):
-        #     for my_point in (my_gripper, my_center, my_tail):
-        #         difference = (neighbor_point-my_point).norm
-        #         if difference < shortest_spring_length:
-        #             shortest_spring_length = difference
+        for neighbor_point in (neighbor_gripper, neighbor_center, neighbor_tail):
+            for my_point in (my_gripper, my_center, my_tail):
+                difference = (neighbor_point-my_point).norm
+                if difference < shortest_spring_length:
+                    shortest_spring_length = difference
 
         # As the spring direction, we always take the spring to the neighbor center, but use the length from above
-        # avoidance_direction = (neighbor_center-my_gripper).unit
-        # nett_neighbor_avoidance = robot_avoidance_spring.get_force_vector(avoidance_direction*shortest_spring_length)
-        nett_neighbor_avoidance = nett_neighbor_avoidance + \
-                                  robot_avoidance_spring.get_force_vector(neighbor_gripper - my_gripper) + \
-                                  robot_avoidance_spring.get_force_vector(neighbor_tail - my_gripper) + \
-                                  robot_avoidance_spring.get_force_vector_from_tail(neighbor_gripper + my_gripper) + \
-                                  robot_avoidance_spring.get_force_vector_from_tail(neighbor_tail + my_gripper)
+        avoidance_direction = (neighbor_center-my_gripper).unit
+        nett_neighbor_avoidance += robot_avoidance_spring.get_force_vector(avoidance_direction*shortest_spring_length)
+
+        # nett_neighbor_avoidance = nett_neighbor_avoidance + \
+        #                           robot_avoidance_spring.get_force_vector(neighbor_gripper - my_gripper) + \
+        #                           robot_avoidance_spring.get_force_vector(neighbor_tail - my_gripper) + \
+        #                           robot_avoidance_spring.get_force_vector_from_tail(neighbor_gripper + my_gripper) + \
+        #                           robot_avoidance_spring.get_force_vector_from_tail(neighbor_tail + my_gripper)
 
         # ... and add attraction springs only to their centers
         if neighbor == 1:
