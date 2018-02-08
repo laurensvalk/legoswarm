@@ -57,6 +57,7 @@ TO_CENTER = 'to_center'
 
 pause_end_time = time.time()
 pause_next_state = SEEK_BALL
+purge_next_state = SEEK_BALL
 
 state = DRIVE
 CHECK_VOLT_AFTER_LOOPS = 500
@@ -210,10 +211,11 @@ while True:
             state = LOW_VOLTAGE
 
     # Go to depot if our belly is full.
-    if state in (SEEK_BALL, DRIVE, BOUNCE, ):
+    if state in (DRIVE, BOUNCE, ):
         if picker.store_count > robot_settings['max_balls_in_store']:
             state = PURGE
             logging.info("Changing to {0} state".format(state))
+            purge_next_state = TO_CENTER
 
     # Drive to field corner c when voltage is low.
     if state == LOW_VOLTAGE:
@@ -256,6 +258,10 @@ while True:
                 total_force = no_force
                 state = STORE
                 logging.info("Changing to {0} state".format(state))
+        if picker.store_count > robot_settings['max_balls_in_store']:
+            state = PURGE
+            logging.info("Changing to {0} state".format(state))
+            purge_next_state = SEEK_BALL
 
     # When the ball is close, drive towards it blindly
     if state == STORE:
@@ -315,7 +321,7 @@ while True:
             except:
                 pass
 
-            state = TO_CENTER
+            state = purge_next_state
             logging.info("Changing to {0} state".format(state))
 
     if state == TO_CENTER:
