@@ -11,7 +11,7 @@ robot_settings = {
             'max_balls_in_store': 5,
             'bounce_drive_speed': 4,
             'min_wall_distance': 7,
-            'distance_to_purge_location': 10,
+            'distance_to_purge_location': 15,
             'robot_avoidance_spring': [
             #                         c                     15 (pull when far)
             #                        / \
@@ -85,12 +85,12 @@ robot_settings = {
             #        5   10      
             # 
             #                                     
-                [0 ,  20], #a
-                [200,  20 ], #b
+                [0 ,  5], #a
+                [10,  20 ], #b
             ],
             'spring_to_position' : [
                 [0, 0],
-                [5, 10]
+                [10, 20]
             ]
 
 }

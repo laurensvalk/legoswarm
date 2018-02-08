@@ -137,32 +137,35 @@ while True:
     nett_neighbor_avoidance = no_force
     nett_neighbor_attraction = no_force
     for neighbor in neighbors:
+
+        neighbor_center = vector(neighbor_info[neighbor]['center_location'])
+        neighbor_gripper = vector(neighbor_info[neighbor]['gripper_location'])
+        neighbor_tail = neighbor_center + (neighbor_center - neighbor_gripper)
+
+        # Now we compare my gripper, center, and tail to every point on the neighbor
+        # The closest one will pose the most immediate threat for collision.
+
+        # Initialize closest point at infinity
+        shortest_spring_length = 100000
+
+        # Loop over all 9 point combinations to find the most threatening one
+        for neighbor_point in (neighbor_gripper, neighbor_center, neighbor_tail):
+            for my_point in (my_gripper, my_center, my_tail):
+                difference = (neighbor_point-my_point).norm
+                if difference < shortest_spring_length:
+                    shortest_spring_length = difference
+
+        # As the spring direction, we always take the spring to the neighbor center, but use the length from above
+        avoidance_direction = (neighbor_center-my_gripper).unit
+
         # Institute a pecking order:
         if neighbor < MY_ID:
-            neighbor_center = vector(neighbor_info[neighbor]['center_location'])
-            neighbor_gripper = vector(neighbor_info[neighbor]['gripper_location'])
-            neighbor_tail = neighbor_center + (neighbor_center - neighbor_gripper)
-
-            # Now we compare my gripper, center, and tail to every point on the neighbor
-            # The closest one will pose the most immediate threat for collision.
-
-            # Initialize closest point at infinity
-            shortest_spring_length = 100000
-
-            # Loop over all 9 point combinations to find the most threatening one
-            for neighbor_point in (neighbor_gripper, neighbor_center, neighbor_tail):
-                for my_point in (my_gripper, my_center, my_tail):
-                    difference = (neighbor_point-my_point).norm
-                    if difference < shortest_spring_length:
-                        shortest_spring_length = difference
-
-            # As the spring direction, we always take the spring to the neighbor center, but use the length from above
-            avoidance_direction = (neighbor_center-my_gripper).unit
-            nett_neighbor_avoidance += robot_avoidance_spring.get_force_vector(avoidance_direction*shortest_spring_length)
+            shortest_spring_length /= 2
+        nett_neighbor_avoidance += robot_avoidance_spring.get_force_vector(avoidance_direction*shortest_spring_length)
 
             # ... and add attraction springs only to their centers
         # if neighbor == 1:
-            nett_neighbor_attraction = nett_neighbor_attraction + robot_attraction_spring.get_force_vector(neighbor_center - my_gripper)
+        nett_neighbor_attraction = nett_neighbor_attraction + robot_attraction_spring.get_force_vector(neighbor_center - my_gripper)
 
     # 2. Walls
 
@@ -251,6 +254,7 @@ while True:
 
     # Ball seeking regimen
     if state == SEEK_BALL:
+        picker.open(blocking=False)
         total_force = nett_neighbor_avoidance + nett_wall_force + nett_ball_force
         if ball_visible:
             logging.debug("nearest ball at is {0}cm, {1}".format(nearest_ball_to_my_gripper.norm, nearest_ball_to_my_gripper))
@@ -276,7 +280,7 @@ while True:
 
         # Drive to the ball's last position
         base.turn_degrees(angle_to_ball)
-        base.drive_cm(distance_to_ball)
+        base.drive_cm(distance_to_ball/10)
 
         # The ball should be right in the gripper now.
         picker.store()
@@ -303,11 +307,7 @@ while True:
     if state == PURGE:
         # Drive to a corner and purge
         mid_of_a_d = vector((vector(wall_info['corners'][0]) + vector(wall_info['corners'][1])) / 2)
-        total_force = spring_to_position.get_force_vector(mid_of_a_d) + \
-                      nett_neighbor_avoidance + \
-                      force_to_bottom + \
-                      force_to_left + \
-                      force_to_right
+        total_force = spring_to_position.get_force_vector(mid_of_a_d) + nett_wall_force
         picker.store()
         if mid_of_a_d.norm < robot_settings['distance_to_purge_location']:
             base.stop()
