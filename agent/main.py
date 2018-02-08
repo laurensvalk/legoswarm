@@ -294,7 +294,7 @@ while True:
 
     if state == PURGE:
         # Drive to a corner and purge
-        mid_of_a_d = vector((vector(wall_info['corners'][0]) + vector(wall_info['corners'][3])) / 2)
+        mid_of_a_d = vector((vector(wall_info['corners'][0]) + vector(wall_info['corners'][1])) / 2)
         total_force = spring_to_position.get_force_vector(mid_of_a_d) + nett_neighbor_avoidance
         picker.store()
         if mid_of_a_d.norm < robot_settings['distance_to_purge_location']:
