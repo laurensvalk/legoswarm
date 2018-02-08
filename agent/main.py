@@ -136,29 +136,31 @@ while True:
     nett_neighbor_avoidance = no_force
     nett_neighbor_attraction = no_force
     for neighbor in neighbors:
-        neighbor_center = vector(neighbor_info[neighbor]['center_location'])
-        neighbor_gripper = vector(neighbor_info[neighbor]['gripper_location'])
-        neighbor_tail = neighbor_center + (neighbor_center - neighbor_gripper)
+        # Institute a pecking order:
+        if neighbor < MY_ID:
+            neighbor_center = vector(neighbor_info[neighbor]['center_location'])
+            neighbor_gripper = vector(neighbor_info[neighbor]['gripper_location'])
+            neighbor_tail = neighbor_center + (neighbor_center - neighbor_gripper)
 
-        # Now we compare my gripper, center, and tail to every point on the neighbor
-        # The closest one will pose the most immediate threat for collision.
+            # Now we compare my gripper, center, and tail to every point on the neighbor
+            # The closest one will pose the most immediate threat for collision.
 
-        # Initialize closest point at infinity
-        shortest_spring_length = 100000
+            # Initialize closest point at infinity
+            shortest_spring_length = 100000
 
-        # Loop over all 9 point combinations to find the most threatening one
-        for neighbor_point in (neighbor_gripper, neighbor_center, neighbor_tail):
-            for my_point in (my_gripper, my_center, my_tail):
-                difference = (neighbor_point-my_point).norm
-                if difference < shortest_spring_length:
-                    shortest_spring_length = difference
+            # Loop over all 9 point combinations to find the most threatening one
+            for neighbor_point in (neighbor_gripper, neighbor_center, neighbor_tail):
+                for my_point in (my_gripper, my_center, my_tail):
+                    difference = (neighbor_point-my_point).norm
+                    if difference < shortest_spring_length:
+                        shortest_spring_length = difference
 
-        # As the spring direction, we always take the spring to the neighbor center, but use the length from above
-        avoidance_direction = (neighbor_center-my_gripper).unit
-        nett_neighbor_avoidance += robot_avoidance_spring.get_force_vector(avoidance_direction*shortest_spring_length)
+            # As the spring direction, we always take the spring to the neighbor center, but use the length from above
+            avoidance_direction = (neighbor_center-my_gripper).unit
+            nett_neighbor_avoidance += robot_avoidance_spring.get_force_vector(avoidance_direction*shortest_spring_length)
 
-        # ... and add attraction springs only to their centers
-        if neighbor == 1:
+            # ... and add attraction springs only to their centers
+        # if neighbor == 1:
             nett_neighbor_attraction = nett_neighbor_attraction + robot_attraction_spring.get_force_vector(neighbor_center - my_gripper)
 
     # 2. Walls
