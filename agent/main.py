@@ -157,19 +157,9 @@ while True:
         avoidance_direction = (neighbor_center-my_gripper).unit
         nett_neighbor_avoidance += robot_avoidance_spring.get_force_vector(avoidance_direction*shortest_spring_length)
 
-        # nett_neighbor_avoidance = nett_neighbor_avoidance + \
-        #                           robot_avoidance_spring.get_force_vector(neighbor_gripper - my_gripper) + \
-        #                           robot_avoidance_spring.get_force_vector(neighbor_tail - my_gripper) + \
-        #                           robot_avoidance_spring.get_force_vector_from_tail(neighbor_gripper + my_gripper) + \
-        #                           robot_avoidance_spring.get_force_vector_from_tail(neighbor_tail + my_gripper)
-
         # ... and add attraction springs only to their centers
         if neighbor == 1:
             nett_neighbor_attraction = nett_neighbor_attraction + robot_attraction_spring.get_force_vector(neighbor_center - my_gripper)
-
-        # spring_extension = neighbor_center - my_gripper
-        # nett_neighbor_avoidance = nett_neighbor_avoidance + robot_avoidance_spring.get_force_vector(spring_extension)
-        # nett_neighbor_attraction = nett_neighbor_attraction + robot_attraction_spring.get_force_vector(spring_extension)
 
     # 2. Walls
 
@@ -217,9 +207,11 @@ while True:
         if voltage < 7.2:
             state = LOW_VOLTAGE
 
-    if picker.store_count > robot_settings['max_balls_in_store'] and state is not PURGE:
-        state = PURGE
-        logging.info("Changing to {0} state".format(state))
+    # Go to depot if our belly is full.
+    if state in (SEEK_BALL, DRIVE, BOUNCE, ):
+        if picker.store_count > robot_settings['max_balls_in_store']:
+            state = PURGE
+            logging.info("Changing to {0} state".format(state))
 
     # Drive to field corner c when voltage is low.
     if state == LOW_VOLTAGE:
@@ -255,7 +247,7 @@ while True:
 
     # Ball seeking regimen
     if state == SEEK_BALL:
-        total_force = total_force + nett_ball_force
+        total_force = nett_neighbor_avoidance + nett_wall_force + nett_ball_force
         if ball_visible:
             logging.debug("nearest ball at is {0}cm, {1}".format(nearest_ball_to_my_gripper.norm, nearest_ball_to_my_gripper))
             if nearest_ball_to_my_gripper.norm < robot_settings['ball_close_enough']:
@@ -268,12 +260,15 @@ while True:
         vector_to_ball = nearest_ball_to_my_gripper + my_gripper
         angle_to_ball = vector_to_ball.angle_with_y_axis * 180/3.1415
         distance_to_ball = vector_to_ball.norm - my_gripper.norm
-        base.turn_degrees(angle_to_ball)
-        base.drive_cm(distance_to_ball)
         logging.debug(
             "Storing with turn: {0}, distance: {1}, stored:{2}".format(angle_to_ball,
-                                                           robot_settings['ball_close_enough'],
+                                                                       robot_settings['ball_close_enough'],
                                                                        picker.store_count))
+        time.sleep(2)
+
+        # Drive to the ball's last position
+        base.turn_degrees(angle_to_ball)
+        base.drive_cm(distance_to_ball)
 
         # The ball should be right in the gripper now.
         picker.store()
@@ -286,10 +281,10 @@ while True:
             pass
 
         # Next state
-        # state = PAUSE
-        # logging.info("Changing to {0} state".format(state))
-        # pause_end_time = time.time() + 2
-        # pause_next_state = SEEK_BALL
+        state = PAUSE
+        logging.info("Changing to {0} state".format(state))
+        pause_end_time = time.time() + 2
+        pause_next_state = SEEK_BALL
 
     if state == PAUSE:
         total_force = no_force

@@ -346,6 +346,8 @@ if __name__ == '__main__':
             robot_settings['state'] = 'flocking'
         elif keypress == ord('b'):
             robot_settings['state'] = 'drive'
+        elif keypress == ord('s'):
+            robot_settings['state'] = 'seek ball'
         elif keypress == ord(' '):
             # Save an image to disk:
             cv2.imwrite("test_images/{0}.jpg".format(int(time.time())), img_cam)
