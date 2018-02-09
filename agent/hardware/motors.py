@@ -134,7 +134,7 @@ class DriveBase:
         self.leftmotor.run_forever_at_speed(leftspeed)
         self.rightmotor.run_forever_at_speed(rightspeed)
 
-    def turn_degrees(self, degrees, turnrate=200 blocking=True):
+    def turn_degrees(self, degrees, turnrate=200, blocking=True):
         self.stop()
         wheel_degrees = int(degrees * self.wheel_span / self.wheel_diameter)
         if self.counter_clockwise_is_positive:
