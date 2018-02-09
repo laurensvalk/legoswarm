@@ -6,12 +6,12 @@ robot_settings = {
             'p_bot_rear': (0, -15),
             'speed_per_unit_force': .75,
             'turnrate_per_unit_force': 2,
-            'ball_close_enough': 12,
+            'ball_close_enough': 18,
             'ball_grab_time': 3,  # s
             'max_balls_in_store': 5,
             'bounce_drive_speed': 4,
             'min_wall_distance': 7,
-            'distance_to_purge_location': 15,
+            'distance_to_purge_location': 11,
             'robot_avoidance_spring': [
             #                         c                     15 (pull when far)
             #                        / \
@@ -85,8 +85,8 @@ robot_settings = {
             #        5   10      
             # 
             #                                     
-                [0 ,  5], #a
-                [10,  20 ], #b
+                [0 ,  7], #a
+                [10,  30 ], #b
             ],
             'spring_to_position' : [
                 [0, 0],
@@ -118,15 +118,15 @@ server_settings = {
     'bounding_box_cm': [
         # List of points in centimeters, encircling the robot
         # Starting at left wheel, then go counterclockwise
-        [-12, 2.5], # Front end of left wheel
-        [-12, -2.5], # Back end of left wheel
+        [-13, 2.5], # Front end of left wheel
+        [-13, -2.5], # Back end of left wheel
         [-8, -14], # Left rear wheel caster
         [0, -17], # Motor cable
         [8, -14], # right wheel caster
-        [12, -2.5], # Back end of right wheel
-        [12, 2.5], # Front end of right wheel
-        [5, 19], # Front-right end of gripper
-        [-5, 19] # Front-left end of gripper
+        [13, -2.5], # Back end of right wheel
+        [13, 2.5], # Front end of right wheel
+        [5, 20], # Front-right end of gripper
+        [-5, 20] # Front-left end of gripper
     ]
 }
 

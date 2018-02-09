@@ -280,7 +280,7 @@ while True:
 
         # Drive to the ball's last position
         base.turn_degrees(angle_to_ball)
-        base.drive_cm(distance_to_ball/2)
+        base.drive_cm(distance_to_ball)
 
         # The ball should be right in the gripper now.
         picker.store()
