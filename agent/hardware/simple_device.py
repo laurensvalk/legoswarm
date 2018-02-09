@@ -169,7 +169,7 @@ class Motor():
         # When blocking is false, we do not want to wait for completion, so we use the ev3dev run_to_abs method
         if not blocking and not self.is_running and not self.at_target(reference, tolerance):
             write_int(self.position_sp_file, reference) # Write speed setpoint
-            write_int(self.speed_sp_file, abs(self.limit(speed))) # Write target
+            write_int(self.speed_sp_file, abs(int(self.limit(speed)))) # Write target
             write_str(self.command_file, self.COMMAND_RUN_TO_ABS_POS) # Write command
 
         # When we allow blocking, we can use normal speed control to ensure we actually get there    
