@@ -285,6 +285,7 @@ while True:
 
         # The ball should be right in the gripper now.
         picker.store()
+        time.sleep(0.4)
         picker.open()
 
         # Clear the buffer so we have up-to-date data at the next loop
