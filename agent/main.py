@@ -269,6 +269,7 @@ while True:
 
     # When the ball is close, drive towards it blindly
     if state == STORE:
+        base.stop()
         vector_to_ball = nearest_ball_to_my_gripper + my_gripper
         angle_to_ball = vector_to_ball.angle_with_y_axis * 180/3.1415
         distance_to_ball = vector_to_ball.norm - my_gripper.norm
@@ -276,11 +277,15 @@ while True:
             "Storing with turn: {0}, distance: {1}, stored:{2}".format(angle_to_ball,
                                                                        robot_settings['ball_close_enough'],
                                                                     picker.store_count))
-        base.stop()
-        time.sleep(2)
+
+        time.sleep(5)
+
+
 
         # Drive to the ball's last position
         base.turn_degrees(angle_to_ball)
+        time.sleep(5)
+
         base.drive_cm(distance_to_ball)
 
         # The ball should be right in the gripper now.
