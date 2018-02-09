@@ -275,7 +275,8 @@ while True:
         logging.debug(
             "Storing with turn: {0}, distance: {1}, stored:{2}".format(angle_to_ball,
                                                                        robot_settings['ball_close_enough'],
-                                                                       picker.store_count))
+                                                                    picker.store_count))
+        base.stop()
         time.sleep(2)
 
         # Drive to the ball's last position
