@@ -282,7 +282,7 @@ while True:
 
     # When the ball is close, drive towards it blindly
     elif state == STORE:
-        base.stop()
+        # base.stop()
         vector_to_ball = nearest_ball_to_my_gripper + my_gripper
         angle_to_ball = vector_to_ball.angle_with_y_axis * 180/3.1415
         distance_to_ball = vector_to_ball.norm - my_gripper.norm
@@ -296,20 +296,20 @@ while True:
 
         # Drive backwards to debug
         # base.drive_cm(-5)
-        # base.drive_cm(distance_to_ball)
+        base.drive_cm(distance_to_ball)
 
         # The ball should be right in the gripper now.
-        # picker.store()
-        # picker.open()
+        picker.store()
+        picker.open()
 
         # Clear the buffer so we have up-to-date data at the next loop
         # empty_udp_buffer(s)
 
         # Next state
-        state = PAUSE
+        state = SEEK_BALL
         logging.info("Changing to {0} state".format(state))
-        pause_end_time = time.time() + 3
-        pause_next_state = STORE
+        # pause_end_time = time.time() + 3
+        # pause_next_state = STORE
 
     elif state == PURGE:
         # Drive to a corner and purge
