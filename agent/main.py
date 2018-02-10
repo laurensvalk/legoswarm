@@ -266,7 +266,7 @@ while True:
 
     # Ball seeking regimen
     elif state == SEEK_BALL:
-        # picker.open(blocking=False)
+        picker.open(blocking=False)
         total_force = nett_neighbor_avoidance + nett_wall_force + nett_ball_force
         if ball_visible:
             logging.debug("nearest ball at is {0}cm, {1}".format(nearest_ball_to_my_gripper.norm, nearest_ball_to_my_gripper))
