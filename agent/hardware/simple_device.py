@@ -22,6 +22,17 @@ def write_str(outfile, value):
     outfile.write(value)
     outfile.flush()      
 
+# Preconverted dutyvalue strings
+duty_int2str = [str(i) for i in range(-100, 100+1)]
+
+def write_duty(dutyfile, value):
+    """ Like write_int, but 1 ms faster (which can be a factor 2 depending on your goal!).
+    Suitable for quickly writing values with a known upper and lower bound
+    """
+    duty = max(min(100, int(value)), -100)  
+    dutyfile.write(duty_int2str[duty+100])
+    dutyfile.flush()  
+
 def get_device_path(parent_folder, port_name):
     """Get a path to a device based on port name. For example:
     
@@ -108,6 +119,7 @@ class Motor():
     COMMAND_RESET = 'reset'
     COMMAND_RUN_TO_ABS_POS = 'run-to-abs-pos'
     COMMAND_RUN_TO_REL_POS = 'run-to-rel-pos'
+    COMMAND_DUTY = 'run-direct'
     POLARITY_NORMAL = 'normal'
     POLARITY_INVERSED = 'inversed'
 
@@ -118,9 +130,11 @@ class Motor():
         self.speed_file = open(self.path + '/speed', 'rb')
         self.speed_sp_file = open(self.path + '/speed_sp', 'w')
         self.position_sp_file = open(self.path + '/position_sp', 'w')
+        self.duty_file = open(self.path + '/duty_cycle_sp', 'w')
         self.command_file = open(self.path + '/command', 'w')
         self.polarity_file = open(self.path + '/polarity', 'w')
         self.state_file = open(self.path + '/state', 'rb')
+        self.Kp = 3
 
     @property
     def position(self):
@@ -143,7 +157,10 @@ class Motor():
         write_str(self.command_file, self.COMMAND_STOP) 
 
     def reset(self):
-        write_str(self.command_file, self.COMMAND_RESET)         
+        write_str(self.command_file, self.COMMAND_RESET)     
+
+    def set_duty_mode(self):
+        write_str(self.command_file, self.COMMAND_DUTY)      
 
     @property
     def polarity(self):
@@ -176,19 +193,25 @@ class Motor():
         if blocking:
             # Check if we aren't already at the target
             if not self.at_target(reference, tolerance):
+                # Activate direct duty cycle control (ev3dev speed control usually does not work)
+                self.set_duty_mode()
+
                 # Otherwise, check if we should go backwards or forwards to reach the target
                 if reference > self.position:
                     # If the reference is ahead of us, we go forwards
-                    self.run_forever_at_speed(speed)
-                    # Wait until we're there                    
-                    while self.position <= reference - tolerance:
-                        time.sleep(0.01)
+                    real_speed = speed
                 else:
                     # If the reference is behind us, we go backwards
-                    self.run_forever_at_speed(-speed)
-                    # Wait until we're there                                    
-                    while self.position >= reference + tolerance:
-                        time.sleep(0.01)
+                    real_speed = -speed
+                start_time = time.time()
+                start_pos = self.position  
+                while not self.at_target(reference, tolerance):
+                    time_now =  time.time() - start_time
+                    target_now = start_pos + time_now*real_speed
+                    position_now = self.position
+                    error = target_now - position_now
+                    write_duty(self.duty_file, self.Kp*error)
+
             # Stop the motor when at target                        
             self.stop()                        
 

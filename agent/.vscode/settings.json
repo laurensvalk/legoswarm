@@ -2,6 +2,6 @@
     "python.pythonPath": "/usr/bin/python3",
     "python.linting.pylintPath": "/usr/bin/pylint3",
     //"ev3devBrowser.download.include": "*.py"
-    "ev3devBrowser.download.include": "**/*.py"
-    //"ev3devBrowser.download.include": "{test_mechanics_with_ir.py,hardware/simple_device.py,hardware/motors.py,hardware/sensors.py}"
+    //"ev3devBrowser.download.include": "**/*.py"
+    "ev3devBrowser.download.include": "{test_mechanics_with_ir.py,hardware/simple_device.py,hardware/motors.py,hardware/sensors.py}"
 }
