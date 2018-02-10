@@ -153,6 +153,8 @@ class DriveBase:
         self.stop()
         self.leftmotor.go_to(self.leftmotor.position + wheel_degrees, speed, 2, blocking=False)
         self.rightmotor.go_to(self.rightmotor.position + wheel_degrees, speed, 2, blocking)
+        while self.leftmotor.is_running and blocking:
+            time.sleep(0.02)
 
     def stop(self):
         """Stop the robot"""
