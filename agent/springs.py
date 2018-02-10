@@ -57,3 +57,9 @@ class Spring():
         nose_vector = self.get_force_vector(spring_vector)
         return vector([- nose_vector[0], nose_vector[1]])
 
+    @staticmethod
+    def limit_force(force, max_force=20):
+        if force.norm > max_force:
+            return force.unit*max_force
+        else:
+            return force
