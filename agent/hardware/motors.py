@@ -134,13 +134,19 @@ class DriveBase:
         self.leftmotor.run_forever_at_speed(leftspeed)
         self.rightmotor.run_forever_at_speed(rightspeed)
 
+    def turn_degrees_simple(self, degrees, turnrate_deg_sec=30):
+        turn_time = degrees/turnrate_deg_sec
+        self.drive_and_turn(0, turnrate_deg_sec)
+        time.sleep(turn_time)
+        self.stop()
+
     def turn_degrees(self, degrees, turnrate=200, blocking=True):
         self.stop()
         wheel_degrees = int(degrees * self.wheel_span / self.wheel_diameter)
         if self.counter_clockwise_is_positive:
             self.leftmotor.go_to(self.leftmotor.position + wheel_degrees, turnrate, 2, blocking=False)
             self.rightmotor.go_to(self.rightmotor.position - wheel_degrees, turnrate, 2, blocking)
-            while self.rightmotor.is_running and blocking:
+            while self.leftmotor.is_running and blocking:
                 time.sleep(0.02)
         else:
             self.leftmotor.go_to(self.leftmotor.position - wheel_degrees, turnrate, 2, blocking=False)
