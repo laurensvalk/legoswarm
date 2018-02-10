@@ -20,7 +20,7 @@ except:
     MY_ID = 3
 
 # Log settings
-logging.basicConfig(format='%(asctime)s, %(levelname)s, %(message)s',datefmt='%H:%M:%S', level=logging.INFO)
+logging.basicConfig(format='%(asctime)s, %(levelname)s, %(message)s',datefmt='%H:%M:%S', level=logging.DEBUG)
 
 # Start data thread
 s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -272,7 +272,6 @@ while True:
             purge_next_state = SEEK_BALL
 
     if state == STORE_DEBUG:
-        time.sleep(5)
         vector_to_ball = nearest_ball_to_my_gripper + my_gripper
         angle_to_ball = vector_to_ball.angle_with_y_axis * 180 / 3.1415
         distance_to_ball = vector_to_ball.norm - my_gripper.norm
@@ -292,7 +291,7 @@ while True:
                                                                        robot_settings['ball_close_enough'],
                                                                     picker.store_count))
 
-        time.sleep(5)
+        # time.sleep(5)
 
 
 
@@ -300,18 +299,18 @@ while True:
         base.turn_degrees(angle_to_ball)
 
         # Drive backwards to debug
-        base.drive_cm(-5)
-        # base.drive_cm(distance_to_ball)
+        # base.drive_cm(-5)
+        base.drive_cm(distance_to_ball)
 
         # The ball should be right in the gripper now.
-        # picker.store()
-        # picker.open()
+        picker.store()
+        picker.open()
 
         # Clear the buffer so we have up-to-date data at the next loop
         empty_udp_buffer(s)
 
         # Next state
-        state = STORE_DEBUG
+        state = SEEK_BALL
         logging.info("Changing to {0} state".format(state))
         # pause_end_time = time.time() + 2
         # pause_next_state = STORE_DEBUG
