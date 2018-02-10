@@ -128,7 +128,7 @@ server_settings = {
     'cm_per_marker_px': 0.13*(1936-132*0.8)/1936, # Markers are at approx 13.2 cm from ground
     'cm_per_bounding_px': 0.13*(1936-60)/1936, # dimensions relevant for bounding box are at approx 6cm above ground
     'ball_info_max_size': 3, # Number of nearest balls each robot should get details of
-    'depot_radius': 100,
+    'depot_radius': 200, #pixels
     'bounding_box_cm': [
         # List of points in centimeters, encircling the robot
         # Starting at left wheel, then go counterclockwise

@@ -274,10 +274,6 @@ while True:
                 total_force = no_force
                 state = STORE
                 logging.info("Changing to {0} state".format(state))
-        if picker.store_count > robot_settings['max_balls_in_store']:
-            state = PURGE
-            logging.info("Changing to {0} state".format(state))
-            purge_next_state = SEEK_BALL
 
     elif state == STORE_DEBUG:
         vector_to_ball = nearest_ball_to_my_gripper + my_gripper
@@ -306,7 +302,12 @@ while True:
 
         # The ball should be right in the gripper now.
         picker.store()
-        picker.open()
+        if picker.store_count > robot_settings['max_balls_in_store']:
+            state = PURGE
+            logging.info("Changing to {0} state".format(state))
+            purge_next_state = SEEK_BALL
+        else:
+            picker.open()
 
         # Clear the buffer so we have up-to-date data at the next loop
         # empty_udp_buffer(s)
@@ -335,7 +336,7 @@ while True:
     elif state == TO_CENTER:
         center_direction = vector((vector(wall_info['corners'][0]) + vector(wall_info['corners'][2])) / 2)
         total_force = spring_to_balls.get_force_vector(center_direction) + nett_neighbor_avoidance
-        if center_direction.norm < 40:
+        if center_direction.norm < 20:
             picker.open()
             state = purge_next_state
             logging.info("Changing to {0} state".format(state))
