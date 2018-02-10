@@ -251,10 +251,10 @@ if __name__ == '__main__':
             R = np.array([[-s, -c], [-c, s]])
 
             # Calculate the relative position of the code dots with some linear algebra.
-            relative_code_positions = np.array([[0.375, 0.5],
+            relative_code_positions = np.array([[0.4, 0.5],
                                                 [0.125, 0.5],
                                                 [-0.125, 0.5],
-                                                [-0.375, 0.5]])
+                                                [-0.4, 0.5]])
 
             # Do a dot product of the relative positions with the center position,
             # and offset this back to position of the robot to find matrix of absolute code pixel positions

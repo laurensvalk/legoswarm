@@ -308,15 +308,14 @@ while True:
             purge_next_state = SEEK_BALL
         else:
             picker.open()
+            # Clear the buffer so we have up-to-date data at the next loop
+            # empty_udp_buffer(s)
 
-        # Clear the buffer so we have up-to-date data at the next loop
-        # empty_udp_buffer(s)
-
-        # Next state
-        state = PAUSE
-        logging.info("Changing to {0} state".format(state))
-        pause_end_time = time.time() + 1
-        pause_next_state = SEEK_BALL
+            # Next state
+            state = PAUSE
+            logging.info("Changing to {0} state".format(state))
+            pause_end_time = time.time() + 1
+            pause_next_state = SEEK_BALL
 
     elif state == PURGE:
         # Drive to a corner and purge
