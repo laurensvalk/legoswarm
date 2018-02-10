@@ -292,7 +292,7 @@ while True:
                                                                     picker.store_count))
         # time.sleep(5)
         # Drive to the ball's last position
-        base.turn_degrees_simple(angle_to_ball)
+        base.turn_degrees_simple(-angle_to_ball)
 
         # Drive backwards to debug
         # base.drive_cm(-5)
