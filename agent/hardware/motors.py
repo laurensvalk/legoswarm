@@ -146,7 +146,7 @@ class DriveBase:
         if self.counter_clockwise_is_positive:
             self.leftmotor.go_to(self.leftmotor.position + wheel_degrees, turnrate, 2, blocking=False)
             self.rightmotor.go_to(self.rightmotor.position - wheel_degrees, turnrate, 2, blocking)
-            while self.rightmotor.is_running and blocking:
+            while self.leftmotor.is_running and blocking:
                 time.sleep(0.02)
         else:
             self.leftmotor.go_to(self.leftmotor.position - wheel_degrees, turnrate, 2, blocking=False)
