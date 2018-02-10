@@ -68,11 +68,35 @@ failcount = 0
 last_volt_check = time.time()
 no_force = vector([0, 0])
 
+
 def empty_udp_buffer(socket):
     try:
         compressed_data, server = socket.recvfrom(1500)
     except:
         pass
+
+class Timer:
+    def __init__(self, duration):
+        self.end_time = 0
+        self.duration = duration
+        self.running = False
+
+    def start(self):
+        self.running = True
+
+    def stop(self):
+        self.running = False
+
+    def reset(self):
+        self.end_time = time.time() + self.duration
+        self.running = True
+
+    @property
+    def elapsed(self):
+        return  time.time() > self.end_time and self.running
+
+blocked_timer = Timer(5)
+pause_timer = Timer(5)
 
 #################################################################
 ###### At every time step, read camera data, process it,
@@ -371,6 +395,15 @@ while True:
     sideways_force, forward_force = Spring.limit_force(total_force)
     speed = forward_force * robot_settings['speed_per_unit_force']
     turnrate = sideways_force * robot_settings['turnrate_per_unit_force']
+
+    if turnrate < 1 and speed < 1:
+        if blocked_timer.elapsed:
+            base.drive_cm(-4, speed=50)
+            blocked_timer.reset()
+            continue
+    else:
+        blocked_timer.reset()
+
     base.drive_and_turn(speed, turnrate)
 
     # Time for pause is here
