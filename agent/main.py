@@ -54,6 +54,7 @@ BOUNCE = 'bounce'
 DRIVE = 'drive'
 PAUSE = 'pause'
 TO_CENTER = 'to_center'
+STORE_DEBUG = 'store debug'
 
 pause_end_time = time.time()
 pause_next_state = SEEK_BALL
@@ -66,6 +67,12 @@ loopcount = 0
 failcount = 0
 last_volt_check = time.time()
 no_force = vector([0, 0])
+
+def empty_udp_buffer(socket):
+    try:
+        compressed_data, server = socket.recvfrom(1500)
+    except:
+        pass
 
 #################################################################
 ###### At every time step, read camera data, process it,
@@ -243,10 +250,7 @@ while True:
             picker.open(blocking=True)
             time.sleep(0.5)
             # Clear the buffer so we have up-to-date data at the next loop
-            try:
-                compressed_data, server = s.recvfrom(1500)
-            except:
-                pass
+            empty_udp_buffer(s)
 
     # Flocking regimen
     if state == FLOCKING:
@@ -267,6 +271,16 @@ while True:
             logging.info("Changing to {0} state".format(state))
             purge_next_state = SEEK_BALL
 
+    if state == STORE_DEBUG:
+        time.sleep(5)
+        vector_to_ball = nearest_ball_to_my_gripper + my_gripper
+        angle_to_ball = vector_to_ball.angle_with_y_axis * 180 / 3.1415
+        distance_to_ball = vector_to_ball.norm - my_gripper.norm
+        logging.debug(
+            "Ball at: {0} degrees, distance: {1}, stored:{2}".format(angle_to_ball,
+                                                                       robot_settings['ball_close_enough'],
+                                                                       picker.store_count))
+
     # When the ball is close, drive towards it blindly
     if state == STORE:
         base.stop()
@@ -284,32 +298,23 @@ while True:
 
         # Drive to the ball's last position
         base.turn_degrees(angle_to_ball)
-        time.sleep(5)
 
-        base.drive_cm(distance_to_ball)
+        # Drive backwards to debug
+        base.drive_cm(-5)
+        # base.drive_cm(distance_to_ball)
 
         # The ball should be right in the gripper now.
-        picker.store()
-        time.sleep(0.4)
-        picker.open()
+        # picker.store()
+        # picker.open()
 
         # Clear the buffer so we have up-to-date data at the next loop
-        try:
-            compressed_data, server = s.recvfrom(1500)
-        except:
-            pass
+        empty_udp_buffer(s)
 
         # Next state
-        state = PAUSE
+        state = STORE_DEBUG
         logging.info("Changing to {0} state".format(state))
-        pause_end_time = time.time() + 2
-        pause_next_state = SEEK_BALL
-
-    if state == PAUSE:
-        total_force = no_force
-        if time.time() > pause_end_time:
-            state = pause_next_state
-            logging.info("Changing to {0} state".format(state))
+        # pause_end_time = time.time() + 2
+        # pause_next_state = STORE_DEBUG
 
     if state == PURGE:
         # Drive to a corner and purge
@@ -351,6 +356,12 @@ while True:
         total_force = nett_neighbor_avoidance + nett_wall_force
         if min(wall_info['distances']) > 20:
             state = DRIVE
+            logging.info("Changing to {0} state".format(state))
+
+    if state == PAUSE:
+        total_force = no_force
+        if time.time() > pause_end_time:
+            state = pause_next_state
             logging.info("Changing to {0} state".format(state))
 
     logging.debug("State strategy processed for state {0} after {1}ms".format(state,

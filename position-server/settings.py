@@ -85,8 +85,8 @@ robot_settings = {
             #        5   10      
             # 
             #                                     
-                [0 ,  7], #a
-                [10,  30 ], #b
+                [0 ,  0], #a
+                [10,  10 ], #b
             ],
             'spring_to_position' : [
                 [0, 0],
