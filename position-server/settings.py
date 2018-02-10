@@ -98,9 +98,9 @@ robot_settings = {
                 [10,  10 ], #b
             ],
             'spring_to_depot' : [
-                [0 ,  10], #a
-                [10,  20 ], #b
-                [20, 15]
+                [0 ,  20], #a
+                [10,  30 ], #b
+                [30, 15]
             ],
             'spring_to_position' : [
                 [0, 0],

@@ -125,6 +125,8 @@ while True:
         # Stop the loop if we're unable to get server data
         logging.warning("{0}: Reading data from port {1} failed. Waiting...".format(repr(e), port))
 
+        # Only check for backspace button when data read fails. It slows the loop time otherwise
+        # The marker will never be visible if you pick up a robot to press it's backspace button anyway.
         if 'backspace' in buttons.buttons_pressed:
             ballsensor.stop()
             break
@@ -264,7 +266,7 @@ while True:
 
     # Ball seeking regimen
     elif state == SEEK_BALL:
-        picker.open(blocking=False)
+        # picker.open(blocking=False)
         total_force = nett_neighbor_avoidance + nett_wall_force + nett_ball_force
         if ball_visible:
             logging.debug("nearest ball at is {0}cm, {1}".format(nearest_ball_to_my_gripper.norm, nearest_ball_to_my_gripper))
@@ -275,7 +277,7 @@ while True:
         if picker.store_count > robot_settings['max_balls_in_store']:
             state = PURGE
             logging.info("Changing to {0} state".format(state))
-            purge_next_state = SEEK_BALL
+            purge_next_state = TO_CENTER
 
     elif state == STORE_DEBUG:
         vector_to_ball = nearest_ball_to_my_gripper + my_gripper
@@ -288,7 +290,7 @@ while True:
 
     # When the ball is close, drive towards it blindly
     elif state == STORE:
-        # base.stop()
+        base.stop()
         vector_to_ball = nearest_ball_to_my_gripper + my_gripper
         angle_to_ball = vector_to_ball.angle_with_y_axis * 180/3.1415
         distance_to_ball = vector_to_ball.norm - my_gripper.norm
@@ -296,12 +298,10 @@ while True:
             "Storing with turn: {0}, distance: {1}, stored:{2}".format(angle_to_ball,
                                                                        distance_to_ball,
                                                                     picker.store_count))
-        # time.sleep(5)
         # Drive to the ball's last position
         base.turn_degrees_simple(-angle_to_ball)
 
         # Drive backwards to debug
-        # base.drive_cm(-5)
         base.drive_cm(distance_to_ball)
 
         # The ball should be right in the gripper now.
@@ -312,10 +312,10 @@ while True:
         # empty_udp_buffer(s)
 
         # Next state
-        state = SEEK_BALL
+        state = PAUSE
         logging.info("Changing to {0} state".format(state))
-        # pause_end_time = time.time() + 3
-        # pause_next_state = STORE
+        pause_end_time = time.time() + 1
+        pause_next_state = SEEK_BALL
 
     elif state == PURGE:
         # Drive to a corner and purge
@@ -327,11 +327,9 @@ while True:
             picker.purge()
             time.sleep(1)
             picker.store()
-
             # Clear the buffer so we have up-to-date data at the next loop
             empty_udp_buffer(s)
-
-            state = purge_next_state
+            state = TO_CENTER
             logging.info("Changing to {0} state".format(state))
 
     elif state == TO_CENTER:
@@ -339,7 +337,7 @@ while True:
         total_force = spring_to_balls.get_force_vector(center_direction) + nett_neighbor_avoidance
         if center_direction.norm < 40:
             picker.open()
-            state = DRIVE
+            state = purge_next_state
             logging.info("Changing to {0} state".format(state))
 
     elif state == DRIVE:
