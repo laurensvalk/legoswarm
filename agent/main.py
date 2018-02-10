@@ -257,7 +257,7 @@ while True:
         total_force = nett_wall_force + nett_neighbor_avoidance + nett_neighbor_attraction
 
     # Ball seeking regimen
-    if state == SEEK_BALL:
+    elif state == SEEK_BALL:
         picker.open(blocking=False)
         total_force = nett_neighbor_avoidance + nett_wall_force + nett_ball_force
         if ball_visible:
@@ -271,7 +271,7 @@ while True:
             logging.info("Changing to {0} state".format(state))
             purge_next_state = SEEK_BALL
 
-    if state == STORE_DEBUG:
+    elif state == STORE_DEBUG:
         vector_to_ball = nearest_ball_to_my_gripper + my_gripper
         angle_to_ball = vector_to_ball.angle_with_y_axis * 180 / 3.1415
         distance_to_ball = vector_to_ball.norm - my_gripper.norm
@@ -281,7 +281,7 @@ while True:
                                                                        picker.store_count))
 
     # When the ball is close, drive towards it blindly
-    if state == STORE:
+    elif state == STORE:
         base.stop()
         vector_to_ball = nearest_ball_to_my_gripper + my_gripper
         angle_to_ball = vector_to_ball.angle_with_y_axis * 180/3.1415
@@ -296,7 +296,7 @@ while True:
 
 
         # Drive to the ball's last position
-        base.turn_degrees(angle_to_ball)
+        base.turn_degrees_simple(angle_to_ball)
 
         # Drive backwards to debug
         # base.drive_cm(-5)
@@ -315,7 +315,7 @@ while True:
         # pause_end_time = time.time() + 2
         # pause_next_state = STORE_DEBUG
 
-    if state == PURGE:
+    elif state == PURGE:
         # Drive to a corner and purge
         mid_of_a_d = vector((vector(wall_info['corners'][0]) + vector(wall_info['corners'][1])) / 2)
         total_force = spring_to_position.get_force_vector(mid_of_a_d) + nett_wall_force + nett_neighbor_avoidance
@@ -335,7 +335,7 @@ while True:
             state = purge_next_state
             logging.info("Changing to {0} state".format(state))
 
-    if state == TO_CENTER:
+    elif state == TO_CENTER:
         center_direction = vector((vector(wall_info['corners'][0]) + vector(wall_info['corners'][2])) / 2)
         total_force = spring_to_position.get_force_vector(center_direction) + nett_neighbor_avoidance
         if center_direction.norm < 40:
@@ -343,21 +343,21 @@ while True:
             state = DRIVE
             logging.info("Changing to {0} state".format(state))
 
-    if state == DRIVE:
+    elif state == DRIVE:
         total_force = nett_neighbor_avoidance + vector([0, robot_settings['bounce_drive_speed']])
         if min(wall_info['distances']) < robot_settings['min_wall_distance']:
             # random_factor = 1+(random.random()/10)
             state = BOUNCE
             logging.info("Changing to {0} state".format(state))
 
-    if state == BOUNCE:
+    elif state == BOUNCE:
         # total_force = nett_neighbor_avoidance + vector([nett_wall_force[0]*random_factor, nett_wall_force[1]])  # yuck
         total_force = nett_neighbor_avoidance + nett_wall_force
         if min(wall_info['distances']) > 20:
             state = DRIVE
             logging.info("Changing to {0} state".format(state))
 
-    if state == PAUSE:
+    elif state == PAUSE:
         total_force = no_force
         if time.time() > pause_end_time:
             state = pause_next_state
