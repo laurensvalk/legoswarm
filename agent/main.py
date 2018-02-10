@@ -299,7 +299,7 @@ while True:
         base.turn_degrees(angle_to_ball)
 
         # Drive backwards to debug
-        base.drive_cm(-5)
+        # base.drive_cm(-5)
         # base.drive_cm(distance_to_ball)
 
         # The ball should be right in the gripper now.
@@ -310,8 +310,8 @@ while True:
         empty_udp_buffer(s)
 
         # Next state
-        state = STORE_DEBUG
-        logging.info("Changing to {0} state".format(state))
+        # state = STORE_DEBUG
+        # logging.info("Changing to {0} state".format(state))
         # pause_end_time = time.time() + 2
         # pause_next_state = STORE_DEBUG
 
@@ -371,7 +371,7 @@ while True:
     #################################################################
 
     # Decompose total force into forward and sideways force
-    sideways_force, forward_force = total_force
+    sideways_force, forward_force = Spring.limit_force(total_force)
     speed = forward_force * robot_settings['speed_per_unit_force']
     turnrate = sideways_force * robot_settings['turnrate_per_unit_force']
     base.drive_and_turn(speed, turnrate)
