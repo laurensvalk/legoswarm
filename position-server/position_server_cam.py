@@ -87,7 +87,7 @@ class SocketThread(Thread):
                 port = server_settings['SERVER_BASE_PORT']+robot_id_key
                 sent_bytes = self.udp_send_dict_key(data_to_transmit, robot_id_key, port)
                 logging.debug("Sent {0} to port {1}".format(sent_bytes, port))
-            time.sleep(0.025)
+            time.sleep(0.06)
         self.server_socket.close()
         logging.info("Socket server stopped")
 

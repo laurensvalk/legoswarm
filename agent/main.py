@@ -111,10 +111,12 @@ while True:
         
         # Unpack spring characteristics
         robot_avoidance_spring = Spring(robot_settings['robot_avoidance_spring'])
+        robot_avoidance_spring_inferior = Spring(robot_settings['robot_avoidance_spring_inferior'])
         robot_attraction_spring = Spring(robot_settings['robot_attraction_spring'])
         spring_to_walls = Spring(robot_settings['spring_to_walls'])
         spring_to_balls = Spring(robot_settings['spring_to_balls'])
-        spring_to_position = Spring(robot_settings['spring_to_position'])
+        # spring_to_position = Spring(robot_settings['spring_to_position'])
+        spring_to_depot = Spring(robot_settings['spring_to_depot'])
         if 'state' in robot_settings:
             if robot_settings['state']:
                 state = robot_settings['state']
@@ -164,11 +166,15 @@ while True:
 
         # As the spring direction, we always take the spring to the neighbor center, but use the length from above
         avoidance_direction = (neighbor_center-my_gripper).unit
-
+        avoidance_vector = avoidance_direction * shortest_spring_length
         # Institute a pecking order:
         if neighbor < MY_ID:
-            shortest_spring_length /= 2
-        nett_neighbor_avoidance += robot_avoidance_spring.get_force_vector(avoidance_direction*shortest_spring_length)
+            # Respect for higher ranks
+            nett_neighbor_avoidance += robot_avoidance_spring.get_force_vector(avoidance_vector)
+        else:
+            # Push others aside
+            nett_neighbor_avoidance += robot_avoidance_spring_inferior.get_force_vector(avoidance_vector)
+
 
             # ... and add attraction springs only to their centers
         # if neighbor == 1:
@@ -230,7 +236,7 @@ while True:
     # Drive to field corner c when voltage is low.
     if state == LOW_VOLTAGE:
         corner_c_direction = vector(wall_info['corners'][2])
-        total_force = spring_to_position.get_force_vector(corner_c_direction) + nett_wall_force
+        total_force = spring_to_depot.get_force_vector(corner_c_direction) + nett_wall_force
 
     # Stop this program. Not used, so far.
     if state == EXIT:
@@ -314,7 +320,7 @@ while True:
     elif state == PURGE:
         # Drive to a corner and purge
         mid_of_a_d = vector((vector(wall_info['corners'][0]) + vector(wall_info['corners'][1])) / 2)
-        total_force = spring_to_position.get_force_vector(mid_of_a_d) + nett_wall_force + nett_neighbor_avoidance
+        total_force = spring_to_depot.get_force_vector(mid_of_a_d) + nett_wall_force + nett_neighbor_avoidance
         picker.store()
         if mid_of_a_d.norm < robot_settings['distance_to_purge_location']:
             base.stop()
@@ -330,7 +336,7 @@ while True:
 
     elif state == TO_CENTER:
         center_direction = vector((vector(wall_info['corners'][0]) + vector(wall_info['corners'][2])) / 2)
-        total_force = spring_to_position.get_force_vector(center_direction) + nett_neighbor_avoidance
+        total_force = spring_to_balls.get_force_vector(center_direction) + nett_neighbor_avoidance
         if center_direction.norm < 40:
             picker.open()
             state = DRIVE

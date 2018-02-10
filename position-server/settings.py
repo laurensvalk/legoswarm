@@ -13,21 +13,30 @@ robot_settings = {
             'min_wall_distance': 7,
             'distance_to_purge_location': 11,
             'robot_avoidance_spring': [
-            #                         c                     15 (pull when far)
-            #                        / \
-            #                      /     \
-            #                    /         \ 
-            #                  b             d------------   0 (no force at at 200 cm or beyond)
-            #                /        
-            #              / 
-            #            /
-            # ----------a                                    -20 (push when too close)
+            # 0                  b ------------   0 (no force at at 30 cm or beyond)
+            #                  /
+            #                /
+            #              /
+            # -20 ---------a                     -20 (push when too close)
             # 
             #          0      30    160     200      
             # 
             #                                     
                 [0,  -30], #a
-                [30,  0 ], #b
+                [40,  0 ], #b
+            ],
+            'robot_avoidance_spring_inferior': [
+            # 0                  b ------------   0 (no force at at 30 cm or beyond)
+            #                  /
+            #                /
+            #              /
+            # -20 ---------a                     -20 (push when too close)
+            #
+            #          0      30    160     200
+            #
+            #
+                [0,  -30], #a
+                [20,  0 ], #b
             ],
             'robot_attraction_spring' : [
             #                         c                     15 (pull when far)
@@ -87,6 +96,11 @@ robot_settings = {
             #                                     
                 [0 ,  0], #a
                 [10,  10 ], #b
+            ],
+            'spring_to_depot' : [
+                [0 ,  10], #a
+                [10,  20 ], #b
+                [20, 15]
             ],
             'spring_to_position' : [
                 [0, 0],
