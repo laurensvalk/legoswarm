@@ -100,7 +100,7 @@ robot_settings = {
             'spring_to_depot' : [
                 [0 ,  20], #a
                 [10,  30 ], #b
-                [30, 15]
+                [50, 15]
             ],
             'spring_to_position' : [
                 [0, 0],

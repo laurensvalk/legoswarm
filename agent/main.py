@@ -233,7 +233,7 @@ while True:
         if picker.store_count > robot_settings['max_balls_in_store']:
             state = PURGE
             logging.info("Changing to {0} state".format(state))
-            purge_next_state = TO_CENTER
+            purge_next_state = DRIVE
 
     # Drive to field corner c when voltage is low.
     if state == LOW_VOLTAGE:
@@ -277,7 +277,7 @@ while True:
         if picker.store_count > robot_settings['max_balls_in_store']:
             state = PURGE
             logging.info("Changing to {0} state".format(state))
-            purge_next_state = TO_CENTER
+            purge_next_state = SEEK_BALL
 
     elif state == STORE_DEBUG:
         vector_to_ball = nearest_ball_to_my_gripper + my_gripper
