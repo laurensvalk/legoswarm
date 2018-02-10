@@ -277,7 +277,7 @@ while True:
         distance_to_ball = vector_to_ball.norm - my_gripper.norm
         logging.debug(
             "Ball at: {0} degrees, distance: {1}, stored:{2}".format(angle_to_ball,
-                                                                       robot_settings['ball_close_enough'],
+                                                                     distance_to_ball,
                                                                        picker.store_count))
 
     # When the ball is close, drive towards it blindly
@@ -288,7 +288,7 @@ while True:
         distance_to_ball = vector_to_ball.norm - my_gripper.norm
         logging.debug(
             "Storing with turn: {0}, distance: {1}, stored:{2}".format(angle_to_ball,
-                                                                       robot_settings['ball_close_enough'],
+                                                                       distance_to_ball,
                                                                     picker.store_count))
 
         # time.sleep(5)
@@ -299,18 +299,18 @@ while True:
         base.turn_degrees(angle_to_ball)
 
         # Drive backwards to debug
-        # base.drive_cm(-5)
-        base.drive_cm(distance_to_ball)
+        base.drive_cm(-5)
+        # base.drive_cm(distance_to_ball)
 
         # The ball should be right in the gripper now.
-        picker.store()
-        picker.open()
+        # picker.store()
+        # picker.open()
 
         # Clear the buffer so we have up-to-date data at the next loop
         empty_udp_buffer(s)
 
         # Next state
-        state = SEEK_BALL
+        state = STORE_DEBUG
         logging.info("Changing to {0} state".format(state))
         # pause_end_time = time.time() + 2
         # pause_next_state = STORE_DEBUG
