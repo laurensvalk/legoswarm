@@ -290,11 +290,7 @@ while True:
             "Storing with turn: {0}, distance: {1}, stored:{2}".format(angle_to_ball,
                                                                        distance_to_ball,
                                                                     picker.store_count))
-
         # time.sleep(5)
-
-
-
         # Drive to the ball's last position
         base.turn_degrees_simple(angle_to_ball)
 
@@ -307,13 +303,13 @@ while True:
         # picker.open()
 
         # Clear the buffer so we have up-to-date data at the next loop
-        empty_udp_buffer(s)
+        # empty_udp_buffer(s)
 
         # Next state
-        # state = STORE_DEBUG
-        # logging.info("Changing to {0} state".format(state))
-        # pause_end_time = time.time() + 2
-        # pause_next_state = STORE_DEBUG
+        state = PAUSE
+        logging.info("Changing to {0} state".format(state))
+        pause_end_time = time.time() + 3
+        pause_next_state = STORE
 
     elif state == PURGE:
         # Drive to a corner and purge
@@ -327,10 +323,7 @@ while True:
             picker.store()
 
             # Clear the buffer so we have up-to-date data at the next loop
-            try:
-                compressed_data, server = s.recvfrom(1500)
-            except:
-                pass
+            empty_udp_buffer(s)
 
             state = purge_next_state
             logging.info("Changing to {0} state".format(state))
@@ -381,5 +374,4 @@ while True:
     logging.debug("Loop done. Speed:{0:.2f}, Turnrate:{1:.2f}, Looptime: {2}ms".format(speed,
                                                                                      turnrate,
                                                                                      int((time.time()-loopstart)*1000),
-                                                                                     total_force
                                                                                      ))
