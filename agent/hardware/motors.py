@@ -135,7 +135,7 @@ class DriveBase:
         self.rightmotor.run_forever_at_speed(rightspeed)
 
     def turn_degrees_simple(self, degrees, turnrate_deg_sec=30):
-        turn_time = degrees/turnrate_deg_sec
+        turn_time = abs(degrees/turnrate_deg_sec)
         self.drive_and_turn(0, turnrate_deg_sec)
         time.sleep(turn_time)
         self.stop()
