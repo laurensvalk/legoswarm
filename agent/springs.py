@@ -1,13 +1,14 @@
 from lightvectors.lightvectors import vector
 
 class Spring():
-    def __init__(self, characteristic):
+    def __init__(self, characteristic, max_force=20):
         """Extract data from spring characteristic from settings"""
         self.forces = [force for (extension, force) in characteristic]
         self.extensions = [extension for (extension, force) in characteristic]
         self.npoints = len(self.extensions)
         self.min_extension = self.extensions[0]
         self.max_extension = self.extensions[-1]
+        self.max_force = max_force
 
     def get_force_scalar(self, length):
         """Convert a given spring length to a force"""
@@ -57,3 +58,9 @@ class Spring():
         nose_vector = self.get_force_vector(spring_vector)
         return vector([- nose_vector[0], nose_vector[1]])
 
+    @staticmethod
+    def limit_force(force, max_force=20):
+        if force.norm > max_force:
+            return force.unit*max_force
+        else:
+            return force
