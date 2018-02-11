@@ -111,7 +111,7 @@ def rect_from_image_size(width, height):
         [0, height]], dtype="float32")
 
 
-def find_nested_triangles(img, threshold=150, threshold_type="simple"):
+def find_nested_triangles(img, threshold=150, threshold_type="simple", depth=2):
     triangles = []
     img_grey = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
@@ -150,7 +150,7 @@ def find_nested_triangles(img, threshold=150, threshold_type="simple"):
         if hierarchy[0][k][2] != -1:
             c = c + 1
 
-        if c == 2:
+        if c == depth:
             # To do: also check if it runs *exactly* 2 children deep. and not more.
             # This marker has at least two children. Now let's check if it's a triangle.
             approx = cv2.approxPolyDP(contours[x], cv2.arcLength(contours[x], True) * 0.04, True)

@@ -197,9 +197,13 @@ if __name__ == '__main__':
             c = triangle[2][0]
 
             # Now lets find the middle of the base of the triangle and the apex.
-            lengths = [vec_length(a - b), vec_length(b - c), vec_length(a - c)]
+            equal_sides = lengths = [vec_length(a - b), vec_length(b - c), vec_length(a - c)]
             shortest = min(lengths)
             shortest_idx = lengths.index(shortest)
+            equal_sides.pop(shortest_idx)
+            if min(equal_sides) * 1.09 < max(equal_sides):
+                # If the equal sides are not so equal, skip this triangle...
+                continue
             if shortest_idx == 0:
                 midbase_marker = (a + b) / 2
                 apex_marker = c
