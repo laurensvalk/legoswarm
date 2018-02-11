@@ -119,10 +119,9 @@ server_settings = {
     'MIN_BALL_RADIUS_PX' : 5,
     'MAX_BALL_RADIUS_PX' : 25,
     'MAX_AGENTS' : 8,
-    'depots' : [(0.5, 0)], # List of depot locations in fractions of the field size.
     'depots_world' : [  # all cm relative to center of field:
-                        [0, 80],  # +80 along y, 0 along x.
-                        [-150, 0] # -150 cm along x, and in the middle of y
+                        [0, 50],  # +80 along y, 0 along x.
+                        # [-150, 0] # -150 cm along x, and in the middle of y
                      ],    
     'p_bot_midbase' : robot_settings['p_bot_midbase'],
     'p_bot_gripper' : robot_settings['p_bot_gripper'],

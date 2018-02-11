@@ -123,6 +123,7 @@ while True:
         robot_settings = data['robot_settings']
         wall_info = data['walls']
         ball_info = data['balls']
+        depot_info = data['depots']
 
         # Unpack some useful data from the information we received
         neighbors = neighbor_info.keys()
@@ -234,6 +235,10 @@ while True:
         ball_visible = False
         nett_ball_force = no_force
 
+    # 4. Nearest depot
+    nearest_depot_to_my_gripper = vector(depot_info[0])
+    nett_depot_force = spring_to_balls.get_force_vector(nearest_depot_to_my_gripper)
+
     # 4. Start with a zero total force for processing all state behaviour
     total_force = no_force
 
@@ -343,10 +348,9 @@ while True:
 
     elif state == PURGE:
         # Drive to a corner and purge
-        mid_of_a_d = vector((vector(wall_info['corners'][0]) + vector(wall_info['corners'][1])) / 2)
-        total_force = spring_to_depot.get_force_vector(mid_of_a_d) + nett_wall_force + nett_neighbor_avoidance
+        total_force = nett_depot_force + nett_wall_force + nett_neighbor_avoidance
         picker.store()
-        if mid_of_a_d.norm < robot_settings['distance_to_purge_location']:
+        if nearest_depot_to_my_gripper.norm < robot_settings['distance_to_purge_location']:
             base.stop()
             picker.purge()
             time.sleep(1)
