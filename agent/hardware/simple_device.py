@@ -129,6 +129,7 @@ class Motor():
         self.position_file = open(self.path + '/position', 'rb')
         self.speed_file = open(self.path + '/speed', 'rb')
         self.speed_sp_file = open(self.path + '/speed_sp', 'w')
+        self.stop_action_file = open(self.path + '/stop_action', 'w')
         self.position_sp_file = open(self.path + '/position_sp', 'w')
         self.duty_file = open(self.path + '/duty_cycle_sp', 'w')
         self.command_file = open(self.path + '/command', 'w')
@@ -139,6 +140,9 @@ class Motor():
     @property
     def position(self):
         return read_int(self.position_file)
+
+    def hold(self):
+        write_str(self.stop_action_file, 'hold')
 
     @property
     def speed(self):
@@ -158,6 +162,10 @@ class Motor():
 
     def reset(self):
         write_str(self.command_file, self.COMMAND_RESET)     
+
+    def set_stop_mode(self, mode):
+        # mode should be: 'hold', 'brake', or 'coast'
+        write_str(self.stop_action_file, mode)
 
     def set_duty_mode(self):
         write_str(self.command_file, self.COMMAND_DUTY)      

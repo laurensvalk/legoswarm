@@ -6,7 +6,7 @@ class Picker(Motor):
     # Target positions for the gripper (degrees). 0 corresponds to the gripper all the way open
     OPEN = 90
     CLOSED = 130
-    STORE = 270
+    STORE = 260
     PURGE = 287
 
     # Speed and tolerance parameters
@@ -31,6 +31,7 @@ class Picker(Motor):
         self.stop()
         self.reset()
         self.polarity = self.POLARITY_INVERSED
+        self.set_stop_mode('brake')
         self.go_to_target(self.OPEN, blocking=True)
 
     @property
