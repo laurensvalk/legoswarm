@@ -22,12 +22,30 @@ def bounding_box(server_settings, midbase_marker, apex_marker, field_corners):
     # Revert the indexing so this can be seen as a list of coordinates
     return (bounding_box_in_bounding_pixels.T).astype(int)
 
-def get_depot_info(H_to_bot_from_world, server_settings):
+def get_depot_info(H_to_bot_from_world, server_settings, sort_by_distance=False):
+    # Load the absolute depot locations
     depot_locations_world = np.array(server_settings['depots_world']).T
+
+    # Empty dictionary which we'll fill for each agent in this loop
     depots_agents = {}
     for (agent, transformation) in H_to_bot_from_world.items():
+        # Transform the gripper to current agent
         depots_agent_frame = transformation*depot_locations_world
-        depots_agents[agent] = depots_agent_frame.T.tolist()
+
+        if not sort_by_distance:
+            # If no sorting is needed, we're already done
+            depots_agents[agent] = depots_agent_frame.T.tolist()
+        else:
+            # Scalar distance to the depot as seen from the current agent
+            distances = np.linalg.norm(depots_agent_frame, axis=0)
+
+            # Sort by distance
+            sorted_index = np.argsort(distances)
+            n_depots_found = len(sorted_index)
+
+            # Rebuild the array in order of distance
+            depots_agents[agent] = [depots_agent_frame[:,index].tolist() for index in sorted_index]
+            
     return depots_agents
 
 def get_ball_info(H_to_bot_from_world, ball_locations, server_settings, field_corners):
