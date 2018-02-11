@@ -1,6 +1,6 @@
 import cv2
 import numpy as np
-
+from operator import itemgetter
 from linalg import unit_vector
 
 YELLOW = (0, 255, 255)
@@ -158,3 +158,80 @@ def find_nested_triangles(img, threshold=150, threshold_type="simple"):
                 triangles += [approx]
 
     return img_grey, triangles
+
+
+def find_largest_rectangle_transform(img, offset, look_for='edges'):
+
+        height, width = np.shape(img)[:2]
+        largest_rect = rect_from_image_size(width, height)
+        if look_for == 'edges':
+            img_grey, largest_rect = find_largest_n_side(img, sides=4)
+            # Optionally review edge-finding image
+            # img = cv2.cvtColor(img_grey, cv2.COLOR_GRAY2BGR)
+        if look_for == '4_blobs':
+            img, centers = find_blobs(img, (30, 70, 20), (68, 255, 160), 65)
+            if len(centers) > 4:
+                largest_rect = np.array(centers[:4])
+
+        # Now that we have our playing field contour, we need to determine
+        # the top-left, top-right, bottom-right, and bottom-left
+        # points so that we can later warp the image. So we sort the polygon points in this order
+        rect = sorted_rect(largest_rect)
+        offset_rect = offset_convex_polygon(rect, offset)
+
+        # Present the found rectangles to the user
+        cv2.drawContours(img, [rect.astype(int)], -1, GREEN, thickness=8)
+        cv2.drawContours(img, [offset_rect.astype(int)], -1, PURPLE, thickness=8)
+        cv2.putText(img, "Press y if the playing field is detected, press n if not", (100, 500),
+                    cv2.FONT_HERSHEY_SIMPLEX, 2, GREEN, 4)
+
+        # now that we have our rectangle of points, let's compute
+        # the width of our new image
+        if len(offset_rect) == 4:
+            try:
+                (tl, tr, br, bl) = offset_rect
+                width_a = np.sqrt(((br[0] - bl[0]) ** 2) + ((br[1] - bl[1]) ** 2))
+                width_b = np.sqrt(((tr[0] - tl[0]) ** 2) + ((tr[1] - tl[1]) ** 2))
+
+                # ...and now for the height of our new image
+                height_a = np.sqrt(((tr[0] - br[0]) ** 2) + ((tr[1] - br[1]) ** 2))
+                height_b = np.sqrt(((tl[0] - bl[0]) ** 2) + ((tl[1] - bl[1]) ** 2))
+
+                # take the maximum of the width and height values to reach
+                # our final dimensions
+                width = max(int(width_a), int(width_b))
+                height = max(int(height_a), int(height_b))
+
+                # construct our destination points which will be used to
+                # map the screen to a top-down, "birds eye" view
+            except:
+                pass
+        dst = rect_from_image_size(width - 1, height - 1)
+
+        # calculate the perspective transform matrix and warp
+        # the perspective to grab the screen
+        M = cv2.getPerspectiveTransform(offset_rect, dst)
+
+        return img, M, dst, width, height
+
+
+def find_blobs(img, min_hsv, max_hsv, min_size):
+    img_HSV = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+    img_blobs = cv2.inRange(img_HSV, min_hsv, max_hsv)
+    img_blobs, contours, tree = cv2.findContours(img_blobs, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
+    blobs = [((0,0), 0)]
+    for c in contours:
+        M = cv2.moments(c)
+        area = M['m00']
+        if min_size < area:  # m00 is the area
+            cv2.drawContours(img, [c], -1, (255, 0, 0), thickness=3)
+            cx = int(M['m10'] / M['m00'])
+            cy = int(M['m01'] / M['m00'])
+            blobs += [([cx, cy], area)]
+            cv2.line(img, (cx - 20, cy), (cx + 20, cy), (0, 0, 255), 2)
+            cv2.line(img, (cx, cy - 20), (cx, cy + 20), (0, 0, 255), 2)
+
+        blobs = sorted(blobs, key=itemgetter(1), reverse=True) # Sort blobs so the largest are first
+    blob_centers = [blob[0] for blob in blobs]
+
+    return img, blob_centers

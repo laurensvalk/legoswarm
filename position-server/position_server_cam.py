@@ -18,7 +18,7 @@ from threading import Thread
 from platform import platform
 import gzip
 
-from antoncv import find_largest_n_side, sorted_rect, offset_convex_polygon, rect_from_image_size, \
+from antoncv import find_largest_rectangle_transform, sorted_rect, offset_convex_polygon, rect_from_image_size, \
     find_nested_triangles, YELLOW, RED, PURPLE, GREEN, ORANGE
 from linalg import atan2_vec, vec_length
 
@@ -121,6 +121,7 @@ if __name__ == '__main__':
     ############################################################################
     ############################################################################
 
+    objects = 'edges'
     while True:
         if not server_settings['FILE']:
             ok, img = cap.read()
@@ -130,56 +131,22 @@ if __name__ == '__main__':
         else:
             img = cv2.imread(server_settings['FILE'])
 
-        img_grey, largest_rect = find_largest_n_side(img, sides=4)
-
-        # Optionally review edge-finding image
-        # img = cv2.cvtColor(img_grey, cv2.COLOR_GRAY2BGR)
-
-        # Now that we have our playing field contour, we need to determine
-        # the top-left, top-right, bottom-right, and bottom-left
-        # points so that we can later warp the image. So we sort the polygon points in this order
-        rect = sorted_rect(largest_rect)
-        offset_rect = offset_convex_polygon(rect, server_settings['PLAYING_FIELD_OFFSET'])
-
-        # Present the found rectangles to the user
-        cv2.drawContours(img, [largest_rect.astype(int)], -1, GREEN, thickness=8)
-        cv2.drawContours(img, [offset_rect.astype(int)], -1, PURPLE, thickness=8)
-        cv2.putText(img, "Press y if the playing field is detected, press n if not", (100, 500),
-                    cv2.FONT_HERSHEY_SIMPLEX, 2, GREEN, 4)
+        img, M, dst, maxWidth, maxHeight = find_largest_rectangle_transform(img,
+                                                                            server_settings['PLAYING_FIELD_OFFSET'],
+                                                                            look_for=objects)
+        field_corners = offset_convex_polygon(dst, -server_settings['PLAYING_FIELD_OFFSET'])
 
         cv2.imshow("cam", img)
         # Wait for the 'k' key. Dont use ctrl-c !!!
         keypress = cv2.waitKey(1000) & 0xFF
 
         if keypress == ord('y'):
-            # now that we have our rectangle of points, let's compute
-            # the width of our new image
-            (tl, tr, br, bl) = offset_rect
-            widthA = np.sqrt(((br[0] - bl[0]) ** 2) + ((br[1] - bl[1]) ** 2))
-            widthB = np.sqrt(((tr[0] - tl[0]) ** 2) + ((tr[1] - tl[1]) ** 2))
-
-            # ...and now for the height of our new image
-            heightA = np.sqrt(((tr[0] - br[0]) ** 2) + ((tr[1] - br[1]) ** 2))
-            heightB = np.sqrt(((tl[0] - bl[0]) ** 2) + ((tl[1] - bl[1]) ** 2))
-
-            # take the maximum of the width and height values to reach
-            # our final dimensions
-            maxWidth = max(int(widthA), int(widthB))
-            maxHeight = max(int(heightA), int(heightB))
-
-            # construct our destination points which will be used to
-            # map the screen to a top-down, "birds eye" view
-            dst = rect_from_image_size(maxWidth - 1, maxHeight - 1)
-
-            # calculate the perspective transform matrix and warp
-            # the perspective to grab the screen
-            M = cv2.getPerspectiveTransform(offset_rect, dst)
-
             found_playing_field = True
-            field_corners = offset_convex_polygon(dst, -server_settings['PLAYING_FIELD_OFFSET'])
-            # field_corners = rect
             break
-
+        elif keypress == ord('e'):
+            objects = 'edges'
+        elif keypress == ord('b'):
+            objects = '4_blobs'
         elif keypress == ord('n'):
             found_playing_field = False
             field_corners = rect_from_image_size(server_settings['WIDTH'], server_settings['HEIGHT'])
