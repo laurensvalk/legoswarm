@@ -236,10 +236,10 @@ while True:
         nett_ball_force = no_force
 
     # 4. Nearest depot
-    nearest_depot_to_my_gripper = vector(depot_info[0])
-    nett_depot_force = spring_to_balls.get_force_vector(nearest_depot_to_my_gripper - my_gripper)
+    nearest_depot_to_my_gripper = vector(depot_info[0] - my_gripper)
+    nett_depot_force = spring_to_balls.get_force_vector(nearest_depot_to_my_gripper)
 
-    # 4. Start with a zero total force for processing all state behaviour
+    # 5. Start with a zero total force for processing all state behaviour
     total_force = no_force
 
     logging.debug("Done spring calculations after {0}ms".format(int( (time.time()-loopstart)*1000 )))
@@ -350,6 +350,7 @@ while True:
         # Drive to a corner and purge
         total_force = nett_depot_force + nett_wall_force + nett_neighbor_avoidance
         picker.store()
+        logging.debug("Depot at {0}cm, force {1}".format(nearest_depot_to_my_gripper.norm, nett_depot_force))
         if nearest_depot_to_my_gripper.norm < robot_settings['distance_to_purge_location']:
             base.stop()
             picker.purge()
