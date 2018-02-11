@@ -22,6 +22,13 @@ def bounding_box(server_settings, midbase_marker, apex_marker, field_corners):
     # Revert the indexing so this can be seen as a list of coordinates
     return (bounding_box_in_bounding_pixels.T).astype(int)
 
+def get_depot_info(H_to_bot_from_world, server_settings):
+    depot_locations_world = np.array(server_settings['depots_world']).T
+    depots_agents = {}
+    for (agent, transformation) in H_to_bot_from_world.items():
+        depots_agent_frame = transformation*depot_locations_world
+        depots_agents[agent] = depots_agent_frame.T.tolist()
+    return depots_agents
 
 def get_ball_info(H_to_bot_from_world, ball_locations, server_settings, field_corners):
     sorted_balls_relative_to_gripper = {}
@@ -212,13 +219,16 @@ def make_data_for_robots(markers, ball_locations, field_corners, server_settings
     # Get the ball locations in each robot frame, sorted by distance from gripper
     ball_info = get_ball_info(H_to_bot_from_world, ball_locations, server_settings, field_corners)
 
-    # Get depot locations
-    left, top = field_corners[0]
-    right, bottom = field_corners[2]
-    width = right - left
-    height = bottom - top
-    depots = [(x * width + left, y * height + top) for x,y in server_settings['depots']]
-    depot_info = get_ball_info(H_to_bot_from_world, depots, server_settings, field_corners)
+    # # Get depot locations
+    # left, top = field_corners[0]
+    # right, bottom = field_corners[2]
+    # width = right - left
+    # height = bottom - top
+    # depots = [(x * width + left, y * height + top) for x,y in server_settings['depots']]
+    # depot_info = get_ball_info(H_to_bot_from_world, depots, server_settings, field_corners)
+
+    # Get depot locations in each of the robot frames (relative to robot base)
+    depot_info = get_depot_info(H_to_bot_from_world, server_settings)
 
     # Get perpendicular lines to each wall in each robot frame of reference
     wall_info = get_wall_info(H_to_bot_from_world, server_settings, field_corners)
