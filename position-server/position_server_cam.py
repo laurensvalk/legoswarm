@@ -132,9 +132,11 @@ if __name__ == '__main__':
             img = cv2.imread(server_settings['FILE'])
 
         img, M, dst, maxWidth, maxHeight = find_largest_rectangle_transform(img,
-                                                                            server_settings['PLAYING_FIELD_OFFSET'],
+                                                                            server_settings['extra border outside'],
                                                                             look_for=objects)
-        field_corners = offset_convex_polygon(dst, -server_settings['PLAYING_FIELD_OFFSET'])
+        field_corners = offset_convex_polygon(dst,
+                                              -server_settings['extra border outside'] + \
+                                              server_settings['extra border inside'])
 
         cv2.imshow("cam", img)
         # Wait for the 'k' key. Dont use ctrl-c !!!
@@ -186,7 +188,7 @@ if __name__ == '__main__':
 
         img_grey = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
         values, img_grey = cv2.threshold(img_grey, 65, 255, cv2.THRESH_BINARY)
-        img = cv2.cvtColor(img_triangles, cv2.COLOR_GRAY2BGR)
+        # img = cv2.cvtColor(img_triangles, cv2.COLOR_GRAY2BGR)
 
         for triangle in triangles:
             # Let it's corners be these vectors.
@@ -272,20 +274,21 @@ if __name__ == '__main__':
             # Get the size of the image
             img_height, img_width = img.shape[:2]
 
-            # Erase the borders
-            cv2.polylines(img_grey,
-                            np.array([rect_from_image_size(img_width, img_height)], dtype=int),
-                            True,
-                            255,
-                            thickness=abs(server_settings['PLAYING_FIELD_OFFSET'])*2+16)
+            # total_margin = abs(server_settings['extra border outside']) + abs(server_settings['extra border inside'])
+            # # Erase the borders
+            # cv2.polylines(img_grey,
+            #                 np.array([rect_from_image_size(img_width, img_height)], dtype=int),
+            #                 True,
+            #                 255,
+            #                 thickness=total_margin)
 
             # Erase the ball depot
             cv2.circle(img_grey, (img_width // 2, 0), server_settings['depot_radius'], (255,255,255), cv2.FILLED)
 
-            # mask = np.zeros((img_height, img_width), dtype=np.uint8)
-            # cv2.fillConvexPoly(mask, field_corners.astype(int), 255)
-            # cv2.bitwise_not(mask, dst=mask)
-            # cv2.bitwise_or(img_grey, mask, dst=img_grey)
+            mask = np.zeros((img_height, img_width), dtype=np.uint8)
+            cv2.fillConvexPoly(mask, field_corners.astype(int), 255)
+            cv2.bitwise_not(mask, dst=mask)
+            cv2.bitwise_or(img_grey, mask, dst=img_grey)
 
         # Now all robots & border are blacked out let's look for contours again.
         img_grey, contours, tree = cv2.findContours(img_grey, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)

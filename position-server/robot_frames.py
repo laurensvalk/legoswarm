@@ -16,7 +16,7 @@ def transform_to_world_from_pixels(server_settings, field_corners, cm_per_px):
 
     # Obtain previously computed field corners
     A, B, C, D = field_corners
-    abs_offset = abs(server_settings['PLAYING_FIELD_OFFSET'])
+    abs_offset = abs(server_settings['extra border outside']) + abs(server_settings['extra border inside'])
 
     # Use field corners and border size to obtain cropped/warped image size
     image_width = abs(B[0]-A[0]) + 2*abs_offset

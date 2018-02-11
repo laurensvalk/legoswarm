@@ -115,9 +115,10 @@ server_settings = {
     'THRESHOLD' : 150,         # Threshold for b/w version of camera image. Was 230 most of the time
     'WIDTH' : 1920,            # Camera image
     'HEIGHT' : 1080,
-    'PLAYING_FIELD_OFFSET' : -50,
+    'extra border outside' : -70,
+    'extra border inside' : 20,
     'MIN_BALL_RADIUS_PX' : 5,
-    'MAX_BALL_RADIUS_PX' : 16,
+    'MAX_BALL_RADIUS_PX' : 25,
     'MAX_AGENTS' : 8,
     'p_bot_midbase' : robot_settings['p_bot_midbase'],
     'p_bot_gripper' : robot_settings['p_bot_gripper'],
