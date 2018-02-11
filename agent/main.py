@@ -20,7 +20,7 @@ except:
     MY_ID = 3
 
 # Log settings
-logging.basicConfig(format='%(asctime)s, %(levelname)s, %(message)s',datefmt='%H:%M:%S', level=logging.DEBUG)
+logging.basicConfig(format='%(asctime)s, %(levelname)s, %(message)s',datefmt='%H:%M:%S', level=logging.INFO)
 
 # Start data thread
 s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -331,6 +331,7 @@ while True:
 
         # The ball should be right in the gripper now.
         picker.store()
+        time.sleep(1)
         if picker.store_count > robot_settings['max_balls_in_store']:
             state = PURGE
             logging.info("Changing to {0} state".format(state))
