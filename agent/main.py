@@ -237,7 +237,7 @@ while True:
 
     # 4. Nearest depot
     nearest_depot_to_my_gripper = vector(depot_info[0])
-    nett_depot_force = spring_to_balls.get_force_vector(nearest_depot_to_my_gripper)
+    nett_depot_force = spring_to_balls.get_force_vector(nearest_depot_to_my_gripper - my_gripper)
 
     # 4. Start with a zero total force for processing all state behaviour
     total_force = no_force
