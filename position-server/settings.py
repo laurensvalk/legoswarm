@@ -1,6 +1,5 @@
 robot_settings = {
             'sight_range': 300,
-            'dump_location': (0, 0),
             'p_bot_midbase': (-2, -8),
             'p_bot_gripper': (0, 11),
             'p_bot_rear': (0, -15),
@@ -120,6 +119,7 @@ server_settings = {
     'MIN_BALL_RADIUS_PX' : 5,
     'MAX_BALL_RADIUS_PX' : 25,
     'MAX_AGENTS' : 8,
+    'depots' : [(0.5, 0)], # List of depot locations in fractions of the field size.
     'p_bot_midbase' : robot_settings['p_bot_midbase'],
     'p_bot_gripper' : robot_settings['p_bot_gripper'],
     'p_bot_rear' : robot_settings['p_bot_rear'],

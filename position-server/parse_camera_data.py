@@ -22,6 +22,7 @@ def bounding_box(server_settings, midbase_marker, apex_marker, field_corners):
     # Revert the indexing so this can be seen as a list of coordinates
     return (bounding_box_in_bounding_pixels.T).astype(int)
 
+
 def get_ball_info(H_to_bot_from_world, ball_locations, server_settings, field_corners):
     sorted_balls_relative_to_gripper = {}
     if len(ball_locations) > 0:
@@ -211,6 +212,14 @@ def make_data_for_robots(markers, ball_locations, field_corners, server_settings
     # Get the ball locations in each robot frame, sorted by distance from gripper
     ball_info = get_ball_info(H_to_bot_from_world, ball_locations, server_settings, field_corners)
 
+    # Get depot locations
+    left, top = field_corners[0]
+    right, bottom = field_corners[2]
+    width = right - left
+    height = bottom - top
+    depots = [(x * width + left, y * height + top) for x,y in server_settings['depots']]
+    depot_info = get_ball_info(H_to_bot_from_world, depots, server_settings, field_corners)
+
     # Get perpendicular lines to each wall in each robot frame of reference
     wall_info = get_wall_info(H_to_bot_from_world, server_settings, field_corners)
 
@@ -219,5 +228,6 @@ def make_data_for_robots(markers, ball_locations, field_corners, server_settings
         result[robot_id] = {'neighbors': neighbor_info[robot_id],
                             'balls': ball_info[robot_id],
                             'walls': wall_info[robot_id],
+                            'depots': depot_info[robot_id],
                             'robot_settings': robot_settings}
     return result
