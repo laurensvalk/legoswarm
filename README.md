@@ -1,14 +1,18 @@
 # Lego Swarm
 Swarm robotics with LEGO: Multiple LEGO robot vehicles collaborating to harvest and sort LEGO balls spread out in a field.
 
+_If you are serious about replicating this, feel free to post an issue to share your interest and we may be able to help you get started. (And update this read me)._
+
+The following is an old list of ideas. The actual implementation quite different. 
+
 # General Concept
 - Decentralized Control: Each agent (Skid steering rover) has simple local rules for emerging "intelligent" behavior
-  - Driving around while collecting any balls that are "accidentally" in its path
+  - Driving around while collecting any balls that are nearby and those that happen to be in its path
   - Control by virtual springs
     - Virtual springs with repulsive spring force between neighbors
     - Virtual springs with attractive spring force to valuable locations (see below)
     - The forces are based on information broadcast by other agents
-  - Each robot is completely oblivious to what it is doing (it doesn't even detect the resource until actually finding it), yet is part of a useful network
+  - Each robot is completely oblivious to what its neigbors are doing, yet is part of a useful network
 - Agents communicate only with neighboring agents, broadcasting:
   - 1) Its approximate location
     - Repulsive forces prevent most collisions
@@ -66,7 +70,7 @@ Swarm robotics with LEGO: Multiple LEGO robot vehicles collaborating to harvest 
   - Returning to charge point would be nice
 
 
-# Installation
+# Server Installation
 ## MacOS
 This is how I installed it on Mac OS X. If you manage to install openCV on other systems, 
 please document it here and do a pull request.
@@ -91,76 +95,14 @@ https://github.com/Polyconseil/zbarlight/
 
 And then of course `git clone` this repository.
 
-## Raspberry Pi
-The position server probably runs from a Raspberry Pi 3 with Picamera too. Installation is a little harder.
-Here's what you do:
-1. Download a raspbian stretch lite image from here
-2. Burn it with Etcher (or similar) to a microSD
-3. In the boot directory add an empty file named 'ssh' to enable headless ssh installation
-4. Boot the pi on a wired connection and log in to it with `ssh pi@raspberrypi.local` and password `raspberry`
-5. `passwd` and choose a new one
-6. `sudo raspi-config` and enable OpenGL, PiCamera and expand the filesystem (all under adavanced). 
-Now might also be a good time to setup WiFi under Networking.
-7. `sudo apt-get update`
-8. `sudo apt-get upgrade`
-9. `sudo apt-get install build-essential checkinstall cmake pkg-config yasm`
-10. `sudo apt-get install git gfortran`
-11. `sudo apt-get install libjpeg8-dev libjasper-dev libpng12-dev`
-12. ?? `sudo apt-get install x264 v4l-utils`
-12. `sudo apt-get install python3-numpy python3-pip libpython3-dev python3.5-dev`
-13. `sudo pip3 install picamera[array]`
-17. `git clone https://github.com/opencv/opencv_contrib.git`
-18. `cd opencv_contrib/`
-15. `git checkout 3.4.0`
-16. `cd ..`
-13. `git clone https://github.com/opencv/opencv.git`
-14. `cd opencv`
-15. `git checkout 3.4.0`
-16. `mkdir build`
-17. `cd build`
-18. ```cmake -D CMAKE_BUILD_TYPE=RELEASE \
-      -D CMAKE_INSTALL_PREFIX=/usr/local \
-      -D WITH_PYTHON3=ON \
-      -D WITH_EIGEN=ON \
-      -D INSTALL_C_EXAMPLES=ON \
-      -D INSTALL_PYTHON_EXAMPLES=ON \
-      -D WITH_TBB=ON \
-      -D WITH_V4L=ON \
-      -D WITH_OPENGL=ON \
-      -D OPENCV_EXTRA_MODULES_PATH=../../opencv_contrib/modules \
-      -D BUILD_EXAMPLES=ON \
-      -D PYTHON_EXECUTABLE=/usr/bin/python3 \
-      -D PYTHON_DEFAULT_EXECUTABLE=/usr/bin/python3 ..```
-2. `make -j4`
-3. press ctrl-Z
-4. `disown -h`
-5. `bg`
-19. Get some sleep. Do something else. This takes hours.
-
-
-
-## EV3 brick with ev3dev
-- Create an ev3dev micro SD card as documented on www.ev3dev.org
-
-- On the brick you need numpy:
-`apt-get install python-numpy`
-... and a lot of patience.
-
-- In some cases you need to install some more stuff before it works.
-`apt-get install python-pip python-dev python-numpy`
-
-
 # Running
 - Print the templates and stick them on robots
-- Plug in a webcam into your Mac/Pc and run the position_server_triangles.py
-- Run the robot scripts on the robot and put the robots under the webcam
+- Plug in a webcam into your Mac/Pc and run the position server
+- Run the agent main script on the robot and put the robots under the webcam
  
-# Testing
-The repository includes a bare server with dummy data and a bare client for your testing convenience.
-
-# Selling the concept
+# Some ideas to present the concept
 - As in the real deal, all communication and intelligence is local to the agents. There is no global oversight.
-- But to understand and visualize what is going on (for our debugging, and the public), here's an idea:
+- But to understand and visualize what is going on (for our debugging, and the public):
   - Camera top view
   - _Live, visual overlay of what's going on_
   - All agents actually do broadcast to a central hub
