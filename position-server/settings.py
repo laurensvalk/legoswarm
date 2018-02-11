@@ -9,7 +9,7 @@ robot_settings = {
             'ball_grab_time': 3,  # s
             'max_balls_in_store': 5,
             'bounce_drive_speed': 4,
-            'min_wall_distance': 7,
+            'min_wall_distance': 12,
             'distance_to_purge_location': 11,
             'robot_avoidance_spring': [
             # 0                  b ------------   0 (no force at at 30 cm or beyond)
@@ -97,9 +97,9 @@ robot_settings = {
                 [10,  10 ], #b
             ],
             'spring_to_depot' : [
-                [0 ,  20], #a
-                [50,  100], #b
-                #[50, 15]
+                [0 ,  10], #a
+                [20,  20], #b
+                [50, 15]
             ],
             'spring_to_position' : [
                 [0, 0],
@@ -120,7 +120,7 @@ server_settings = {
     'MAX_BALL_RADIUS_PX' : 25,
     'MAX_AGENTS' : 8,
     'depots_world' : [  # all cm relative to center of field:
-                        [0, 56],  # +80 along y, 0 along x.
+                        [0, 60],  # +80 along y, 0 along x.
                         # [-150, 0] # -150 cm along x, and in the middle of y
                      ],    
     'p_bot_midbase' : robot_settings['p_bot_midbase'],
