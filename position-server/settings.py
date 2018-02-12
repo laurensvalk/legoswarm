@@ -10,7 +10,7 @@ robot_settings = {
             'max_balls_in_store': 5,
             'bounce_drive_speed': 4,
             'min_wall_distance': 12,
-            'distance_to_purge_location': 11,
+            'distance_to_purge_location': 13,
             'robot_avoidance_spring': [
             # 0                  b ------------   0 (no force at at 30 cm or beyond)
             #                  /
@@ -64,7 +64,7 @@ robot_settings = {
             # 
             #                                     
             #     [-30, 30],
-                [0,  -10], #a
+                [0,  -25], #a
                 [25, 0 ], #b
             ],
             'short_spring_to_walls' : [
@@ -97,8 +97,8 @@ robot_settings = {
                 [10,  10 ], #b
             ],
             'spring_to_depot' : [
-                [0 ,  10], #a
-                [20,  20], #b
+                [0 ,  15], #a
+                [20,  30], #b
                 [50, 15]
             ],
             'spring_to_position' : [
