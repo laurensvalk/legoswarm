@@ -169,7 +169,7 @@ def find_largest_rectangle_transform(img, offset, look_for='edges'):
             # Optionally review edge-finding image
             # img = cv2.cvtColor(img_grey, cv2.COLOR_GRAY2BGR)
         if look_for == '4_blobs':
-            img, centers = find_blobs(img, (30, 70, 20), (68, 255, 160), 65)
+            img, centers = find_blobs(img, (60, 70, 20), (100, 255, 160), 65)
             if len(centers) > 4:
                 largest_rect = np.array(centers[:4])
 
