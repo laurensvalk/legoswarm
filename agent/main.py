@@ -266,7 +266,7 @@ while True:
 
     # Drive to field corner c when voltage is low.
     if state == LOW_VOLTAGE:
-        corner_c_direction = vector(wall_info['corners'][2])
+        corner_c_direction = vector(wall_info['corners'][1])
         total_force = spring_to_depot.get_force_vector(corner_c_direction) + nett_wall_force
 
     # Stop this program. Not used, so far.
@@ -358,6 +358,7 @@ while True:
             time.sleep(1)
             picker.store()
             # Clear the buffer so we have up-to-date data at the next loop
+            base.drive_cm(-5, speed=100)
             empty_udp_buffer(s)
             state = TO_CENTER
             logging.info("Changing to {0} state".format(state))
