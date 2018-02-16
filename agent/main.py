@@ -238,6 +238,7 @@ while True:
     # 4. Nearest depot
     nearest_depot_to_my_gripper = vector(depot_info[0]) - my_gripper
     nett_depot_force = spring_to_depot.get_force_vector(nearest_depot_to_my_gripper)
+    nett_depot_avoidance = robot_avoidance_spring.get_force_vector(nearest_depot_to_my_gripper)
 
     # 5. Start with a zero total force for processing all state behaviour
     total_force = no_force
@@ -365,14 +366,14 @@ while True:
 
     elif state == TO_CENTER:
         center_direction = vector((vector(wall_info['corners'][0]) + vector(wall_info['corners'][2])) / 2)
-        total_force = spring_to_balls.get_force_vector(center_direction) + nett_neighbor_avoidance
+        total_force = spring_to_balls.get_force_vector(center_direction) + nett_neighbor_avoidance + nett_depot_avoidance
         if center_direction.norm < 20:
             picker.open()
             state = purge_next_state
             logging.info("Changing to {0} state".format(state))
 
     elif state == DRIVE:
-        total_force = nett_neighbor_avoidance + vector([0, robot_settings['bounce_drive_speed']])
+        total_force = nett_neighbor_avoidance + vector([0, robot_settings['bounce_drive_speed']]) + nett_depot_avoidance
         if min(wall_info['distances']) < robot_settings['min_wall_distance']:
             # random_factor = 1+(random.random()/10)
             state = BOUNCE
@@ -380,7 +381,7 @@ while True:
 
     elif state == BOUNCE:
         # total_force = nett_neighbor_avoidance + vector([nett_wall_force[0]*random_factor, nett_wall_force[1]])  # yuck
-        total_force = nett_neighbor_avoidance + nett_wall_force
+        total_force = nett_neighbor_avoidance + nett_wall_force + nett_depot_avoidance
         if min(wall_info['distances']) > 20:
             state = DRIVE
             logging.info("Changing to {0} state".format(state))
