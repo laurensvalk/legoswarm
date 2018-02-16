@@ -183,12 +183,12 @@ if __name__ == '__main__':
             logging.debug("Image warped: {0}".format(time.time() - lt))
 
         robot_markers = {}
-        img_triangles, triangles = find_nested_triangles(img, threshold=70)
+        img_triangles, triangles = find_nested_triangles(img, threshold=server_settings['THRESHOLD'])
         logging.debug("Got triangles: {0}".format(time.time() - lt))
 
         img_grey = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-        values, img_grey = cv2.threshold(img_grey, 65, 255, cv2.THRESH_BINARY)
-        # img = cv2.cvtColor(img_triangles, cv2.COLOR_GRAY2BGR)
+        values, img_grey = cv2.threshold(img_grey, server_settings['THRESHOLD'], 255, cv2.THRESH_BINARY)
+        img = cv2.cvtColor(img_triangles, cv2.COLOR_GRAY2BGR)
 
         for triangle in triangles:
             # Let it's corners be these vectors.
