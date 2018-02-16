@@ -10,7 +10,7 @@ robot_settings = {
             'max_balls_in_store': 5,
             'bounce_drive_speed': 4,
             'min_wall_distance': 12,
-            'distance_to_purge_location': 13,
+            'distance_to_purge_location': 22,
             'robot_avoidance_spring': [
             # 0                  b ------------   0 (no force at at 30 cm or beyond)
             #                  /
@@ -21,8 +21,8 @@ robot_settings = {
             #          0      30    160     200      
             # 
             #                                     
-                [0,  -30], #a
-                [40,  0 ], #b
+                [0,  -45], #a
+                [45,  0 ], #b
             ],
             'robot_avoidance_spring_inferior': [
             # 0                  b ------------   0 (no force at at 30 cm or beyond)
@@ -34,8 +34,8 @@ robot_settings = {
             #          0      30    160     200
             #
             #
-                [0,  -30], #a
-                [20,  0 ], #b
+                [0,  -45], #a
+                [30,  0 ], #b
             ],
             'robot_attraction_spring' : [
             #                         c                     15 (pull when far)
@@ -97,7 +97,7 @@ robot_settings = {
                 [10,  10 ], #b
             ],
             'spring_to_depot' : [
-                [0 ,  15], #a
+                [0 ,  25], #a
                 [20,  30], #b
                 [50, 15]
             ],
@@ -111,16 +111,16 @@ robot_settings = {
 # Server settings
 server_settings = {
     'SERVER_BASE_PORT' : 50000,
-    'THRESHOLD' : 150,         # Threshold for b/w version of camera image. Was 230 most of the time
+    'THRESHOLD' : 130,         # Threshold for b/w version of camera image. Was 230 most of the time
     'WIDTH' : 1920,            # Camera image
     'HEIGHT' : 1080,
     'extra border outside' : -70,
     'extra border inside' : 20,
-    'MIN_BALL_RADIUS_PX' : 5,
-    'MAX_BALL_RADIUS_PX' : 25,
+    'MIN_BALL_RADIUS_PX' : 3,
+    'MAX_BALL_RADIUS_PX' : 30,
     'MAX_AGENTS' : 8,
     'depots_world' : [  # all cm relative to center of field:
-                        [0, 60],  # +80 along y, 0 along x.
+                        [0, -102],  # +80 along y, 0 along x.
                         # [-150, 0] # -150 cm along x, and in the middle of y
                      ],    
     'p_bot_midbase' : robot_settings['p_bot_midbase'],
@@ -128,9 +128,9 @@ server_settings = {
     'p_bot_rear' : robot_settings['p_bot_rear'],
     'sight_range' : robot_settings['sight_range'],
     'FILE' : '',#'"test_images/error_scenario_too_many_balls.png",#""test_images/1516199702.jpg" #"test_images/test.jpg" # 1920 x 1080 afbeelding. png mag ook.
-    'cm_per_ball_px': 0.13, # 263 cm diagonal = 1990 px, on the gound
-    'cm_per_marker_px': 0.13*(1936-132*0.8)/1936, # Markers are at approx 13.2 cm from ground
-    'cm_per_bounding_px': 0.13*(1936-60)/1936, # dimensions relevant for bounding box are at approx 6cm above ground
+    'cm_per_ball_px': 0.15, # 263 cm diagonal = 1990 px, on the gound
+    'cm_per_marker_px': 0.15*(1936+500-132*0.8)/1936, # Markers are at approx 13.2 cm from ground
+    'cm_per_bounding_px': 0.15*(1936+500-60)/1936, # dimensions relevant for bounding box are at approx 6cm above ground
     'ball_info_max_size': 3, # Number of nearest balls each robot should get details of
     'depot_radius': 200, #pixels
     'bounding_box_cm': [
