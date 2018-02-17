@@ -10,7 +10,7 @@ robot_settings = {
             'max_balls_in_store': 5,
             'bounce_drive_speed': 4,
             'min_wall_distance': 12,
-            'distance_to_purge_location': 22,
+            'distance_to_purge_location': 27,
             'robot_avoidance_spring': [
             # 0                  b ------------   0 (no force at at 30 cm or beyond)
             #                  /
@@ -21,7 +21,7 @@ robot_settings = {
             #          0      30    160     200      
             # 
             #                                     
-                [0,  -45], #a
+                [0,  -55], #a
                 [45,  0 ], #b
             ],
             'robot_avoidance_spring_inferior': [
@@ -34,7 +34,7 @@ robot_settings = {
             #          0      30    160     200
             #
             #
-                [0,  -45], #a
+                [0,  -55], #a
                 [30,  0 ], #b
             ],
             'robot_attraction_spring' : [
@@ -98,7 +98,7 @@ robot_settings = {
             ],
             'spring_to_depot' : [
                 [0 ,  25], #a
-                [20,  30], #b
+                [30,  40], #b
                 [50, 15]
             ],
             'spring_to_position' : [
@@ -111,7 +111,7 @@ robot_settings = {
 # Server settings
 server_settings = {
     'SERVER_BASE_PORT' : 50000,
-    'THRESHOLD' : 130,         # Threshold for b/w version of camera image. Was 230 most of the time
+    'THRESHOLD' : 140,         # Threshold for b/w version of camera image. Was 230 most of the time
     'WIDTH' : 1920,            # Camera image
     'HEIGHT' : 1080,
     'extra border outside' : -70,
@@ -120,7 +120,7 @@ server_settings = {
     'MAX_BALL_RADIUS_PX' : 30,
     'MAX_AGENTS' : 8,
     'depots_world' : [  # all cm relative to center of field:
-                        [0, -102],  # +80 along y, 0 along x.
+                        [0, -112],  # +80 along y, 0 along x.
                         # [-150, 0] # -150 cm along x, and in the middle of y
                      ],    
     'p_bot_midbase' : robot_settings['p_bot_midbase'],

@@ -334,19 +334,19 @@ while True:
         picker.store()
         time.sleep(1)
         if picker.store_count > robot_settings['max_balls_in_store']:
-            state = PURGE
+            state = TO_CENTER
             logging.info("Changing to {0} state".format(state))
-            purge_next_state = SEEK_BALL
+            purge_next_state = PURGE
         else:
             picker.open()
             # Clear the buffer so we have up-to-date data at the next loop
             # empty_udp_buffer(s)
 
             # Next state
-            state = PAUSE
+            state = SEEK_BALL
             logging.info("Changing to {0} state".format(state))
-            pause_end_time = time.time() + 1
-            pause_next_state = SEEK_BALL
+            # pause_end_time = time.time() + 1
+            # pause_next_state = SEEK_BALL
 
     elif state == PURGE:
         # Drive to a corner and purge
@@ -361,7 +361,7 @@ while True:
             # Clear the buffer so we have up-to-date data at the next loop
             base.drive_cm(-5, speed=100)
             empty_udp_buffer(s)
-            state = TO_CENTER
+            state = BOUNCE
             logging.info("Changing to {0} state".format(state))
 
     elif state == TO_CENTER:
