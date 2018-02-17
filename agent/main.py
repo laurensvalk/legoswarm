@@ -58,7 +58,7 @@ STORE_DEBUG = 'store debug'
 
 pause_end_time = time.time()
 pause_next_state = SEEK_BALL
-purge_next_state = SEEK_BALL
+to_center_next_state = SEEK_BALL
 
 state = DRIVE
 CHECK_VOLT_AFTER_LOOPS = 500
@@ -261,9 +261,9 @@ while True:
     # Go to depot if our belly is full.
     if state in (DRIVE, BOUNCE, ):
         if picker.store_count > robot_settings['max_balls_in_store']:
-            state = PURGE
+            state = TO_CENTER
             logging.info("Changing to {0} state".format(state))
-            purge_next_state = DRIVE
+            to_center_next_state = DRIVE
 
     # Drive to field corner c when voltage is low.
     if state == LOW_VOLTAGE:
@@ -336,7 +336,7 @@ while True:
         if picker.store_count > robot_settings['max_balls_in_store']:
             state = TO_CENTER
             logging.info("Changing to {0} state".format(state))
-            purge_next_state = PURGE
+            to_center_next_state = PURGE
         else:
             picker.open()
             # Clear the buffer so we have up-to-date data at the next loop
@@ -369,7 +369,7 @@ while True:
         total_force = spring_to_balls.get_force_vector(center_direction) + nett_neighbor_avoidance + nett_depot_avoidance
         if center_direction.norm < 20:
             picker.open()
-            state = purge_next_state
+            state = to_center_next_state
             logging.info("Changing to {0} state".format(state))
 
     elif state == DRIVE:
