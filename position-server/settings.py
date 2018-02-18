@@ -111,13 +111,13 @@ robot_settings = {
 # Server settings
 server_settings = {
     'SERVER_BASE_PORT' : 50000,
-    'THRESHOLD' : 140,         # Threshold for b/w version of camera image. Was 230 most of the time
+    'THRESHOLD' : 145,         # Threshold for b/w version of camera image. Higher number means more black
     'WIDTH' : 1920,            # Camera image
     'HEIGHT' : 1080,
     'extra border outside' : -70,
-    'extra border inside' : 20,
-    'MIN_BALL_RADIUS_PX' : 3,
-    'MAX_BALL_RADIUS_PX' : 30,
+    'extra border inside' : 10,
+    'MIN_BALL_RADIUS_PX' : 6,
+    'MAX_BALL_RADIUS_PX' : 12,
     'MAX_AGENTS' : 8,
     'depots_world' : [  # all cm relative to center of field:
                         [0, -112],  # +80 along y, 0 along x.
@@ -133,18 +133,19 @@ server_settings = {
     'cm_per_bounding_px': 0.15*(1936+500-60)/1936, # dimensions relevant for bounding box are at approx 6cm above ground
     'ball_info_max_size': 3, # Number of nearest balls each robot should get details of
     'depot_radius': 200, #pixels
+    'reload_settings_after_n_loops': 200,
     'bounding_box_cm': [
         # List of points in centimeters, encircling the robot
         # Starting at left wheel, then go counterclockwise
-        [-13, 2.5], # Front end of left wheel
-        [-13, -2.5], # Back end of left wheel
+        [-14, 2.5], # Front end of left wheel
+        [-14, -2.5], # Back end of left wheel
         [-8, -14], # Left rear wheel caster
         [0, -17], # Motor cable
         [8, -14], # right wheel caster
-        [13, -2.5], # Back end of right wheel
-        [13, 2.5], # Front end of right wheel
-        [5, 20], # Front-right end of gripper
-        [-5, 20] # Front-left end of gripper
+        [14, -2.5], # Back end of right wheel
+        [14, 2.5], # Front end of right wheel
+        [5, 22], # Front-right end of gripper
+        [-5, 22] # Front-left end of gripper
     ]
 }
 

@@ -18,8 +18,8 @@ from threading import Thread
 from platform import platform
 import gzip
 
-from antoncv import find_largest_rectangle_transform, sorted_rect, offset_convex_polygon, rect_from_image_size, \
-    find_nested_triangles, YELLOW, RED, PURPLE, GREEN, ORANGE
+from antoncv import find_largest_rectangle_transform, offset_convex_polygon, rect_from_image_size, \
+    find_nested_triangles, YELLOW, RED, PURPLE, GREEN, ORANGE, adjust_curve
 from linalg import atan2_vec, vec_length
 
 from importlib import reload
@@ -160,7 +160,7 @@ if __name__ == '__main__':
     ############################################################################
     ############################################################################
 
-    n = 100             # Number of loops to wait for time calculation
+    n = server_settings['reload_settings_after_n_loops']             # Number of loops to wait for time calculation
     t = time.time()     # Starttime for calculation
     while True:
         lt = time.time()
@@ -183,12 +183,13 @@ if __name__ == '__main__':
             logging.debug("Image warped: {0}".format(time.time() - lt))
 
         robot_markers = {}
-        img_triangles, triangles = find_nested_triangles(img, threshold=server_settings['THRESHOLD'])
+        img_grey, triangles = find_nested_triangles(img, threshold=server_settings['THRESHOLD'])
         logging.debug("Got triangles: {0}".format(time.time() - lt))
 
-        img_grey = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-        values, img_grey = cv2.threshold(img_grey, server_settings['THRESHOLD'], 255, cv2.THRESH_BINARY)
-        img = cv2.cvtColor(img_triangles, cv2.COLOR_GRAY2BGR)
+        # img_grey = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        # img_grey = adjust_curve(img_grey, 1.4)
+        # values, img_grey = cv2.threshold(img_grey, server_settings['THRESHOLD'], 255, cv2.THRESH_BINARY)
+        # img = cv2.cvtColor(img_grey, cv2.COLOR_GRAY2BGR)
 
         for triangle in triangles:
             # Let it's corners be these vectors.
@@ -294,17 +295,21 @@ if __name__ == '__main__':
             cv2.bitwise_not(mask, dst=mask)
             cv2.bitwise_or(img_grey, mask, dst=img_grey)
 
+        logging.debug("Masked field after: {0}s".format(time.time() - lt))
         # Now all robots & border are blacked out let's look for contours again.
         img_grey, contours, tree = cv2.findContours(img_grey, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
         for c in contours:
             c, r = cv2.minEnclosingCircle(c)
             c = tuple(map(int, c))
-            if 5 < r < 15:
+            if server_settings['MIN_BALL_RADIUS_PX'] < r < server_settings['MAX_BALL_RADIUS_PX']:
                 cv2.circle(img, c, int(r), YELLOW, 2)
                 balls += [c]
 
+        logging.debug("Listed balls after: {0}s".format(time.time() - lt))
         # Calculations to save time on client side
         data_to_transmit = make_data_for_robots(robot_markers, balls, field_corners, server_settings, robot_settings)
+        logging.debug("Listed done calculations: {0}s".format(time.time() - lt))
+
 
         # Show all calculations in the preview window
         # img = cv2.cvtColor(img_grey, cv2.COLOR_GRAY2BGR)
@@ -328,10 +333,10 @@ if __name__ == '__main__':
         else:
             robot_settings['state'] = ''
         if n == 0:
-            logging.info("Looptime: {0}. Reloading settings.".format((time.time()-t)/100))
+            logging.info("Looptime: {0}. Reloading settings.".format((time.time()-t)/server_settings['reload_settings_after_n_loops']))
             reload(settings)
             from settings import server_settings, robot_settings
-            n = 200
+            n = server_settings['reload_settings_after_n_loops']
             t = time.time()
         else:
             n -= 1
