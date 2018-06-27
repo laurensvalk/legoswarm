@@ -176,6 +176,54 @@ def get_wall_info(H_to_bot_from_world, server_settings, field_corners):
     # For each agent, return a sorted list of ball locations
     return wall_info
 
+
+def line_coefs(p1, p2):
+    A = (p1[1] - p2[1])
+    B = (p2[0] - p1[0])
+    C = (p1[0]*p2[1] - p2[0]*p1[1])
+    return A, B, -C
+
+def intersection(L1, L2):
+    D  = L1[0] * L2[1] - L1[1] * L2[0]
+    Dx = L1[2] * L2[1] - L1[1] * L2[2]
+    Dy = L1[0] * L2[2] - L1[2] * L2[0]
+    if D != 0:
+        x = Dx / D
+        y = Dy / D
+        return x,y
+    else:
+        return False
+
+def get_line_info(H_to_bot_from_world, server_settings, line):
+    # Load the absolute depot locations
+    line_points_world = np.array(line).T
+
+    # Gripper in agent frame
+    my_gripper = np.array(server_settings['p_bot_gripper'])
+
+    # Empty dictionary which we'll fill for each agent in this loop
+    line_info = {}
+    for (agent, transformation) in H_to_bot_from_world.items():
+        # Transform the gripper to current agent
+        endpoint_agent_frame = transformation * line_points_world[1]
+
+        # Location of my gripper in the world frame
+        my_gripper_world = transformation.inverse() * my_gripper
+
+        L1 = line_coefs(line[0], line[1])
+        line_vec = (line_points_world[1] - line_points_world[0])
+        line_vec_perp = np.array(-line_vec[1], line_vec[0])
+        line_vec_perp_from_gripper = my_gripper_world + line_vec_perp
+
+        L2 = line_coefs(my_gripper_world, line_vec_perp_from_gripper)
+        closest_point = np.array(intersection(L1,L2))
+        closest_point_agent_frame = transformation * closest_point
+
+        line_info[agent] = {'endpoint': endpoint_agent_frame, 'closest_point': closest_point_agent_frame}
+
+    return line_info
+
+
 def get_neighbor_info(markers, server_settings, field_corners):
     # Determine who's who
     agents = markers.keys()
@@ -229,7 +277,7 @@ def get_neighbor_info(markers, server_settings, field_corners):
     return neighbor_info, H_to_bot_from_world
 
 
-def make_data_for_robots(markers, ball_locations, field_corners, server_settings, robot_settings):
+def make_data_for_robots(markers, ball_locations, field_corners, server_settings, robot_settings, line):
 
     # Information about the neighbors of each robot, in their own frame of reference
     neighbor_info, H_to_bot_from_world = get_neighbor_info(markers, server_settings, field_corners)
@@ -250,6 +298,8 @@ def make_data_for_robots(markers, ball_locations, field_corners, server_settings
 
     # Get perpendicular lines to each wall in each robot frame of reference
     wall_info = get_wall_info(H_to_bot_from_world, server_settings, field_corners)
+
+    line_info = get_line_info(H_to_bot_from_world, server_settings, line)
 
     result = {}
     for robot_id in markers:

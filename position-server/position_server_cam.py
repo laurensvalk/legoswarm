@@ -83,6 +83,7 @@ class SocketThread(Thread):
     def run(self):
         global data_to_transmit, running
         while running:
+            # This is not very threadsafe, a lock would be better here. But hey, it works.
             for robot_id_key in data_to_transmit:
                 port = server_settings['SERVER_BASE_PORT']+robot_id_key
                 sent_bytes = self.udp_send_dict_key(data_to_transmit, robot_id_key, port)
@@ -92,7 +93,6 @@ class SocketThread(Thread):
         logging.info("Socket server stopped")
 
     def udp_send_dict_key(self, dictionary, key, port):
-
         if key in dictionary:
             data = gzip.compress(pickle.dumps(dictionary[key]))
             try:
@@ -150,6 +150,7 @@ if __name__ == '__main__':
         elif keypress == ord('b'):
             objects = '4_blobs'
         elif keypress == ord('n'):
+            # No Field edge detection, take the whole camera picture
             found_playing_field = False
             field_corners = rect_from_image_size(server_settings['WIDTH'], server_settings['HEIGHT'])
             break
@@ -279,14 +280,6 @@ if __name__ == '__main__':
             # Get the size of the image
             img_height, img_width = img.shape[:2]
 
-            # total_margin = abs(server_settings['extra border outside']) + abs(server_settings['extra border inside'])
-            # # Erase the borders
-            # cv2.polylines(img_grey,
-            #                 np.array([rect_from_image_size(img_width, img_height)], dtype=int),
-            #                 True,
-            #                 255,
-            #                 thickness=total_margin)
-
             # Erase the ball depot
             cv2.circle(img_grey, (img_width // 2, 0), server_settings['depot_radius'], (255,255,255), cv2.FILLED)
 
@@ -306,10 +299,19 @@ if __name__ == '__main__':
                 balls += [c]
 
         logging.debug("Listed balls after: {0}s".format(time.time() - lt))
-        # Calculations to save time on client side
-        data_to_transmit = make_data_for_robots(robot_markers, balls, field_corners, server_settings, robot_settings)
-        logging.debug("Listed done calculations: {0}s".format(time.time() - lt))
 
+        # Just define a random line for testing
+        line = [(-200,-200), (200,200)]
+
+        # Calculations to save time on client side
+        data_to_transmit = make_data_for_robots(robot_markers,
+                                                balls,
+                                                field_corners,
+                                                server_settings,
+                                                robot_settings,
+                                                line)
+
+        logging.debug("Listed done calculations: {0}s".format(time.time() - lt))
 
         # Show all calculations in the preview window
         # img = cv2.cvtColor(img_grey, cv2.COLOR_GRAY2BGR)
@@ -327,6 +329,8 @@ if __name__ == '__main__':
             robot_settings['state'] = 'drive'
         elif keypress == ord('s'):
             robot_settings['state'] = 'seek ball'
+        elif keypress == ord('l'):
+            robot_settings['state'] = 'straight line'
         elif keypress == ord(' '):
             # Save an image to disk:
             cv2.imwrite("test_images/{0}.jpg".format(int(time.time())), img_cam)

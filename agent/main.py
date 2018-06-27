@@ -55,12 +55,13 @@ DRIVE = 'drive'
 PAUSE = 'pause'
 TO_CENTER = 'to_center'
 STORE_DEBUG = 'store debug'
+STRAIGHT_LINE = 'straight line'
 
 pause_end_time = time.time()
 pause_next_state = SEEK_BALL
 to_center_next_state = SEEK_BALL
 
-state = DRIVE
+state = STRAIGHT_LINE
 CHECK_VOLT_AFTER_LOOPS = 500
 MAX_FAILS_BEFORE_WAIT = 8
 loopcount = 0
@@ -124,6 +125,7 @@ while True:
         wall_info = data['walls']
         ball_info = data['balls']
         depot_info = data['depots']
+        line_info = data['line']
 
         # Unpack some useful data from the information we received
         neighbors = neighbor_info.keys()
@@ -140,7 +142,8 @@ while True:
         robot_attraction_spring = Spring(robot_settings['robot_attraction_spring'])
         spring_to_walls = Spring(robot_settings['spring_to_walls'])
         spring_to_balls = Spring(robot_settings['spring_to_balls'])
-        # spring_to_position = Spring(robot_settings['spring_to_position'])
+        spring_to_line = Spring(robot_settings['spring_to_line'])
+        spring_to_position = Spring(robot_settings['spring_to_position'])
         spring_to_depot = Spring(robot_settings['spring_to_depot'])
         if 'state' in robot_settings:
             if robot_settings['state']:
@@ -209,7 +212,8 @@ while True:
 
     # 2. Walls
 
-    # Unpack wall x and y directions, from my point of view
+    # Unpack wall X and Y axis directions, from my point of view
+    # They are unit vectors, pointing in the directions of the world's coordinate system.
     world_x_from_my_gripper = vector(wall_info['world_x'])
     world_y_from_my_gripper = vector(wall_info['world_y'])
 
@@ -217,6 +221,7 @@ while True:
     (distance_to_top, distance_to_bottom, distance_to_left, distance_to_right) = wall_info['distances']
 
     # Make one spring to each wall
+    # The walls are always aligned with the world axes. E.g. the top wall has
     force_to_top = spring_to_walls.get_force_vector(distance_to_top * world_y_from_my_gripper)
     force_to_bottom = spring_to_walls.get_force_vector(-distance_to_bottom * world_y_from_my_gripper)
     force_to_left = spring_to_walls.get_force_vector(-distance_to_left * world_x_from_my_gripper)
@@ -239,6 +244,14 @@ while True:
     nearest_depot_to_my_gripper = vector(depot_info[0]) - my_gripper
     nett_depot_force = spring_to_depot.get_force_vector(nearest_depot_to_my_gripper)
     nett_depot_avoidance = robot_avoidance_spring.get_force_vector(nearest_depot_to_my_gripper)
+
+    # 4.5 Line following forces for line mode
+    force_to_line_endpoint = 0
+    force_to_line = 0
+
+    if len(line_info) > 0:
+        force_to_position = spring_to_line_endpoint.get_force_vector(line_info['endpoint'])
+        force_to_line = spring_to_line.get_force_vector(line_info['closest_point'])
 
     # 5. Start with a zero total force for processing all state behaviour
     total_force = no_force
@@ -380,7 +393,6 @@ while True:
             logging.info("Changing to {0} state".format(state))
 
     elif state == BOUNCE:
-        # total_force = nett_neighbor_avoidance + vector([nett_wall_force[0]*random_factor, nett_wall_force[1]])  # yuck
         total_force = nett_neighbor_avoidance + nett_wall_force + nett_depot_avoidance
         if min(wall_info['distances']) > 20:
             state = DRIVE
@@ -391,6 +403,9 @@ while True:
         if time.time() > pause_end_time:
             state = pause_next_state
             logging.info("Changing to {0} state".format(state))
+
+    elif state == STRAIGHT_LINE:
+        total_force = force_to_line + force_to_line_endpoint
 
     logging.debug("State strategy processed for state {0} after {1}ms".format(state,
                                                                               int((time.time()-loopstart)*1000)))

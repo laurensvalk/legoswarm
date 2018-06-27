@@ -101,6 +101,10 @@ robot_settings = {
                 [30,  40], #b
                 [50, 15]
             ],
+            'spring_to_line' : [
+                [0, 0],
+                [10, 40]
+            ],
             'spring_to_position' : [
                 [0, 0],
                 [10, 20]
